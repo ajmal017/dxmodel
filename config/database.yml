@@ -7,13 +7,13 @@ base: &base
 
 development:
   <<: *base
-  database: nilesh_dev
+  database: dxmodel_dev
 
 #test:
 #  <<: *base
-#  database: nilesh_test
+#  database: dxmodel_test
 
-#production:
-#  <<: *base
-#  database: nilesh_prod
-#  socket: /var/run/mysqld/mysqld.sock #Ubuntu
+production:
+  <<: *base
+  database: dxmodel_prod
+  socket: /var/run/mysqld/mysqld.sock #Ubuntu

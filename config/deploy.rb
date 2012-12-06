@@ -18,7 +18,6 @@ require 'bundler/capistrano'
 
 # Database
 $:.unshift File.join(File.dirname(__FILE__), './deploy') 
-require "capistrano_database" 
 
 # Main Details
 set :application, "dxmodel"
