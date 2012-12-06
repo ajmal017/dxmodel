@@ -1,0 +1,2 @@
+module StockScoresHelper
+end

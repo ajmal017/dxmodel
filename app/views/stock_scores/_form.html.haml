@@ -1,0 +1,19 @@
+= form_for @stock_score do |f|
+  - if @stock_score.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@stock_score.errors.count, "error")} prohibited this stock_score from being saved:"
+      %ul
+        - @stock_score.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :date
+    = f.datetime_select :date
+  .field
+    = f.label :stock_id
+    = f.number_field :stock_id
+  .field
+    = f.label :risk_funda_screen1_rank_by_industry
+    = f.number_field :risk_funda_screen1_rank_by_industry
+  .actions
+    = f.submit 'Save'

@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  industry_id: 1
+  risk_funda_screen1_score: 1.5
+
+two:
+  name: MyString
+  industry_id: 1
+  risk_funda_screen1_score: 1.5

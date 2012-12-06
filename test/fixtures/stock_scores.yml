@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  date: 2012-11-19 15:00:17
+  stock_id: 1
+  risk_funda_screen1_rank: 1
+
+two:
+  date: 2012-11-19 15:00:17
+  stock_id: 1
+  risk_funda_screen1_rank: 1

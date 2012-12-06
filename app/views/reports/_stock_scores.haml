@@ -1,0 +1,23 @@
+
+%table.table-bordered.table-condensed
+  %tr
+    %th Name
+    %th Industry
+    %th Fund. long score
+    %th Fund. long rank in industry
+    %th Fund. short score
+    %th Fund. short rank in industry
+
+  - stock_scores.each_with_index do |stock_score, index|
+    %tr
+      %td
+        = stock_score.stock.name
+
+      %td
+        = stock_score.industry.name
+
+      %td
+        = stock_score.fund_long_score
+
+      %td
+        = stock_score.fund_long_rank_by_industry.to_i + 1

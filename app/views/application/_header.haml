@@ -1,0 +1,10 @@
+.navbar
+  .navbar-inner
+    = link_to 'DX Model', '#', :class => 'brand'
+    %ul.nav
+      %li{:class => "#{'active' if params[:controller] == 'uploads' and params[:action] == 'new'}"}
+        = link_to 'Upload new data', new_upload_path
+      %li{:class => "#{'active' if params[:controller] == 'reports' and params[:action] == 'long'}"}
+        = link_to 'Long reports', long_reports_path
+      %li{:class => "#{'active' if params[:controller] == 'reports' and params[:action] == 'short'}"}
+        = link_to 'Short reports', short_reports_path

@@ -1,0 +1,5 @@
+- [:info, :success, :error].each do |name|
+  - if flash[name]
+    = content_tag :div, :class => "alert alert-block alert-#{name.to_s}" do
+      %a.close{'data-dismiss' => "alert"} &times;
+      = flash[name].strip.html_safe

@@ -1,0 +1,19 @@
+base: &base
+  adapter: mysql2
+  username: root
+  host: localhost
+  encoding: utf8
+  timeout: 5000
+
+development:
+  <<: *base
+  database: nilesh_dev
+
+#test:
+#  <<: *base
+#  database: nilesh_test
+
+#production:
+#  <<: *base
+#  database: nilesh_prod
+#  socket: /var/run/mysqld/mysqld.sock #Ubuntu
