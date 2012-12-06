@@ -1,6 +1,7 @@
 .navbar
   .navbar-inner
-    = link_to 'DX Model', '#', :class => 'brand'
+    =# link_to 'DX Model', '#', :class => 'brand'
+    %span.brand DX Model
     %ul.nav
       %li{:class => "#{'active' if params[:controller] == 'uploads' and params[:action] == 'new'}"}
         = link_to 'Upload new data', new_upload_path
