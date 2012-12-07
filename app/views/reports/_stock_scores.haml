@@ -17,7 +17,13 @@
         = stock_score.industry.name
 
       %td
-        = stock_score.fund_long_score
+        = stock_score.long_fund_score
 
       %td
-        = stock_score.fund_long_rank_by_industry.to_i + 1
+        = stock_score.long_fund_rank_by_industry.to_i + 1
+        
+      %td
+        = stock_score.short_fund_score
+
+      %td
+        = stock_score.short_fund_rank_by_industry.to_i + 1

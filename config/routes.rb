@@ -5,8 +5,7 @@ Nilesh::Application.routes.draw do
   resources :stocks
   resources :industries
 
-  match 'reports/long', :to => "reports#long", :as => :long_reports
-  match 'reports/short', :to => "reports#short", :as => :short_reports
+  match 'reports/index', :to => "reports#index", :as => :reports
 
   resources :uploads
 end

@@ -6,20 +6,26 @@ class UploadsController < ApplicationController
 
 
   def create
-    Stock.transaction do
-      date = params[:date]
-      rows = CSV.parse(params[:file].read)
-      rows.delete_at(0) # Remove headings
+    if params[:file].nil?
+      flash[:error] = 'No file specified' and 
+      redirect_to new_upload_path 
+    else
 
-      import_industries rows     
-      import_stocks rows     
-      import_fund_scores rows, date, params[:longshort]
+      Stock.transaction do
+        date = params[:date]
+        rows = CSV.parse(params[:file].read)
+        rows.delete_at(0) # Remove headings
 
-      calc_long_fund_ranks date if params[:longshort] == 'long'
-      calc_short_fund_ranks date if params[:longshort] == 'short'
+        import_industries rows     
+        import_stocks rows     
+        import_fund_scores rows, date, params[:longshort]
 
-      flash[:success] = "Upload successful"
-      redirect_to long_reports_path
+        calc_long_fund_ranks date if params[:longshort] == 'long'
+        calc_short_fund_ranks date if params[:longshort] == 'short'
+
+        flash[:success] = "Upload successful"
+        redirect_to reports_path(:longshort => params[:longshort])
+      end
     end
   end
 
