@@ -27,9 +27,9 @@ private
       one_third = (industry.stock_scores.count.to_f / 3.0).ceil
 
       if longshort == 'long' then
-        order = 'stock_scores.long_fund_rank_by_industry ASC'
+        order = 'stock_scores.long_fund_rank_by_industry ASC, stock_scores.long_fund_score DESC'
       elsif longshort == 'short' then
-        order = 'stock_scores.short_fund_rank_by_industry ASC'
+        order = 'stock_scores.short_fund_rank_by_industry ASC, stock_scores.short_fund_score DESC'
       end
 
       industries[industry.id] = industry.stock_scores.where('stock_scores.date = ?', date.to_s(:db)).order(order).limit(one_third)
