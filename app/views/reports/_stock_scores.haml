@@ -3,27 +3,36 @@
   %tr
     %th Name
     %th Industry
-    %th Fund. long score
-    %th Fund. long rank in industry
-    %th Fund. short score
-    %th Fund. short rank in industry
+
+    %th Long fund. score
+    %th Long fund. rank
+    %th Long fund. rank in industry
+
+    %th Short fund. score
+    %th Short fund. rank
+    %th Short fund. rank in industry
+
 
   - stock_scores.each_with_index do |stock_score, index|
     %tr
       %td
         = stock_score.stock.name
-
       %td
         = stock_score.industry.name
 
+
       %td
         = stock_score.long_fund_score
-
       %td
-        = stock_score.long_fund_rank_by_industry.to_i + 1
-        
+        = stock_score.long_fund_rank
+      %td
+        = stock_score.long_fund_rank_by_industry.nil? ? '-' : stock_score.long_fund_rank_by_industry.to_i + 1
+
+
       %td
         = stock_score.short_fund_score
-
       %td
-        = stock_score.short_fund_rank_by_industry.to_i + 1
+        = stock_score.short_fund_rank
+      %td
+        = stock_score.short_fund_rank_by_industry.nil? ? '-' : stock_score.short_fund_rank_by_industry.to_i + 1
+

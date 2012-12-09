@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121119070017) do
+ActiveRecord::Schema.define(:version => 20121209032339) do
 
   create_table "industries", :force => true do |t|
     t.string   "name"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(:version => 20121119070017) do
     t.float    "short_fund_rank_by_industry"
     t.datetime "created_at",                  :null => false
     t.datetime "updated_at",                  :null => false
+    t.integer  "long_fund_rank"
+    t.integer  "short_fund_rank"
   end
 
   create_table "stocks", :force => true do |t|

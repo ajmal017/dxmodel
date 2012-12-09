@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   require 'csv'
   
   def index
-    dates = StockScore.select('distinct date').collect(&:date)
+    dates = StockScore.select('distinct date').order('date DESC').collect(&:date)
     @date1 = dates[0]
     @date2 = dates[1]
     raise "Need data for two dates" unless @date1 and @date2
@@ -27,12 +27,15 @@ private
       one_third = (industry.stock_scores.count.to_f / 3.0).ceil
 
       if longshort == 'long' then
-        order = 'stock_scores.long_fund_rank_by_industry ASC, stock_scores.long_fund_score DESC'
+        order = 'stock_scores.long_fund_rank_by_industry ASC'
+        where = 'stock_scores.long_fund_score IS NOT NULL'
+
       elsif longshort == 'short' then
-        order = 'stock_scores.short_fund_rank_by_industry ASC, stock_scores.short_fund_score DESC'
+        order = 'stock_scores.short_fund_rank_by_industry ASC'
+        where = 'stock_scores.short_fund_score IS NOT NULL'
       end
 
-      industries[industry.id] = industry.stock_scores.where('stock_scores.date = ?', date.to_s(:db)).order(order).limit(one_third)
+      industries[industry.id] = industry.stock_scores.where('stock_scores.date = ?', date.to_s(:db)).where(where).order(order).limit(one_third)
     end
 
     @tiers = []
