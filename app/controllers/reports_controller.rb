@@ -2,16 +2,26 @@ class ReportsController < ApplicationController
   require 'csv'
   
   def index
-    dates = StockScore.select('distinct date').order('date DESC').collect(&:date)
-    @date1 = dates[0]
-    @date2 = dates[1]
-    raise "Need data for two dates" unless @date1 and @date2
+    dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
+    date = dates[0]
 
-    @top_fund_stock_scores_for_date1 = top_fund_ranked_stocks @date1, params[:longshort]
-    @top_fund_stock_scores_for_date2 = top_fund_ranked_stocks @date2, params[:longshort]
+    @long_entries = []
+    @long_exits = []
+    @short_entries = []
+    @short_exits = []
 
-    @new_top_fund_stocks_on_date1 = (@top_fund_stock_scores_for_date2.collect(&:stock) - @top_fund_stock_scores_for_date1.collect(&:stock))
-    @dropped_top_fund_stocks_on_date1 = (@top_fund_stock_scores_for_date1.collect(&:stock) - @top_fund_stock_scores_for_date2.collect(&:stock))
+    StockDate.where(date: date).each do |stock_date|
+      @long_entries << stock_date if stock_date.long_signal == 'ENTER' and not stock_date.open_position.present?
+
+      @long_exits   << stock_date.stock if stock_date.long_signal == 'EXIT' and stock_date.open_position == 'LONG'
+      @short_entries << stock_date.stock if stock_date.short_signal == 'ENTER' and not stock_date.open_position.present?
+      @short_exits   << stock_date.stock if stock_date.short_signal == 'EXIT' and stock_date.open_position == 'SHORT'
+    end
+
+    # Order the long entries by rank
+    @long_entries.sort!{|a, b| a.long_fund_rank <=> b.long_fund_rank}
+    @long_entries = @long_entries.collect(&:stock)
+
   end
 
 
@@ -24,18 +34,18 @@ private
     # Get each industry and top one third of it's stocks by rank for a given date
     industries = {}
     Industry.all.each do |industry|
-      one_third = (industry.stock_scores.count.to_f / 3.0).ceil
+      one_third = (industry.stock_dates.count.to_f / 3.0).ceil
 
       if longshort == 'long' then
-        order = 'stock_scores.long_fund_rank_by_industry ASC'
-        where = 'stock_scores.long_fund_score IS NOT NULL'
+        order = 'stock_dates.long_fund_rank_by_industry ASC'
+        where = 'stock_dates.long_fund_score IS NOT NULL'
 
       elsif longshort == 'short' then
-        order = 'stock_scores.short_fund_rank_by_industry ASC'
-        where = 'stock_scores.short_fund_score IS NOT NULL'
+        order = 'stock_dates.short_fund_rank_by_industry ASC'
+        where = 'stock_dates.short_fund_score IS NOT NULL'
       end
 
-      industries[industry.id] = industry.stock_scores.where('stock_scores.date = ?', date.to_s(:db)).where(where).order(order).limit(one_third)
+      industries[industry.id] = industry.stock_dates.where('stock_dates.date = ?', date.to_s(:db)).where(where).order(order).limit(one_third)
     end
 
     @tiers = []

@@ -1,7 +1,7 @@
 Nilesh::Application.routes.draw do
   root :to => "home#index" 
 
-  resources :stock_scores
+  resources :stock_dates
   resources :stocks
   resources :industries
 

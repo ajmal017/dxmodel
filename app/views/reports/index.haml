@@ -1,29 +1,30 @@
-%ul.nav.nav-tabs
-  %li.active 
-    = link_to "Changes between #{@date1} and #{@date2}", '#changes', :data => {:toggle => 'tab'}
-  %li
-    = link_to "Top fund. stocks for #{@date1}", "##{@date1}", :data => {:toggle => 'tab'}
-  %li
-    = link_to "Top fund. stocks for #{@date2}", "##{@date2}", :data => {:toggle => 'tab'}
+%h3
+  = "Long entries"
+  %small.mute= "(#{@long_entries.size})"
+%ul
+  - @long_entries.each do |stock|
+    %li= stock.name
 
 
-.tab-content
-
-  #changes.tab-pane.active 
-    %h3= "New stocks"
-    %ul
-      - @new_top_fund_stocks_on_date1.each do |stock|
-        %li= stock.name
-
-    %h3= "Dropped stocks"
-    %ul
-      - @dropped_top_fund_stocks_on_date1.each do |stock|
-        %li= stock.name
+%h3
+  = "Long exits"
+  %small.mute= "(#{@long_exits.size})"
+%ul
+  - @long_exits.each do |stock|
+    %li= stock.name
 
 
-  %div{:id => @date1, :class => 'tab-pane'}
-    = render :partial => 'stock_scores', :object => @top_fund_stock_scores_for_date1 
+%h3
+  = "Short entries"
+  %small.mute= "(#{@short_entries.size})"
+%ul
+  - @short_entries.each do |stock|
+    %li= stock.name
 
 
-  %div{:id => @date2, :class => 'tab-pane'}
-    = render :partial => 'stock_scores', :object => @top_fund_stock_scores_for_date2
+%h3
+  = "Short exits"
+  %small.mute= "(#{@short_exits.size})"
+%ul
+  - @short_exits.each do |stock|
+    %li= stock.name

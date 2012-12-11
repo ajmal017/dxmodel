@@ -1,4 +1,4 @@
-class StockScore < ActiveRecord::Base
+class StockDate < ActiveRecord::Base
   attr_accessible :date, :risk_funda_screen1_rank_by_industry, :stock_id
 
   belongs_to :stock

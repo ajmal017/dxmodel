@@ -1,22 +1,12 @@
 = form_tag(uploads_path, {:multipart => true, :class => 'form-horizontal'}) do 
   .control-group
-    %label.control-label{:for => "date"} Date
-    .controls
-      %input#date{:placeholder => "E.g. 19730401", :name => 'date', :type => "text"}
-
-  .control-group
-    .controls
-      %label.radio
-        %input#longshort1{:checked => "", :name => "longshort", :type => "radio", :value => "long"}
-          Long
-      %label.radio
-        %input#longshort2{:name => "longshort", :type => "radio", :value => "short"}
-          Short
-
-  .control-group
-    %label.control-label{:for => "file"} File
+    %label.control-label{:for => "file"}
     .controls
       %input#file{:name => 'file', :type => "file"}
+      %span.help-block 
+        Filename must be YYYYMMDD[L|S].csv
+        %br
+        Eg. 20121205L.csv or 20121205S.csv 
 
   .control-group
     .controls

@@ -7,6 +7,7 @@ gem 'rails', '3.2.9'
 gem 'mysql2'
 gem 'haml-rails'
 
+gem 'jquery-tablesorter'
 gem 'thor'
 
 gem 'debugger'

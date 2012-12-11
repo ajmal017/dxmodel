@@ -3,10 +3,10 @@
     %span.brand DX Model
     %ul.nav
       %li{:class => "#{'active' if params[:controller] == 'uploads' and params[:action] == 'new'}"}
-        = link_to 'Upload new data', new_upload_path
+        = link_to 'Upload data', new_upload_path
 
-      %li{:class => "#{'active' if params[:controller] == 'reports' and params[:action] == 'index' and params[:longshort] == 'long'}"}
-        = link_to 'Long reports', reports_path(:longshort => 'long')
+      %li{:class => "#{'active' if params[:controller] == 'reports' and params[:action] == 'index'}"}
+        = link_to 'Reports', reports_path
 
-      %li{:class => "#{'active' if params[:controller] == 'reports' and params[:action] == 'index' and params[:longshort] == 'short'}"}
-        = link_to 'Short reports', reports_path(:longshort => 'short')
+      %li{:class => "#{'active' if params[:controller] == 'stock_dates' and params[:action] == 'index'}"}
+        = link_to 'Raw data', stock_dates_path

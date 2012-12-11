@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121209032339) do
+ActiveRecord::Schema.define(:version => 20121119070017) do
 
   create_table "industries", :force => true do |t|
     t.string   "name"
@@ -19,17 +19,20 @@ ActiveRecord::Schema.define(:version => 20121209032339) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "stock_scores", :force => true do |t|
+  create_table "stock_dates", :force => true do |t|
     t.integer  "stock_id"
     t.date     "date"
-    t.float    "long_fund_score"
-    t.float    "long_fund_rank_by_industry"
-    t.float    "short_fund_score"
-    t.float    "short_fund_rank_by_industry"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.float    "long_fund_score",             :default => 0.0
+    t.integer  "long_fund_rank_by_industry"
     t.integer  "long_fund_rank"
+    t.string   "long_signal"
+    t.float    "short_fund_score",            :default => 0.0
+    t.integer  "short_fund_rank_by_industry"
     t.integer  "short_fund_rank"
+    t.string   "short_signal"
+    t.string   "open_position"
+    t.datetime "created_at",                                   :null => false
+    t.datetime "updated_at",                                   :null => false
   end
 
   create_table "stocks", :force => true do |t|
