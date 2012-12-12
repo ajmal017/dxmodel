@@ -31,7 +31,7 @@ ssh_options[:forward_agent] = true
 set :deploy_to, "/var/www/dxmodel.andywatts.com"
 set :deploy_via, :remote_cache
 set :user, "dxmodel"
-set :use_sudo, true
+set :use_sudo, false
 set :rake, '/usr/local/rvm/gems/ruby-1.9.3-p194@global/bin/rake'
 
 # RVM

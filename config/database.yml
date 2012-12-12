@@ -16,4 +16,5 @@ development:
 production:
   <<: *base
   database: dxmodel_prod
+  password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
