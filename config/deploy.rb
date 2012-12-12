@@ -13,7 +13,6 @@
 #      restart
 
 load 'deploy/assets'
-require 'rvm/capistrano'
 require 'bundler/capistrano'
 
 # Database
@@ -32,11 +31,6 @@ set :deploy_to, "/var/www/dxmodel.andywatts.com"
 set :deploy_via, :remote_cache
 set :user, "dxmodel"
 set :use_sudo, false
-set :rake, '/usr/local/rvm/gems/ruby-1.9.3-p194@global/bin/rake'
-
-# RVM
-set :rvm_ruby_string, 'ruby-1.9.3@dxmodel'
-set :rvm_type, :system
 
 # Bundler
 set :bundle_without, [:darwin, :development, :test]  # Don't install dev, or test gems
@@ -55,8 +49,6 @@ depend :remote, :gem, "bundler", ">=1.0.7"
 
 
 # Setup (new server)
-before 'deploy:setup', 'rvm:install_rvm'
-before 'deploy:setup', 'rvm:install_ruby'
 task :after_setup, :roles => :app do
 end
 after 'deploy:setup', 'after_setup'
