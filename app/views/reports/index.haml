@@ -1,10 +1,18 @@
+%h1
+  Signals for 
+  = @date
+
+- dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
+= select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] })
+
+
 %h3
   = "Long entries"
   %small.mute= "(#{@long_entries.size})"
+
 %ul
   - @long_entries.each do |stock|
     %li= stock.name
-
 
 %h3
   = "Long exits"
@@ -28,3 +36,11 @@
 %ul
   - @short_exits.each do |stock|
     %li= stock.name
+
+
+:javascript
+  $('#date').change(function(){
+    var newURL = window.location.protocol + "//" + window.location.host + "/reports/index?date=" + $(this).val()
+    window.location = newURL
+  })
+

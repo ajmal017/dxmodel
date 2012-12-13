@@ -3,14 +3,14 @@ class ReportsController < ApplicationController
   
   def index
     dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
-    date = dates[0]
+    @date = params[:date] || dates[0]
 
     @long_entries = []
     @long_exits = []
     @short_entries = []
     @short_exits = []
 
-    StockDate.where(date: date).each do |stock_date|
+    StockDate.where(date: @date).each do |stock_date|
       @long_entries << stock_date if stock_date.long_signal == 'ENTER' and not stock_date.open_position.present?
 
       @long_exits   << stock_date.stock if stock_date.long_signal == 'EXIT' and stock_date.open_position == 'LONG'
