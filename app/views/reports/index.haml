@@ -1,5 +1,5 @@
 %h1
-  Signals for 
+  Signals at EOD on
   = @date
 
 - dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
@@ -12,14 +12,24 @@
 
 %ul
   - @long_entries.each do |stock|
-    %li= stock.name
+    %li
+      = stock.ticker
+      &nbsp;
+      = stock.country
+      &nbsp;
+      = stock.name
 
 %h3
   = "Long exits"
   %small.mute= "(#{@long_exits.size})"
 %ul
   - @long_exits.each do |stock|
-    %li= stock.name
+    %li
+      = stock.ticker
+      &nbsp;
+      = stock.country
+      &nbsp;
+      = stock.name
 
 
 %h3
@@ -27,7 +37,12 @@
   %small.mute= "(#{@short_entries.size})"
 %ul
   - @short_entries.each do |stock|
-    %li= stock.name
+    %li
+      = stock.ticker
+      &nbsp;
+      = stock.country
+      &nbsp;
+      = stock.name
 
 
 %h3
@@ -35,7 +50,12 @@
   %small.mute= "(#{@short_exits.size})"
 %ul
   - @short_exits.each do |stock|
-    %li= stock.name
+    %li
+      = stock.ticker
+      &nbsp;
+      = stock.country
+      &nbsp;
+      = stock.name
 
 
 :javascript

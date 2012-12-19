@@ -8,6 +8,8 @@
 %table#data
   %thead
     %tr
+      %th Ticker
+      %th Country
       %th Name
       %th Industry
       %th Position at open
@@ -26,6 +28,10 @@
   %tbody
     - @stock_dates.each do |stock_date|
       %tr
+        %td
+          = stock_date.stock.ticker
+        %td
+          = stock_date.stock.country
         %td= stock_date.stock.name
         %td= stock_date.industry.name
         %td= stock_date.open_position
