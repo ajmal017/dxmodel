@@ -1,17 +1,13 @@
 %h3 
-  Raw fundamentals data for
-  = @date.strftime("%B %d, %Y").to_s
+  Data for 
+  = @stock.name
+  %small.mute= "(#{@stock.ticker} #{@stock.country} - #{@stock.industry.name})"
 
-- dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
-= select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] })
 
 %table#data
   %thead
     %tr
-      %th Ticker
-      %th Country
-      %th Name
-      %th Industry
+      %th Date
       %th Position at open
       %th 
       %th Long signal 
@@ -29,12 +25,7 @@
     - @stock_dates.each do |stock_date|
       %tr
         %td
-          = link_to stock_date.stock.ticker, stock_path(stock_date.stock_id)
-        %td
-          = stock_date.stock.country
-        %td 
-          = link_to stock_date.stock.name, stock_path(stock_date.stock_id)
-        %td= stock_date.industry.name
+          = link_to stock_date.date, reports_path(:date => stock_date.date)
         %td= stock_date.open_position
         %td{:style => "background-color: lightgray;"}
         %td= stock_date.long_signal.try(:capitalize) || ''

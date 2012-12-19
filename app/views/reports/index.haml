@@ -1,61 +1,45 @@
-%h1
-  Signals at EOD on
-  = @date
+%h3
+  EOD signals for
+  = @date.strftime("%B %d, %Y").to_s
+
 
 - dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
 = select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] })
 
 
-%h3
+%h4
   = "Long entries"
   %small.mute= "(#{@long_entries.size})"
 
 %ul
   - @long_entries.each do |stock|
     %li
-      = stock.ticker
-      &nbsp;
-      = stock.country
-      &nbsp;
-      = stock.name
+      = link_to "#{stock.ticker} #{stock.country} #{stock.name}", stock_path(stock)
 
-%h3
+%h4
   = "Long exits"
   %small.mute= "(#{@long_exits.size})"
 %ul
   - @long_exits.each do |stock|
     %li
-      = stock.ticker
-      &nbsp;
-      = stock.country
-      &nbsp;
-      = stock.name
+      = link_to "#{stock.ticker} #{stock.country} #{stock.name}", stock_path(stock)
 
-
-%h3
+%h4
   = "Short entries"
   %small.mute= "(#{@short_entries.size})"
 %ul
   - @short_entries.each do |stock|
     %li
-      = stock.ticker
-      &nbsp;
-      = stock.country
-      &nbsp;
-      = stock.name
+      = link_to "#{stock.ticker} #{stock.country} #{stock.name}", stock_path(stock)
 
 
-%h3
+%h4
   = "Short exits"
   %small.mute= "(#{@short_exits.size})"
 %ul
   - @short_exits.each do |stock|
     %li
-      = stock.ticker
-      &nbsp;
-      = stock.country
-      &nbsp;
-      = stock.name
+      = link_to "#{stock.ticker} #{stock.country} #{stock.name}", stock_path(stock)
 
 
 :javascript
