@@ -3,11 +3,79 @@
     %label.control-label{:for => "file"}
     .controls
       %input#file{:name => 'file', :type => "file"}
-      %span.help-block 
-        Filename must be YYYYMMDD[L|S].csv
-        %br
-        Eg. 20121205L.csv or 20121205S.csv 
+      .control-group
+        .controls
+          %button.btn{:type => "submit"} Upload
 
-  .control-group
-    .controls
-      %button.btn{:type => "submit"} Upload
+%hr
+
+#notes
+  %h4 Filename
+  Must be YYYYMMDD[L|S].csv
+  %br
+  Eg. 20121205L.csv or 20121205S.csv 
+
+
+  %br
+  %br
+
+
+  %h4 CSV columns
+  %table.table.table-condensed.table-bordered
+    %tr
+      %th Column 
+      %th Value
+    %tr
+      %td A
+      %td Ticker and country
+    %tr
+      %td B
+      %td Name
+    %tr
+      %td C
+      %td Industry
+    %tr
+      %td D
+      %td Ranking score
+    %tr
+      %td E
+      %td Alpha  
+    %tr
+      %td F
+      %td PER 
+    %tr
+      %td G
+      %td PE change 
+    %tr
+      %td H
+      %td PBR
+    %tr
+      %td I
+      %td PB change
+    %tr
+      %td J
+      %td PFCF
+    %tr
+      %td K
+      %td PFCF change
+    %tr
+      %td L
+      %td EPS 5 year growth
+    %tr
+      %td M
+      %td ROE BF12M  
+    %tr
+      %td N
+      %td ROA BF12M
+    %tr
+      %td Q
+      %td Average Traded Value 30days
+    %tr
+      %td S
+      %td Closing price
+    %tr
+      %td T
+      %td WMAVG     
+    %tr
+      %td W
+      %td SMAVG

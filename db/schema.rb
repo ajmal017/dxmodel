@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121119070017) do
+ActiveRecord::Schema.define(:version => 20121219135957) do
 
   create_table "industries", :force => true do |t|
     t.string   "name"
@@ -22,17 +22,31 @@ ActiveRecord::Schema.define(:version => 20121119070017) do
   create_table "stock_dates", :force => true do |t|
     t.integer  "stock_id"
     t.date     "date"
-    t.float    "long_fund_score",             :default => 0.0
+    t.float    "long_fund_score",                                             :default => 0.0
     t.integer  "long_fund_rank_by_industry"
     t.integer  "long_fund_rank"
     t.string   "long_signal"
-    t.float    "short_fund_score",            :default => 0.0
+    t.float    "short_fund_score",                                            :default => 0.0
     t.integer  "short_fund_rank_by_industry"
     t.integer  "short_fund_rank"
     t.string   "short_signal"
     t.string   "open_position"
-    t.datetime "created_at",                                   :null => false
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "created_at",                                                                   :null => false
+    t.datetime "updated_at",                                                                   :null => false
+    t.decimal  "alpha",                        :precision => 4,  :scale => 4, :default => 0.0
+    t.decimal  "per",                          :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "per_change",                   :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "pbr",                          :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "pbr_change",                   :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "pfcf",                         :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "pfcf_change",                  :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "eps_5yr_growth",               :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "roe_bf12m",                    :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "roa_bf12m",                    :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "average_traded_value_30_days", :precision => 12, :scale => 4, :default => 0.0
+    t.decimal  "close",                        :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "wmavg_10d",                    :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "smavg_10d",                    :precision => 8,  :scale => 4, :default => 0.0
   end
 
   create_table "stocks", :force => true do |t|

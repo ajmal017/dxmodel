@@ -32,7 +32,7 @@ class UploadsController < ApplicationController
 
         create_stock_dates rows, date
 
-        import_stock_fund_scores rows, date, longshort
+        import_stock_data rows, date, longshort
 
         calc_fund_ranks_by_industry longshort, date 
         calc_fund_ranks longshort, date 
@@ -77,7 +77,7 @@ private
     end
   end
 
-  def import_stock_fund_scores rows, date, longshort
+  def import_stock_data rows, date, longshort
     rows.each_with_index do |row, index|
       ticker, country, name = data_from_row row
       stock = Stock.where(ticker: ticker, country: country).first
@@ -86,6 +86,29 @@ private
 
       stock_dates.long_fund_score = row[3] if longshort == 'long'
       stock_dates.short_fund_score = row[3] if longshort == 'short'
+
+      stock_dates.alpha =  ['','N.A.',nil].include?(row[4]) ? 0.0 : row[4]
+
+      stock_dates.per =  ['','N.A.',nil].include?(row[5]) ? 0.0 : row[5]
+      stock_dates.per_change =  ['','N.A.',nil].include?(row[6]) ? 0.0 : row[6]
+     
+      stock_dates.pbr =  ['','N.A.',nil].include?(row[7]) ? 0.0 : row[7]
+      stock_dates.pbr_change =  ['','N.A.',nil].include?(row[8]) ? 0.0 : row[8]
+     
+      stock_dates.pfcf =  ['','N.A.',nil].include?(row[9]) ? 0.0 : row[9]
+      stock_dates.pfcf_change =  ['','N.A.',nil].include?(row[10]) ? 0.0 : row[10]
+     
+      stock_dates.eps_5yr_growth =  ['','N.A.',nil].include?(row[11]) ? 0.0 : row[11]
+
+      stock_dates.roe_bf12m =  ['','N.A.',nil].include?(row[12]) ? 0.0 : row[12]
+      stock_dates.roa_bf12m =  ['','N.A.',nil].include?(row[13]) ? 0.0 : row[13]
+
+      stock_dates.average_traded_value_30_days =  ['','N.A.',nil].include?(row[16]) ? 0.0 : row[16]
+
+      stock_dates.close =  ['','N.A.',nil].include?(row[18]) ? 0.0 : row[18]
+
+      stock_dates.wmavg_10d =  ['','N.A.',nil].include?(row[19]) ? 0.0 : row[19]
+      stock_dates.smavg_10d =  ['','N.A.',nil].include?(row[22]) ? 0.0 : row[22]
 
       stock_dates.save! 
     end
