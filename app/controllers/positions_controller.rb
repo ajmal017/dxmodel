@@ -8,7 +8,7 @@ class PositionsController < ApplicationController
     @position = Position.new(params[:position])  
     if @position.save  
       flash[:notice] = "Successfully created position."  
-      redirect_to active_positions_path 
+      redirect_to entered_positions_path 
     else
       render :new
     end  
@@ -24,8 +24,8 @@ class PositionsController < ApplicationController
     @exit_signals = Position.exit_signaled.where(exit_signal_date: @date)
   end
 
-  def active
-    @active_positions = Position.active
+  def entered
+    @entered_positions = Position.entered
   end
 
   def exited

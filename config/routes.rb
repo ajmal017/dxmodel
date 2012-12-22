@@ -7,7 +7,7 @@ Nilesh::Application.routes.draw do
   resources :positions do
     collection do
       get 'signaled'
-      get 'active'
+      get 'entered'
       get 'exited'
     end
     member do

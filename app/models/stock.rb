@@ -9,4 +9,16 @@ class Stock < ActiveRecord::Base
   validates :name, :presence => true 
   validates :country, :presence => true
 
+
+
+  def unit
+    case country
+    when 'SP'
+      'S$'
+    when 'HK'
+      'HK$'
+    else
+      ''
+    end
+  end
 end

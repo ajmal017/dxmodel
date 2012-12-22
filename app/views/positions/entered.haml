@@ -1,13 +1,13 @@
 %h3
-  Active positions
+  Entered positions
 
-%table#active_positions
+%table#entered_positions
   %thead
     %tr
       %td{:class => "long {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Stock
 
       %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 6, :style => 'text-align: center;font-size: 14px;'} Entry
+      %td{:class => "short {sorter: false}", :colspan => 7, :style => 'text-align: center;font-size: 14px;'} Entry
 
       %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
       %td{:class => "short {sorter: false}", :colspan => 1, :style => 'text-align: center;font-size: 14px;'}
@@ -23,14 +23,15 @@
       %th Long|Short
       %th Quantity
       %th Price
-      %th USD FX rate
       %th Local value
+      %th USD FX rate
+      %th USD value
 
       %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
       %th Notes
 
   %tbody
-    - @active_positions.each do |position|
+    - @entered_positions.each do |position|
       %tr
         %td= link_to position.stock.ticker, stock_path(position.stock_id)
         %td= position.stock.country
@@ -41,10 +42,11 @@
         %td.fund{:style => "background-color: lightgray;"}
         %td= position.enter_date
         %td= position.longshort.capitalize
-        %td= position.quantity
-        %td= position.enter_price
+        %td= number_with_delimiter(position.quantity)
+        %td= number_to_currency(position.enter_local_price, :unit => position.stock.unit)
+        %td= number_to_currency(position.enter_local_value, :unit => position.stock.unit)
         %td= position.enter_usd_fx_rate
-        %td= position.enter_local_value
+        %td= number_to_currency(position.enter_usd_value)
 
         %td.fund{:style => "background-color: lightgray;"}
         %td
