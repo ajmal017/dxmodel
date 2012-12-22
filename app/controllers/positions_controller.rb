@@ -1,5 +1,19 @@
 class PositionsController < ApplicationController
   
+  def new
+    @position = Position.new(:state => 'entered')
+  end
+
+  def create
+    @position = Position.new(params[:position])  
+    if @position.save  
+      flash[:notice] = "Successfully created position."  
+      redirect_to active_positions_path 
+    else
+      render :new
+    end  
+  end
+
   # Collections
 
   def signaled

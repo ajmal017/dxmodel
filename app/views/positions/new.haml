@@ -1,0 +1,32 @@
+= simple_form_for(@position, :defaults => {:required => false, :input_html => {:class => 'input-xxlarge'}}) do |f|
+  %fieldset
+    %h3 Manual enter a position
+
+    %h4.legend Position
+    = f.input :state, :label => 'State', :collection => Position.state_machine.states.map(&:name).collect{|state|[state, state]} #, :selected => (@position.state || 'entered')
+    = f.input :stock_id, :label => 'Stock', :collection => Stock.order('name ASC').collect{|s| [s.name, s.name] } #, :selected => (@judge.page_id || '')
+
+
+    %h4.legend Enter
+    = f.input :enter_date, :as => :string
+    = f.input :quantity
+    = f.input :enter_price, :label => 'Price'
+    = f.input :enter_usd_fx_rate, :label => 'FX rate'
+    = f.input :enter_local_value, :label => 'Local value'
+    = f.input :enter_usd_value, :label => 'USD value'
+
+
+    %h4.legend Exit
+    = f.input :exit_date, :as => :string
+    = f.input :exit_price, :label => 'Price'
+    = f.input :exit_usd_fx_rate, :label => 'FX rate'
+    = f.input :exit_local_value, :label => "Local value"
+    = f.input :exit_usd_value, :label => 'USD value'
+
+
+    %h4.legend Other
+    = f.input :note, :as => :text
+
+  .control-group
+    .controls
+      = f.submit "Create", :class => 'btn btn-primary btn-large'

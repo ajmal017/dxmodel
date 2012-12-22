@@ -23,7 +23,7 @@
       %th Long|Short
       %th Quantity
       %th Price
-      %th USD value
+      %th USD FX rate
       %th Local value
 
       %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
@@ -43,7 +43,7 @@
         %td= position.longshort.capitalize
         %td= position.quantity
         %td= position.enter_price
-        %td= position.enter_usd_value
+        %td= position.enter_usd_fx_rate
         %td= position.enter_local_value
 
         %td.fund{:style => "background-color: lightgray;"}

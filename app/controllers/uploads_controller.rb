@@ -13,11 +13,9 @@ class UploadsController < ApplicationController
     date = params[:date]
 
     Stock.transaction do
-      long = CSV.parse(params[:long].read)
-      short = CSV.parse(params[:short].read)
-
+      long = CSV.parse(params[:long].read, {:headers => true})
+      short = CSV.parse(params[:short].read, {:headers => true})
       [long, short].each do |data|
-        data.delete_at(0) # Remove headings
         create_industries data
         create_stocks data
         create_stock_dates data, date
@@ -47,7 +45,7 @@ private
   def create_industries rows
     rows.each_with_index do |row, index|
       industry = Industry.new
-      industry.name = row[2]
+      industry.name = row['GICS Sector']
       industry.save! if industry.valid?
     end
   end  
@@ -70,7 +68,6 @@ private
       stock = Stock.where(ticker: ticker, country: country).first
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
       stock_date = StockDate.new(stock_id: stock.id, date: date) if stock_date.nil?
-debugger unless stock_date.valid?
       stock_date.save!
     end
   end
@@ -82,31 +79,31 @@ debugger unless stock_date.valid?
 
       stock_dates = StockDate.where({stock_id: stock.id, date: date}).first
 
-      stock_dates.long_fund_score = row[3] if longshort == 'long'
-      stock_dates.short_fund_score = row[3] if longshort == 'short'
+      stock_dates.long_fund_score = row['Ranking Model: Long Score'] if longshort == 'long'
+      stock_dates.short_fund_score = row['Ranking Model: Short Score'] if longshort == 'short'
 
-      stock_dates.alpha =  ['','N.A.',nil].include?(row[4]) ? 0.0 : row[4]
+      stock_dates.alpha =  ['','N.A.',nil].include?(row['Alpha:M-6']) ? nil : row['Alpha:M-6']
 
-      stock_dates.per =  ['','N.A.',nil].include?(row[5]) ? 0.0 : row[5]
-      stock_dates.per_change =  ['','N.A.',nil].include?(row[6]) ? 0.0 : row[6]
+      stock_dates.per =  ['','N.A.',nil].include?(row['P/E']) ? nil : row['P/E']
+      stock_dates.per_change =  ['','N.A.',nil].include?(row['Live PE Chg']) ? nil : row['Live PE Chg']
      
-      stock_dates.pbr =  ['','N.A.',nil].include?(row[7]) ? 0.0 : row[7]
-      stock_dates.pbr_change =  ['','N.A.',nil].include?(row[8]) ? 0.0 : row[8]
+      stock_dates.pbr =  ['','N.A.',nil].include?(row['P/B']) ? nil : row['P/B']
+      stock_dates.pbr_change =  ['','N.A.',nil].include?(row['Live P/BK Chg']) ? nil : row['Live P/BK Chg']
      
-      stock_dates.pfcf =  ['','N.A.',nil].include?(row[9]) ? 0.0 : row[9]
-      stock_dates.pfcf_change =  ['','N.A.',nil].include?(row[10]) ? 0.0 : row[10]
+      stock_dates.pfcf =  ['','N.A.',nil].include?(row['P/FCF']) ? nil : row['P/FCF']
+      stock_dates.pfcf_change =  ['','N.A.',nil].include?(row['Live P/CF Chg']) ? nil : row['Live P/CF Chg']
      
-      stock_dates.eps_5yr_growth =  ['','N.A.',nil].include?(row[11]) ? 0.0 : row[11]
+      stock_dates.eps_5yr_growth =  ['','N.A.',nil].include?(row['Diluted EPS - 5 Year Average Growth:Y']) ? nil : row['Diluted EPS - 5 Year Average Growth:Y']
 
-      stock_dates.roe_bf12m =  ['','N.A.',nil].include?(row[12]) ? 0.0 : row[12]
-      stock_dates.roa_bf12m =  ['','N.A.',nil].include?(row[13]) ? 0.0 : row[13]
+      stock_dates.roe_bf12m =  ['','N.A.',nil].include?(row['BEst ROE BF12M']) ? nil : row['BEst ROE BF12M']
+      stock_dates.roa_bf12m =  ['','N.A.',nil].include?(row['BEst ROA BF12M']) ? nil : row['BEst ROA BF12M']
 
-      stock_dates.average_traded_value_30_days =  ['','N.A.',nil].include?(row[16]) ? 0.0 : row[16]
+      stock_dates.average_traded_value_30_days =  ['','N.A.',nil].include?(row['Average Traded Value 30days']) ? nil : row['Average Traded Value 30days']
 
-      stock_dates.close =  ['','N.A.',nil].include?(row[18]) ? 0.0 : row[18]
+      stock_dates.close =  ['','N.A.',nil].include?(row['Closing PX ']) ? nil : row['Closing PX ']
 
-      stock_dates.wmavg_10d =  ['','N.A.',nil].include?(row[19]) ? 0.0 : row[19]
-      stock_dates.smavg_10d =  ['','N.A.',nil].include?(row[22]) ? 0.0 : row[22]
+      stock_dates.wmavg_10d =  ['','N.A.',nil].include?(row['WMAVG']) ? nil : row['WMAVG']
+      stock_dates.smavg_10d =  ['','N.A.',nil].include?(row['SMAVG']) ? nil : row['SMAVG']
 
       stock_dates.save! 
     end
@@ -229,10 +226,10 @@ debugger unless stock_date.valid?
 
 
   def data_from_row row
-    ticker = row[0].split(/\s+/)[0]
-    country = row[0].split(/\s+/)[1]
-    name = row[1]
-    industry_name = row[2]
+    ticker = row['Ticker'].split(/\s+/)[0]
+    country = row['Ticker'].split(/\s+/)[1]
+    name = row['Short Name']
+    industry_name = row['GICS Sector']
     return ticker, country, name, industry_name
   end
 

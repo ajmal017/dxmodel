@@ -12,14 +12,11 @@
     = f.input :enter_date, :as => :string
     = f.input :quantity
     = f.input :enter_price, :label => 'Price'
-    = f.input :enter_usd_value, :label => 'USD value'
-    = f.input :enter_local_value, :label => "#{@position.stock.country} value"
+    = f.input :enter_usd_fx_rate, :label => 'FX rate'
+    = f.input :enter_local_value, :label => 'Enter local value'
+    = f.input :enter_usd_value, :label => 'Enter USD value'
 
   .control-group
     .controls
       = f.button :submit, 'Enter position'
 
-:javascript
-  $(document).ready(function() {
-    $( "#position_enter_date" ).datepicker({ dateFormat: "yy-mm-dd" });
-  })
