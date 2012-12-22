@@ -1,0 +1,81 @@
+%h3
+  Exited positions
+
+%table#exited_positions
+  %thead
+    %tr
+      %td{:class => "{sorter: false}", :colspan => 1}
+
+      %td{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
+      %td{:class => "long {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Stock
+
+      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
+      %td{:class => "short {sorter: false}", :colspan => 6, :style => 'text-align: center;font-size: 14px;'} Entry
+
+      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
+      %td{:class => "short {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Exit
+
+      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
+      %td{:class => "short {sorter: false}", :colspan => 1, :style => 'text-align: center;font-size: 14px;'}
+
+
+    %tr
+      %th Signal date
+
+      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
+      %th Ticker
+      %th Country
+      %th Name
+      %th Industry
+
+      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
+      %th Long|Short
+      %th Date
+      %th Quantity
+      %th Price
+      %th USD value
+      %th Local value
+
+      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
+      %th Date
+      %th Price
+      %th USD value
+      %th Local value
+
+      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
+      %th Notes
+
+
+  %tbody
+    - @exited_positions.each do |position|
+      %tr
+        %td= position.enter_signal_date.strftime("%Y-%m-%d")
+
+        %td.fund{:style => "background-color: lightgray;"}
+        %td= link_to position.stock.ticker, stock_path(position.stock_id)
+        %td= position.stock.country
+        %td= link_to position.stock.name, stock_path(position.stock_id)
+        %td= position.industry.name
+
+        %td.fund{:style => "background-color: lightgray;"}
+        %td= position.longshort.capitalize
+        %td= position.quantity
+        %td= position.enter_date
+        %td= position.enter_price
+        %td= position.enter_usd_value
+        %td= position.enter_local_value
+
+        %td.fund{:style => "background-color: lightgray;"}
+        %td= position.exit_date || ''
+        %td= position.exit_price || ''
+        %td= position.exit_usd_value || ''
+        %td= position.exit_local_value || ''
+
+        %td.fund{:style => "background-color: lightgray;"}
+        %td= position.note
+
+
+:javascript
+  $(document).ready(function() {
+    $('table').tablesorter({theme: 'blue'});
+  })

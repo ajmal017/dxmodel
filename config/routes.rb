@@ -4,6 +4,19 @@ Nilesh::Application.routes.draw do
   resources :stock_dates
   resources :stocks
   resources :industries
+  resources :positions do
+    collection do
+      get 'signaled'
+      get 'active'
+      get 'exited'
+    end
+    member do
+      get 'enter'
+      put 'enter'
+      get 'exit'
+      put 'exit'
+    end
+  end
 
   match 'reports/index', :to => "reports#index", :as => :reports
 

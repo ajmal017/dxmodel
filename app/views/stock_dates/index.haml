@@ -38,19 +38,19 @@
       %th Industry
       %th Position at open
 
-      %td{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
+      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
       %th.long Signal 
       %th.long Rank
       %th.long Score
       %th.long Industry rank
 
-      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
+      %th{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
       %th.short Signal 
       %th.short Rank
       %th.short Score
       %th.short Industry rank
       
-      %td{:class => "fund {sorter: false}", :style => "background-color: lightgray;"}
+      %th{:class => "fund {sorter: false}", :style => "background-color: lightgray;"}
       %th.fund Alpha
       %th.fund PER
       %th.fund PER change
@@ -72,12 +72,9 @@
   %tbody
     - @stock_dates.each do |stock_date|
       %tr
-        %td
-          = link_to stock_date.stock.ticker, stock_path(stock_date.stock_id)
-        %td
-          = stock_date.stock.country
-        %td 
-          = link_to stock_date.stock.name, stock_path(stock_date.stock_id)
+        %td= link_to stock_date.stock.ticker, stock_path(stock_date.stock_id)
+        %td= stock_date.stock.country
+        %td= link_to stock_date.stock.name, stock_path(stock_date.stock_id)
         %td= stock_date.industry.name
         %td= stock_date.open_position
 

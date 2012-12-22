@@ -1,25 +1,26 @@
 = form_tag(uploads_path, {:multipart => true, :class => 'form-horizontal'}) do 
   .control-group
-    %label.control-label{:for => "file"}
+    %label.control-label{:for => "date"} Date
     .controls
-      %input#file{:name => 'file', :type => "file"}
-      .control-group
-        .controls
-          %button.btn{:type => "submit"} Upload
+      %input#date{:name => 'date', :type => "text"}
+
+  .control-group
+    %label.control-label{:for => "long"} Long file
+    .controls
+      %input#long{:name => 'long', :type => "file"}
+
+  .control-group
+    %label.control-label{:for => "short"} Short file
+    .controls
+      %input#short{:name => 'short', :type => "file"}
+
+  .control-group
+    .controls
+      %button.btn{:type => "submit"} Upload
 
 %hr
 
 #notes
-  %h4 Filename
-  Must be YYYYMMDD[L|S].csv
-  %br
-  Eg. 20121205L.csv or 20121205S.csv 
-
-
-  %br
-  %br
-
-
   %h4 CSV columns
   %table.table.table-condensed.table-bordered
     %tr
@@ -79,3 +80,9 @@
     %tr
       %td W
       %td SMAVG
+
+
+:javascript
+  $(function() {
+    $( "#date" ).datepicker({ dateFormat: "yy-mm-dd" });
+  });

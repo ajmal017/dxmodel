@@ -1,0 +1,25 @@
+= simple_form_for(@position, :url => enter_position_path(@position), :defaults => {:required => false, :input_html => {:class => 'xlarge'}}) do |f|
+  %fieldset
+    %legend 
+      Enter 
+      = @position.longshort
+      position for
+      = link_to stock_path do
+        = @position.stock.ticker
+        = @position.stock.name
+
+
+    = f.input :enter_date, :as => :string
+    = f.input :quantity
+    = f.input :enter_price, :label => 'Price'
+    = f.input :enter_usd_value, :label => 'USD value'
+    = f.input :enter_local_value, :label => "#{@position.stock.country} value"
+
+  .control-group
+    .controls
+      = f.button :submit, 'Enter position'
+
+:javascript
+  $(document).ready(function() {
+    $( "#position_enter_date" ).datepicker({ dateFormat: "yy-mm-dd" });
+  })

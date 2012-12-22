@@ -1,0 +1,43 @@
+%h3
+  Signals from EOD 
+  = @date.strftime("%B %d, %Y").to_s
+
+- dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
+= select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] })
+
+%table#signals
+  %thead
+    %tr
+      %th Ticker
+      %th Country
+      %th Name
+      %th Industry
+
+      %th Notes
+
+      %th Action
+
+  %tbody
+    - (@enter_signals + @exit_signals).each do |position|
+      %tr
+        %td= link_to position.stock.ticker, stock_path(position.stock_id)
+        %td= position.stock.country
+        %td= link_to position.stock.name, stock_path(position.stock_id)
+        %td= position.industry.name
+
+        %td= position.note
+
+        %td
+          = link_to "Enter #{position.longshort}", enter_position_path(position), :class => "btn btn-primary btn-mini" if position.enter_signaled?
+          = link_to "Exit #{position.longshort}", exit_position_path(position), :class => "btn btn-primary btn-mini" if position.exit_signaled?
+
+
+:javascript
+  $(document).ready(function() {
+    $('table').tablesorter({theme: 'blue'});
+
+     $('#date').change(function(){
+       var newURL = window.location.protocol + "//" + window.location.host + "/positions/signaled?date=" + $(this).val()
+       window.location = newURL
+     })
+  })

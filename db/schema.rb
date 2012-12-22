@@ -11,12 +11,32 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121219135957) do
+ActiveRecord::Schema.define(:version => 20121220125009) do
 
   create_table "industries", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "positions", :force => true do |t|
+    t.string   "state"
+    t.integer  "stock_id"
+    t.string   "longshort"
+    t.integer  "quantity"
+    t.date     "enter_signal_date"
+    t.date     "enter_date"
+    t.decimal  "enter_price",       :precision => 8, :scale => 4
+    t.decimal  "enter_usd_value",   :precision => 8, :scale => 4
+    t.decimal  "enter_local_value", :precision => 8, :scale => 4
+    t.date     "exit_signal_date"
+    t.date     "exit_date"
+    t.decimal  "exit_price",        :precision => 8, :scale => 4
+    t.decimal  "exit_usd_value",    :precision => 8, :scale => 4
+    t.decimal  "exit_local_value",  :precision => 8, :scale => 4
+    t.string   "note"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
   end
 
   create_table "stock_dates", :force => true do |t|

@@ -6,8 +6,8 @@ gem 'rvm-capistrano'
 gem 'rails', '3.2.9'
 gem 'mysql2'
 gem 'haml-rails'
+gem 'state_machine'
 
-gem 'jquery-tablesorter'
 gem 'thor'
 
 gem 'debugger'
@@ -24,6 +24,10 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'jquery-tablesorter'
+gem 'jquery-ui-rails'
+
+gem 'simple_form'
 
 group :test, :development do
   gem 'rspec-rails'

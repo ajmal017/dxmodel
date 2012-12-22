@@ -6,42 +6,39 @@ class UploadsController < ApplicationController
 
 
   def create
-    if params[:file].nil?
-      flash[:error] = 'No file specified' and 
-      redirect_to new_upload_path 
-    else
+    unless params[:long] and params[:short] and params[:date]
+      flash[:error] = "Failed to parse filename.  Does it follow this convention  20121205L.csv or 20121205S.csv?"
+      redirect_to new_upload_path
+    end
+    date = params[:date]
 
-      Stock.transaction do
-        filename = params[:file].original_filename
+    Stock.transaction do
+      long = CSV.parse(params[:long].read)
+      short = CSV.parse(params[:short].read)
 
-        # Get date and long or short
-        filename =~ /(\d+)(L|S).csv/
-        longshort = 'long' if $2.upcase == 'L'
-        longshort = 'short' if $2.upcase == 'S'
-        date = Date.strptime($1, "%Y%m%d")
-        if longshort.nil? or date.nil?
-          flash[:error] = "Failed to parse filename.  Does it follow this convention  20121205L.csv or 20121205S.csv?"
-          redirect_to new_upload_path
-        end
-
-        rows = CSV.parse(params[:file].read)
-        rows.delete_at(0) # Remove headings
-
-        create_industries rows     
-        create_stocks rows     
-
-        create_stock_dates rows, date
-
-        import_stock_data rows, date, longshort
-
-        calc_fund_ranks_by_industry longshort, date 
-        calc_fund_ranks longshort, date 
-        calc_signals longshort, date
-        calc_open_positions longshort, date
-
-        flash[:success] = "Upload successful"
-        redirect_to reports_path
+      [long, short].each do |data|
+        data.delete_at(0) # Remove headings
+        create_industries data
+        create_stocks data
+        create_stock_dates data, date
       end
+
+      import_stock_data long, date, 'long'
+      import_stock_data short, date, 'short'
+
+      calc_fund_ranks_by_industry date 
+
+      calc_fund_ranks 'long', date 
+      calc_fund_ranks 'short', date 
+
+      calc_signals date
+
+      propose_position_entries date
+      propose_position_exits date
+      propose_stop_loss_positions date
+
+      flash[:success] = "Upload successful"
+      redirect_to signaled_positions_path
     end
   end
 
@@ -72,7 +69,8 @@ private
       ticker, country, name = data_from_row row
       stock = Stock.where(ticker: ticker, country: country).first
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
-      stock_date = StockDate.new(date: date, stock_id: stock.id) if stock_date.nil?
+      stock_date = StockDate.new(stock_id: stock.id, date: date) if stock_date.nil?
+debugger unless stock_date.valid?
       stock_date.save!
     end
   end
@@ -114,24 +112,27 @@ private
     end
   end
 
-  def calc_fund_ranks_by_industry longshort, date
+  def calc_fund_ranks_by_industry date
     Industry.all.each do |industry|
-      industry.stock_dates.where("stock_dates.date = '#{date.to_s(:db)}'").order("stock_dates.#{longshort}_fund_score DESC").each_with_index do |stock_dates, index|
-        stock_dates["#{longshort}_fund_rank_by_industry"] = index + 1
+      # Long
+      industry.stock_dates.where("stock_dates.date = '#{date.to_s}'").order("stock_dates.long_fund_score DESC").each_with_index do |stock_dates, index|
+        stock_dates["long_fund_rank_by_industry"] = index + 1
+        stock_dates.save!
+      end
+
+      # Short
+      industry.stock_dates.where("stock_dates.date = '#{date.to_s}'").order("stock_dates.short_fund_score DESC").each_with_index do |stock_dates, index|
+        stock_dates["short_fund_rank_by_industry"] = index + 1
         stock_dates.save!
       end
     end
   end
 
-
   def calc_fund_ranks longshort, date
-    Rails.logger.info "############"
-    Rails.logger.info "Calculating fundamentals ranks."
-
     # Get each industry and its top one third ranked stocks for a given date
     industries = {}
     Industry.all.each do |industry|
-      industries[industry.id] = industry.stock_dates.where('stock_dates.date = ?', date.to_s(:db)).where("stock_dates.#{longshort}_fund_score IS NOT NULL").order("stock_dates.#{longshort}_fund_rank_by_industry ASC")
+      industries[industry.id] = industry.stock_dates.where('stock_dates.date = ?', date.to_s).where("stock_dates.#{longshort}_fund_score IS NOT NULL").order("stock_dates.#{longshort}_fund_rank_by_industry ASC")
     end
 
     @stock_dates = []
@@ -154,74 +155,78 @@ private
     end
   end
 
-
-
-  def calc_signals longshort, date
+  def calc_signals date
     Stock.all.each do |stock|
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
       # skip unless we have rank data for stock on date
       next if stock_date.nil? 
 
-      if longshort == 'long'
-        if stock_date.long_fund_rank <= ENTER_RANK_THRESHOLD 
-          stock_date.long_signal = 'ENTER'
+      if stock_date.long_fund_rank <= ENTER_RANK_THRESHOLD 
+        stock_date.long_signal = 'ENTER'
 
-        elsif stock_date.long_fund_rank > EXIT_RANK_THRESHOLD 
-          stock_date.long_signal = 'EXIT'
-        end
+      elsif stock_date.long_fund_rank > EXIT_RANK_THRESHOLD 
+        stock_date.long_signal = 'EXIT'
+      end
 
-      elsif longshort == 'short'
-        if stock_date.short_fund_rank <= ENTER_RANK_THRESHOLD 
-          stock_date.short_signal = 'ENTER'
+      if stock_date.short_fund_rank <= ENTER_RANK_THRESHOLD 
+        stock_date.short_signal = 'ENTER'
 
-        elsif stock_date.short_fund_rank > EXIT_RANK_THRESHOLD 
-          stock_date.short_signal = 'EXIT'
-        end
+      elsif stock_date.short_fund_rank > EXIT_RANK_THRESHOLD 
+        stock_date.short_signal = 'EXIT'
       end
 
       stock_date.save!
     end
   end
 
-
-  def calc_open_positions longshort, date
+  def propose_position_entries date
     Stock.all.each do |stock|
-      # Find or new
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
-      stock_date = StockDate.new(date: date, stock_id: stock.id) if stock_date.nil?
+      next if stock_date.nil?  # skip unless we have rank data for stock on date
+      
+      if stock_date.long_signal == 'ENTER' and stock_date.short_signal == 'ENTER' 
+        # Do nothing if signals say enter long and short
 
-      previous_date = calc_previous_date date
-      previous_stock_date = StockDate.where({stock_id: stock.id, date: previous_date}).first 
-      if previous_stock_date
-        if previous_stock_date.open_position == '' or previous_stock_date.open_position.nil?
-          stock_date.open_position = 'LONG' if previous_stock_date.long_signal == 'ENTER'
-          stock_date.open_position = 'SHORT' if previous_stock_date.short_signal == 'ENTER'
+      elsif stock_date.long_signal == 'ENTER' 
+        note = "#{date} Enter long signal.  Fund. rank #{stock_date.long_fund_rank}."
+        position = Position.create!(stock_id: stock.id, longshort: 'long', enter_signal_date: date, note: note)
 
-        elsif previous_stock_date.open_position == 'LONG' and previous_stock_date.long_signal == 'EXIT'
-          stock_date.open_position = '' 
-
-        elsif previous_stock_date.open_position == 'SHORT' and previous_stock_date.short_signal == 'EXIT'
-          stock_date.open_position = '' 
-
-        else 
-          stock_date.open_position = previous_stock_date.open_position
-        end
-        stock_date.save!
+      elsif stock_date.short_signal == 'ENTER' 
+        note = "#{date} Enter short signal.  Fund. rank #{stock_date.short_fund_rank}."
+        position = Position.create!(stock_id: stock.id, longshort: 'short', enter_signal_date: date, note: note)
       end
     end
   end
 
+  def propose_position_exits date
+    Stock.all.each do |stock|
+      stock_date = StockDate.where({stock_id: stock.id, date: date}).first
+      next if stock_date.nil?  # skip unless we have rank data for stock on date
 
-  # Return previous date with stock date;  return nil
-  def calc_previous_date target_date
-    dates = StockDate.select('distinct date').order('date ASC').collect(&:date)
-    target_date_index = dates.index{|d|d == target_date}
-    if target_date_index and target_date_index > 0
-      dates[target_date_index -1] 
-    else
-      nil
+      if stock_date.long_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
+        long_position.signal_exit!
+        long_position.note << "\n#{date} Exit long signal.  Fund. rank #{stock_date.long_fund_rank}."
+        long_position.save!
+
+      elsif stock_date.short_signal == 'EXIT' and short_position = stock.positions.entered.short.try(:first)
+        short_position.signal_exit!
+        short_position.note << "\n#{date} Exit short signal.  Fund. rank #{stock_date.short_fund_rank}."
+        short_position.save!
+      end
     end
   end
+
+  def propose_stop_loss_positions date
+    Position.entered.each do |position|
+      stock_date = StockDate.where(stock_id: position.stock_id, date: date)
+      if position.stop_loss_triggered? stock_date.close
+        position.signal_exit! 
+        position.note << "\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{position.holding_period_high}.  Stop loss value: #{stop_loss_value}."
+        short_position.save!
+      end
+    end
+  end
+
 
   def data_from_row row
     ticker = row[0].split(/\s+/)[0]

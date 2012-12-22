@@ -10,5 +10,6 @@
  *
  *= require_self
  *= require jquery-tablesorter/theme.blue
+ *= require jquery.ui.all
  *= require_tree .
  */
