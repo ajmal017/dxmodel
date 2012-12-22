@@ -29,7 +29,8 @@ class UploadsController < ApplicationController
       calc_fund_ranks 'long', date 
       calc_fund_ranks 'short', date 
 
-      calc_signals date
+      calc_fund_signals date
+      calc_tech_signals date
 
       propose_position_entries date
       propose_position_exits date
@@ -152,27 +153,44 @@ private
     end
   end
 
-  def calc_signals date
+  def calc_fund_signals date
     Stock.all.each do |stock|
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
       # skip unless we have rank data for stock on date
       next if stock_date.nil? 
 
       if stock_date.long_fund_rank <= ENTER_RANK_THRESHOLD 
-        stock_date.long_signal = 'ENTER'
+        stock_date.long_fund_signal = 'ENTER'
 
       elsif stock_date.long_fund_rank > EXIT_RANK_THRESHOLD 
-        stock_date.long_signal = 'EXIT'
+        stock_date.long_fund_signal = 'EXIT'
       end
 
       if stock_date.short_fund_rank <= ENTER_RANK_THRESHOLD 
-        stock_date.short_signal = 'ENTER'
+        stock_date.short_fund_signal = 'ENTER'
 
       elsif stock_date.short_fund_rank > EXIT_RANK_THRESHOLD 
-        stock_date.short_signal = 'EXIT'
+        stock_date.short_fund_signal = 'EXIT'
       end
 
       stock_date.save!
+    end
+  end
+
+  def calc_tech_signals date
+    Stock.all.each do |stock|
+      stock_date = StockDate.where({stock_id: stock.id, date: date}).first
+      # skip unless we have rank data for stock on date
+      next if stock_date.nil? 
+      
+      if stock_date.wmavg_10d > stock_date.smavg_10d
+        stock_date.long_tech_signal = 'ENTER'
+        stock_date.short_tech_signal = 'EXIT'
+      elsif stock_date.wmavg_10d < stock_date.smavg_10d
+        stock_date.long_tech_signal = 'EXIT'
+        stock_date.short_tech_signal = 'ENTER'
+      end
+
     end
   end
 
@@ -181,15 +199,19 @@ private
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
       next if stock_date.nil?  # skip unless we have rank data for stock on date
       
-      if stock_date.long_signal == 'ENTER' and stock_date.short_signal == 'ENTER' 
+      if stock_date.long_fund_signal == 'ENTER' and stock_date.short_fund_signal == 'ENTER' 
         # Do nothing if signals say enter long and short
 
-      elsif stock_date.long_signal == 'ENTER' 
-        note = "#{date} Enter long signal.  Fund. rank #{stock_date.long_fund_rank}."
+      elsif stock_date.long_fund_signal == 'ENTER' and stock_date.long_tech_signal == 'ENTER'
+        note = "#{date} Enter long signals."
+        note << "\n Fundamentals. Rank #{stock_date.long_fund_rank}."
+        note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
         position = Position.create!(stock_id: stock.id, longshort: 'long', enter_signal_date: date, note: note)
 
-      elsif stock_date.short_signal == 'ENTER' 
-        note = "#{date} Enter short signal.  Fund. rank #{stock_date.short_fund_rank}."
+      elsif stock_date.short_fund_signal == 'ENTER' and stock_date.short_tech_signal == 'ENTER'
+        note = "#{date} Enter short signals."
+        note << "\n Fundamentals. Rank #{stock_date.short_fund_rank}."
+        note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
         position = Position.create!(stock_id: stock.id, longshort: 'short', enter_signal_date: date, note: note)
       end
     end
@@ -200,15 +222,34 @@ private
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
       next if stock_date.nil?  # skip unless we have rank data for stock on date
 
-      if stock_date.long_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
+      # Exit long position due to fundamentals
+      if stock_date.long_fund_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
         long_position.signal_exit!
-        long_position.note << "\n#{date} Exit long signal.  Fund. rank #{stock_date.long_fund_rank}."
+        long_position.note << "\n#{date} Exit long signal."
+        long_position.note << "\n Fundamentals. Rank #{stock_date.long_fund_rank}."
         long_position.save!
 
-      elsif stock_date.short_signal == 'EXIT' and short_position = stock.positions.entered.short.try(:first)
+      # Exit long position due to technicals
+      elsif stock_date.long_tech_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
+        long_position.signal_exit!
+        long_position.note << "\n#{date} Exit long signal."
+        long_position.note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
+        long_position.save!
+
+      # Exit short position due to fundamentals
+      elsif stock_date.short_fund_signal == 'EXIT' and short_position = stock.positions.entered.short.try(:first)
         short_position.signal_exit!
-        short_position.note << "\n#{date} Exit short signal.  Fund. rank #{stock_date.short_fund_rank}."
+        short_position.note << "\n#{date} Exit short signal."
+        short_position.note << "\n Fundamentals. Rank #{stock_date.short_fund_rank}."
         short_position.save!
+
+      # Exit short position due to technicals
+      elsif stock_date.short_tech_signal == 'EXIT' and short_position = stock.positions.entered.short.try(:first)
+        short_position.signal_exit!
+        short_position.note << "\n#{date} Exit short signal."
+        long_position.note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
+        short_position.save!
+
       end
     end
   end

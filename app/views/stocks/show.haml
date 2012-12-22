@@ -10,14 +10,14 @@
       %th Date
       %th Position at open
       %th 
-      %th Long signal 
-      %th Long rank
-      %th Long score
+      %th Long fund. signal 
+      %th Long fund. rank
+      %th Long fund. score
       %th Long industry rank
       %th 
-      %th Short signal 
-      %th Short rank
-      %th Short score
+      %th Short fund. signal 
+      %th Short fund. rank
+      %th Short fund. score
       %th Short industry rank
 
 
@@ -28,12 +28,12 @@
           = link_to stock_date.date, reports_path(:date => stock_date.date)
         %td= stock_date.open_position
         %td{:style => "background-color: lightgray;"}
-        %td= stock_date.long_signal.try(:capitalize) || ''
+        %td= stock_date.long_fund_signal.try(:capitalize) || ''
         %td= stock_date.long_fund_rank || ''
         %td= stock_date.long_fund_score || ''
         %td= stock_date.long_fund_rank_by_industry || ''
         %td{:style => "background-color: lightgray;"}
-        %td= stock_date.short_signal.try(:capitalize) || ''
+        %td= stock_date.short_fund_signal.try(:capitalize) || ''
         %td= stock_date.short_fund_rank || ''
         %td= stock_date.short_fund_score || ''
         %td= stock_date.short_fund_rank_by_industry || ''

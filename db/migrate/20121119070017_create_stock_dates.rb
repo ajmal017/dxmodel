@@ -6,12 +6,14 @@ class CreateStockDates < ActiveRecord::Migration
       t.float :long_fund_score, :default => 0.0
       t.integer :long_fund_rank_by_industry
       t.integer :long_fund_rank
-      t.string :long_signal
+      t.string :long_fund_signal
+      t.string :long_tech_signal
 
       t.float :short_fund_score, :default => 0.0
       t.integer :short_fund_rank_by_industry
       t.integer :short_fund_rank
-      t.string :short_signal
+      t.string :short_fund_signal
+      t.string :short_tech_signal
 
       t.string :open_position
 

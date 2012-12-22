@@ -23,10 +23,10 @@
       %td{:class => "{sorter: false}", :colspan => 5}
 
       %td{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "long {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Long
+      %td{:class => "long {sorter: false}", :colspan => 5, :style => 'text-align: center;font-size: 14px;'} Long
 
       %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Short
+      %td{:class => "short {sorter: false}", :colspan => 5, :style => 'text-align: center;font-size: 14px;'} Short
 
       %td{:class => "fund {sorter: false}", :style => "background-color: lightgray;"}
       %td{:class => "fund {sorter: false}", :colspan => 14, :style => 'text-align: center;font-size: 14px;'} Fundamentals
@@ -39,13 +39,15 @@
       %th Position at open
 
       %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th.long Signal 
+      %th.long Tech. signal 
+      %th.long Fund. signal 
       %th.long Rank
       %th.long Score
       %th.long Industry rank
 
       %th{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %th.short Signal 
+      %th.short Tech. signal 
+      %th.short Fund. signal 
       %th.short Rank
       %th.short Score
       %th.short Industry rank
@@ -79,13 +81,15 @@
         %td= stock_date.open_position
 
         %td.long{:style => "background-color: lightgray;"}
-        %td.long= stock_date.long_signal.try(:capitalize) || ''
+        %td.long= stock_date.long_tech_signal.try(:capitalize) || ''
+        %td.long= stock_date.long_fund_signal.try(:capitalize) || ''
         %td.long= stock_date.long_fund_rank || ''
         %td.long= stock_date.long_fund_score || ''
         %td.long= stock_date.long_fund_rank_by_industry || ''
 
         %td.short{:style => "background-color: lightgray;"}
-        %td.short= stock_date.short_signal.try(:capitalize) || ''
+        %td.short= stock_date.short_tech_signal.try(:capitalize) || ''
+        %td.short= stock_date.short_fund_signal.try(:capitalize) || ''
         %td.short= stock_date.short_fund_rank || ''
         %td.short= stock_date.short_fund_score || ''
         %td.short= stock_date.short_fund_rank_by_industry || ''
