@@ -1,6 +1,6 @@
 %h3
   Signals from EOD 
-  = @date.strftime("%B %d, %Y").to_s
+  = @date.strftime("%B %d, %Y").to_s if @date
 
 - dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
 = select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] })
