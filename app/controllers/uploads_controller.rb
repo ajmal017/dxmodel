@@ -106,6 +106,8 @@ private
       stock_dates.wmavg_10d =  ['','N.A.',nil].include?(row['WMAVG']) ? nil : row['WMAVG']
       stock_dates.smavg_10d =  ['','N.A.',nil].include?(row['SMAVG']) ? nil : row['SMAVG']
 
+      stock_dates.vwap =  ['','N.A.',nil].include?(row['VWAP']) ? nil : row['VWAP']
+
       stock_dates.save! 
     end
   end
@@ -182,7 +184,7 @@ private
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
       # skip unless we have rank data for stock on date
       next if stock_date.nil? 
-      
+      raise stock_date.inspect if stock_date.wmavg_10d.nil? or stock_date.smavg_10d.nil?
       if stock_date.wmavg_10d > stock_date.smavg_10d
         stock_date.long_tech_signal = 'ENTER'
         stock_date.short_tech_signal = 'EXIT'
@@ -190,6 +192,7 @@ private
         stock_date.long_tech_signal = 'EXIT'
         stock_date.short_tech_signal = 'ENTER'
       end
+      stock_date.save!
 
     end
   end
