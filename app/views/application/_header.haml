@@ -11,7 +11,7 @@
           = link_to 'Signals', signaled_positions_path
 
         %li{:class => "#{'active' if params[:controller] == 'positions' and params[:action] == 'active'}"}
-          = link_to 'Positions', active_positions_path
+          = link_to 'Positions', entered_positions_path
 
         %li{:class => "#{'active' if params[:controller] == 'positions' and params[:action] == 'exited'}"}
           = link_to 'History', exited_positions_path
