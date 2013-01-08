@@ -19,15 +19,15 @@ require 'bundler/capistrano'
 $:.unshift File.join(File.dirname(__FILE__), './deploy') 
 
 # Main Details
-set :application, "dxmodel"
-role :web, "dxmodel.andywatts.com"
-role :app, "dxmodel.andywatts.com"
-role :db,  "dxmodel.andywatts.com", :primary => true
+set :application, "dxmodel_staging"
+role :web, "dxmodel_staging.andywatts.com"
+role :app, "dxmodel_staging.andywatts.com"
+role :db,  "dxmodel_staging.andywatts.com", :primary => true
 
 # Server Details
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
-set :deploy_to, "/var/www/dxmodel.andywatts.com"
+set :deploy_to, "/var/www/dxmodel_staging.andywatts.com"
 set :deploy_via, :remote_cache
 set :user, "dxmodel"
 set :use_sudo, false
