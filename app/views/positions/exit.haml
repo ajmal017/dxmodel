@@ -9,6 +9,7 @@
         = @position.stock.name
 
     = f.input :exit_date, :as => :string
+    = f.input :quantity, :as => :string, :disabled => true
     = f.input :exit_local_price, :label => 'Price'
     = f.input :exit_usd_fx_rate, :label => 'FX rate'
     = f.input :exit_local_value, :label => "#{@position.stock.country} value"
