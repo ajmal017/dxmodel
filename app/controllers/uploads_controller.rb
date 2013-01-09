@@ -32,6 +32,7 @@ class UploadsController < ApplicationController
       calc_fund_signals date
       calc_tech_signals date
 
+      propose_exits_for_missing_stocks date
       propose_position_entries date
       propose_position_exits date
       propose_stop_loss_positions date
@@ -201,6 +202,7 @@ private
     Stock.all.each do |stock|
       stock_date = StockDate.where({stock_id: stock.id, date: date}).first
       next if stock_date.nil?  # skip unless we have rank data for stock on date
+      next if stock.positions.entered.first # Skip if we already entered a position
       
       if stock_date.long_fund_signal == 'ENTER' and stock_date.short_fund_signal == 'ENTER' 
         # Do nothing if signals say enter long and short
@@ -229,6 +231,7 @@ private
       if stock_date.long_fund_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
         long_position.exit_signal_date = date
         long_position.signal_exit!
+        long_position.note_will_change!
         long_position.note << "\n#{date} Exit long signal."
         long_position.note << "\n Fundamentals. Rank #{stock_date.long_fund_rank}."
         long_position.save!
@@ -237,20 +240,25 @@ private
       elsif stock_date.long_tech_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
         long_position.exit_signal_date = date
         long_position.signal_exit!
+        long_position.note_will_change!
         long_position.note << "\n#{date} Exit long signal."
         long_position.note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
         long_position.save!
 
       # Exit short position due to fundamentals
       elsif stock_date.short_fund_signal == 'EXIT' and short_position = stock.positions.entered.short.try(:first)
+        short_position.exit_signal_date = date
         short_position.signal_exit!
+        short_position.note_will_change!
         short_position.note << "\n#{date} Exit short signal."
         short_position.note << "\n Fundamentals. Rank #{stock_date.short_fund_rank}."
         short_position.save!
 
       # Exit short position due to technicals
       elsif stock_date.short_tech_signal == 'EXIT' and short_position = stock.positions.entered.short.try(:first)
+        short_position.exit_signal_date = date
         short_position.signal_exit!
+        short_position.note_will_change!
         short_position.note << "\n#{date} Exit short signal."
         long_position.note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
         short_position.save!
@@ -259,14 +267,28 @@ private
     end
   end
 
+  def propose_exits_for_missing_stocks date
+    Position.entered.each do |position|
+      stock_date = StockDate.where(stock_id: position.stock_id, date: date).first
+      unless stock_date
+        position.exit_signal_date = date
+        position.signal_exit! 
+        position.note_will_change!
+        position.note << "\n#{date} Exit signal due to no data in upload."
+        position.save!
+      end
+    end
+  end
+
   def propose_stop_loss_positions date
     Position.entered.each do |position|
       stock_date = StockDate.where(stock_id: position.stock_id, date: date).first
-      raise "No data for on #{date} for #{position.stock.name}.  Needed due to open position." unless stock_date
       if position.stop_loss_triggered? stock_date.close
+        position.exit_signal_date = date
         position.signal_exit! 
+        position.note_will_change!
         position.note << "\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{position.holding_period_high}.  Stop loss value: #{stop_loss_value}."
-        short_position.save!
+        position.save!
       end
     end
   end

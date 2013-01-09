@@ -25,7 +25,8 @@
         %td= link_to position.stock.name, stock_path(position.stock_id)
         %td= position.industry.name
 
-        %td= position.note
+        %td
+          %pre= position.note
 
         %td
           = link_to "Enter #{position.longshort}", enter_position_path(position), :class => "btn btn-primary btn-mini" if position.enter_signaled?
