@@ -238,7 +238,7 @@ private
         long_position.exit_signal_date = date
         long_position.signal_exit!
         long_position.note_will_change!
-        long_position.note << "\n#{date} Exit long signal."
+        long_position.note << "\n\n#{date} Exit long signal."
         long_position.note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
         long_position.save!
 
@@ -247,7 +247,7 @@ private
         long_position.exit_signal_date = date
         long_position.signal_exit!
         long_position.note_will_change!
-        long_position.note << "\n#{date} Exit long signal."
+        long_position.note << "\n\n#{date} Exit long signal."
         long_position.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
         long_position.save!
 
@@ -256,7 +256,7 @@ private
         short_position.exit_signal_date = date
         short_position.signal_exit!
         short_position.note_will_change!
-        short_position.note << "\n#{date} Exit short signal."
+        short_position.note << "\n\n#{date} Exit short signal."
         short_position.note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
         short_position.save!
 
@@ -265,7 +265,7 @@ private
         short_position.exit_signal_date = date
         short_position.signal_exit!
         short_position.note_will_change!
-        short_position.note << "\n#{date} Exit short signal."
+        short_position.note << "\n\n#{date} Exit short signal."
         long_position.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
         short_position.save!
 
@@ -280,7 +280,7 @@ private
         position.exit_signal_date = date
         position.signal_exit! 
         position.note_will_change!
-        position.note << "\n#{date} Exit signal due to no data in upload."
+        position.note << "\n\n#{date} Exit signal due to no data in upload."
         position.save!
       end
     end
@@ -293,7 +293,7 @@ private
         position.exit_signal_date = date
         position.signal_exit! 
         position.note_will_change!
-        position.note << "\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{position.holding_period_high}.  Stop loss value: #{stop_loss_value}."
+        position.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{position.holding_period_high}.  Stop loss value: #{stop_loss_value}."
         position.save!
       end
     end

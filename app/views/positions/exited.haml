@@ -1,86 +1,15 @@
-%h3
-  Positions exited
+%legend History
 
 %table#exited_positions
   %thead
-    %tr
-      %td{:class => "{sorter: false}", :colspan => 1}
-
-      %td{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "long {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Stock
-
-      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 7, :style => 'text-align: center;font-size: 14px;'} Entry
-
-      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 5, :style => 'text-align: center;font-size: 14px;'} Exit
-
-      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 1, :style => 'text-align: center;font-size: 14px;'}
-
-
-    %tr
-      %th Signal date
-
-      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th Ticker
-      %th Country
-      %th Name
-      %th Industry
-
-      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th Long|Short
-      %th Date
-      %th Quantity
-      %th Price
-      %th Local value
-      %th USD FX rate
-      %th USD value
-
-      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th Date
-      %th Price
-      %th Local value
-      %th USD FX rate
-      %th USD value
-
-      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th Notes
-
+  = render partial: 'headers', locals: {include_exit: true}
 
   %tbody
     - @exited_positions.each do |position|
-      %tr
-        %td= position.enter_signal_date.strftime("%Y-%m-%d")
-
-        %td.fund{:style => "background-color: lightgray;"}
-        %td= link_to position.stock.ticker, stock_path(position.stock_id)
-        %td= position.stock.country
-        %td= link_to position.stock.name, stock_path(position.stock_id)
-        %td= position.industry.name
-
-        %td.fund{:style => "background-color: lightgray;"}
-        %td= position.longshort.capitalize
-        %td= number_with_delimiter(position.quantity)
-        %td= position.enter_date
-        %td= number_to_currency(position.enter_local_price, :unit => position.stock.unit)
-        %td= number_to_currency(position.enter_local_value, :unit => position.stock.unit)
-        %td= position.enter_usd_fx_rate
-        %td= number_to_currency(position.enter_usd_value)
-
-        %td.fund{:style => "background-color: lightgray;"}
-        %td= position.exit_date 
-        %td= number_to_currency(position.exit_local_price, :unit => position.stock.unit)
-        %td= number_to_currency(position.exit_local_value, :unit => position.stock.unit)
-        %td= position.exit_usd_fx_rate
-        %td= number_to_currency(position.exit_usd_value)
-
-        %td.fund{:style => "background-color: lightgray;"}
-        %td
-          %pre= position.note
-
+      = render partial: position, locals: {include_exit: true}
 
 :javascript
   $(document).ready(function() {
     $('table').tablesorter({theme: 'blue'});
   })
+

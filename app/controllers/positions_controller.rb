@@ -25,7 +25,7 @@ class PositionsController < ApplicationController
   end
 
   def entered
-    @entered_positions = Position.entered
+    @entered_positions = Position.entered + Position.exit_signaled
   end
 
   def exited

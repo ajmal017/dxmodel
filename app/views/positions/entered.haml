@@ -1,55 +1,11 @@
-%h3
-  Positions entered
+%legend Positions 
 
 %table#entered_positions
-  %thead
-    %tr
-      %td{:class => "long {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Stock
-
-      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 6, :style => 'text-align: center;font-size: 14px;'} Entry
-
-      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 1, :style => 'text-align: center;font-size: 14px;'}
-
-    %tr
-      %th Ticker
-      %th Country
-      %th Name
-      %th Industry
-
-      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th Date
-      %th Long Short
-      %th Quantity
-      %th Price
-      %th Local value
-      %th USD value
-
-      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th{:class => "long {sorter: false}", :style => ""}
+  = render partial: 'headers'
 
   %tbody
     - @entered_positions.each do |position|
-      %tr
-        %td= link_to position.stock.ticker, stock_path(position.stock_id)
-        %td= position.stock.country
-        %td= link_to position.stock.name, stock_path(position.stock_id)
-        %td
-          %small= position.industry.name
-
-        %td.fund{:style => "background-color: lightgray;"}
-        %td= position.enter_signal_date.strftime("%Y-%m-%d")
-        %td= position.longshort.capitalize
-        %td= number_with_delimiter(position.quantity)
-        %td= number_to_currency(position.enter_local_price, :unit => position.stock.unit)
-        %td= number_to_currency(position.enter_local_value, :precision => 0, :unit => position.stock.unit)
-        %td= number_to_currency(position.enter_usd_value, :precision => 0)
-
-        %td.fund{:style => "background-color: lightgray;"}
-        %td
-          = link_to position_path(position) do
-            %i.icon-search
+      = render partial: position
 
 :javascript
   $(document).ready(function() {

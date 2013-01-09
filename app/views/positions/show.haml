@@ -1,5 +1,6 @@
 %legend
   = @position.state.humanize
+  = 'for' if @position.state =~ /signaled/
   = @position.longshort
   = link_to stock_path do
     = @position.stock.ticker

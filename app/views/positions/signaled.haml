@@ -1,4 +1,4 @@
-%h3
+%legend
   Signals from EOD 
   = @date.strftime("%B %d, %Y").to_s if @date
 
@@ -12,33 +12,27 @@
       %th Country
       %th Name
       %th Industry
+      %th{:class => "long {sorter: false}"}
 
-      %th Notes
+    %tbody
+      - (@enter_signals + @exit_signals).each do |position|
+        %tr
+          %td= link_to position.stock.ticker, stock_path(position.stock_id)
+          %td= position.stock.country
+          %td= link_to position.stock.name, stock_path(position.stock_id)
+          %td
+            %small= position.industry.name
 
-      %th Action
-
-  %tbody
-    - (@enter_signals + @exit_signals).each do |position|
-      %tr
-        %td= link_to position.stock.ticker, stock_path(position.stock_id)
-        %td= position.stock.country
-        %td= link_to position.stock.name, stock_path(position.stock_id)
-        %td= position.industry.name
-
-        %td
-          %pre= position.note
-
-        %td
-          = link_to "Enter #{position.longshort}", enter_position_path(position), :class => "btn btn-primary btn-mini" if position.enter_signaled?
-          = link_to "Exit #{position.longshort}", exit_position_path(position), :class => "btn btn-primary btn-mini" if position.exit_signaled?
+          %td= render partial: 'actions', locals: {position: position}
 
 
-:javascript
-  $(document).ready(function() {
-    $('table').tablesorter({theme: 'blue'});
 
-     $('#date').change(function(){
-       var newURL = window.location.protocol + "//" + window.location.host + "/positions/signaled?date=" + $(this).val()
-       window.location = newURL
-     })
-  })
+  :javascript
+    $(document).ready(function() {
+      $('table').tablesorter({theme: 'blue'});
+
+       $('#date').change(function(){
+         var newURL = window.location.protocol + "//" + window.location.host + "/positions/signaled?date=" + $(this).val()
+         window.location = newURL
+       })
+    })

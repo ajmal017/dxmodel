@@ -1,5 +1,5 @@
-%h3 
-  Raw fundamentals data for
+%legend
+  Raw data for
   = @date.strftime("%B %d, %Y").to_s if @date
 
 - dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
@@ -76,7 +76,7 @@
       %tr
         %td= link_to stock_date.stock.ticker, stock_path(stock_date.stock_id)
         %td= stock_date.stock.country
-        %td= link_to stock_date.stock.name, stock_path(stock_date.stock_id)
+        %td= stock_date.stock.name
         %td= stock_date.industry.name
         %td= stock_date.open_position
 

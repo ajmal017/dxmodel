@@ -1,0 +1,44 @@
+%thead
+  %tr
+    %td{:class => "long {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Stock
+
+
+    %td{:class => "divider short {sorter: false}"}
+    - colspan = (local_assigns.has_key? :include_enter_signal) ? 7 : 6
+    %td{:class => "short {sorter: false}", :colspan => "#{colspan}", :style => 'text-align: center;font-size: 14px;'} Entry
+
+    - if local_assigns.has_key? :include_exit
+      %td{:class => "divider short {sorter: false}"}
+      - colspan = (local_assigns.has_key? :include_exit_signal) ? 5 : 4
+      %td{:class => "short {sorter: false}", :colspan => "#{colspan}", :style => 'text-align: center;font-size: 14px;'} Exit
+
+    %td{:class => "divider short {sorter: false}"}
+    %td{:class => "short {sorter: false}", :colspan => 1, :style => 'text-align: center;font-size: 14px;'}
+
+  %tr
+    %th Ticker
+    %th Country
+    %th Name
+    %th Industry
+
+    %th{:class => "divider long {sorter: false}"}
+    - if local_assigns.has_key? :include_entry_signal
+      %th Signal date
+    %th Date
+    %th Long Short
+    %th Quantity
+    %th Price
+    %th Local value
+    %th USD value
+
+    - if local_assigns.has_key? :include_exit
+      %th{:class => "divider long {sorter: false}"}
+      - if local_assigns.has_key? :include_exit_signal
+        %th Signal date
+      %th Date
+      %th Price
+      %th Local value
+      %th USD value
+
+    %th{:class => "divider long {sorter: false}"}
+    %th{:class => "long {sorter: false}"}

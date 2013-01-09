@@ -8,7 +8,6 @@
         = @position.stock.ticker
         = @position.stock.name
 
-
     = f.input :exit_date, :as => :string
     = f.input :exit_local_price, :label => 'Price'
     = f.input :exit_usd_fx_rate, :label => 'FX rate'
@@ -18,4 +17,3 @@
   .control-group
     .controls
       = f.button :submit, 'Exit position'
-
