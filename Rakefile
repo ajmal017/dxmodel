@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Nilesh::Application.load_tasks
+Dxmodel::Application.load_tasks
