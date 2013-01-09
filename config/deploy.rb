@@ -32,6 +32,8 @@ set :deploy_via, :remote_cache
 set :user, "dxmodel"
 set :use_sudo, false
 
+set :rails_env, "staging"
+
 # Bundler
 set :bundle_without, [:darwin, :development, :test]  # Don't install dev, or test gems
 
