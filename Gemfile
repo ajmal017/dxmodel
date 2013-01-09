@@ -20,7 +20,7 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
 
-  gem "therubyracer"
+  gem "therubyracer", '~> 0.10.2'
   gem "twitter-bootstrap-rails"
 end
 
