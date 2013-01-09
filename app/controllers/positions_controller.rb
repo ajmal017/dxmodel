@@ -62,22 +62,22 @@ class PositionsController < ApplicationController
 
 
   # Exit position (Move from exit_proposed to exited)
-  def enter
+  def exit
     @position = Position.find params[:id] 
 
     if request.get?
-      flash[:error] = 'To enter a position, it should have state enter_proposed' and redirect_to :back unless @position.enter_signaled?
+      flash[:error] = 'To exit a position, it should have state exit_proposed' and redirect_to :back unless @position.exit_signaled?
 
     elsif request.put?
       Position.transaction do
         @position.attributes = params[:position]
-        @position.state = 'entered'
+        @position.state = 'exited'
 
         if @position.save
-          flash[:success] = "Successfully entered position."  
+          flash[:success] = "Successfully exited position."  
           redirect_to signaled_positions_path
         else
-          render :enter
+          render :exit
         end  
       end
     end
