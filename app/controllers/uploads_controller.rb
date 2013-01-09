@@ -6,39 +6,45 @@ class UploadsController < ApplicationController
 
 
   def create
-    unless params[:long] and params[:short] and params[:date]
+    if not params[:long] and not params[:short] 
       flash[:error] = "Failed to parse filename.  Does it follow this convention  20121205L.csv or 20121205S.csv?"
       redirect_to new_upload_path
-    end
-    date = params[:date]
 
-    Stock.transaction do
-      long = CSV.parse(params[:long].read, {:headers => true})
-      short = CSV.parse(params[:short].read, {:headers => true})
-      [long, short].each do |data|
-        create_industries data
-        create_stocks data
-        create_stock_dates data, date
+    elsif not params[:date].present?
+      flash[:error] = "Date mising?"
+      redirect_to new_upload_path
+    else
+
+      date = params[:date]
+
+      Stock.transaction do
+        long = CSV.parse(params[:long].read, {:headers => true})
+        short = CSV.parse(params[:short].read, {:headers => true})
+        [long, short].each do |data|
+          create_industries data
+          create_stocks data
+          create_stock_dates data, date
+        end
+
+        import_stock_data long, date, 'long'
+        import_stock_data short, date, 'short'
+
+        calc_fund_ranks_by_industry date 
+
+        calc_fund_ranks 'long', date 
+        calc_fund_ranks 'short', date 
+
+        calc_fund_signals date
+        calc_tech_signals date
+
+        propose_exits_for_missing_stocks date
+        propose_position_entries date
+        propose_position_exits date
+        propose_stop_loss_positions date
+
+        flash[:success] = "Upload successful"
+        redirect_to signaled_positions_path
       end
-
-      import_stock_data long, date, 'long'
-      import_stock_data short, date, 'short'
-
-      calc_fund_ranks_by_industry date 
-
-      calc_fund_ranks 'long', date 
-      calc_fund_ranks 'short', date 
-
-      calc_fund_signals date
-      calc_tech_signals date
-
-      propose_exits_for_missing_stocks date
-      propose_position_entries date
-      propose_position_exits date
-      propose_stop_loss_positions date
-
-      flash[:success] = "Upload successful"
-      redirect_to signaled_positions_path
     end
   end
 
