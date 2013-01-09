@@ -261,7 +261,7 @@ private
 
   def propose_stop_loss_positions date
     Position.entered.each do |position|
-      stock_date = StockDate.where(stock_id: position.stock_id, date: date)
+      stock_date = StockDate.where(stock_id: position.stock_id, date: date).first
       if position.stop_loss_triggered? stock_date.close
         position.signal_exit! 
         position.note << "\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{position.holding_period_high}.  Stop loss value: #{stop_loss_value}."
