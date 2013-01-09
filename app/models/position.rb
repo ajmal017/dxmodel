@@ -81,22 +81,35 @@ class Position < ActiveRecord::Base
   # ------------- Instance Methods -----------------
   def holding_period_high
     stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close DESC').first
-    return stock_date_since_entry_with_highest_high.close
+    return stock_date_since_entry_with_highest_high.nil? ? nil : stock_date_since_entry_with_highest_high.close
   end
 
   def holding_period_low
     stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close ASC').first
-    return stock_date_since_entry_with_highest_high.close
+    return stock_date_since_entry_with_highest_high.nil? ? nil : stock_date_since_entry_with_highest_high.close
   end
 
   def stop_loss_value
-    holding_period_high * 0.9 if longshort == 'long'
-    holding_period_low * 1.05 if longshort == 'short'
+    if longshort == 'long' and holding_period_high
+      holding_period_high * 0.9 
+
+    elsif longshort == 'short' and holding_period_low
+      holding_period_low * 1.05 
+    else
+      nil
+    end
   end
 
   def stop_loss_triggered? price
-    return price < stop_loss_value if longshort == 'long'
-    return price > stop_loss_value if longshort == 'short'
+    if longshort == 'long' and stop_loss_value
+      return price < stop_loss_value 
+
+    elsif longshort == 'short' and stop_loss_value
+      return price > stop_loss_value 
+
+    else
+      return false
+    end
   end
 
 end

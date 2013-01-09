@@ -1,4 +1,4 @@
-Nilesh::Application.routes.draw do
+Dxmodel::Application.routes.draw do
   root :to => "home#index" 
 
   resources :stock_dates
