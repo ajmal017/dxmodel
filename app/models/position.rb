@@ -49,7 +49,7 @@ class Position < ActiveRecord::Base
     end
 
     event :signal_exit do
-      transition [:active] => :exit_signaled
+      transition [:entered] => :exit_signaled
     end
 
     event :exit do
