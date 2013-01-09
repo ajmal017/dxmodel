@@ -80,12 +80,12 @@ class Position < ActiveRecord::Base
 
   # ------------- Instance Methods -----------------
   def holding_period_high
-    stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close DESC').limit(1)
+    stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close DESC').first
     return stock_date_since_entry_with_highest_high.close
   end
 
   def holding_period_low
-    stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close ASC').limit(1)
+    stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close ASC').first
     return stock_date_since_entry_with_highest_high.close
   end
 
