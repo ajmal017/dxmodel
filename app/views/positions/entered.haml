@@ -7,7 +7,7 @@
       %td{:class => "long {sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Stock
 
       %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 7, :style => 'text-align: center;font-size: 14px;'} Entry
+      %td{:class => "short {sorter: false}", :colspan => 6, :style => 'text-align: center;font-size: 14px;'} Entry
 
       %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
       %td{:class => "short {sorter: false}", :colspan => 1, :style => 'text-align: center;font-size: 14px;'}
@@ -20,15 +20,14 @@
 
       %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
       %th Date
-      %th Long|Short
+      %th Long Short
       %th Quantity
       %th Price
       %th Local value
-      %th USD FX rate
       %th USD value
 
       %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %th Notes
+      %th{:class => "long {sorter: false}", :style => ""}
 
   %tbody
     - @entered_positions.each do |position|
@@ -40,17 +39,17 @@
           %small= position.industry.name
 
         %td.fund{:style => "background-color: lightgray;"}
-        %td= position.enter_date
+        %td= position.enter_signal_date.strftime("%Y-%m-%d")
         %td= position.longshort.capitalize
         %td= number_with_delimiter(position.quantity)
         %td= number_to_currency(position.enter_local_price, :unit => position.stock.unit)
-        %td= number_to_currency(position.enter_local_value, :unit => position.stock.unit)
-        %td= position.enter_usd_fx_rate
-        %td= number_to_currency(position.enter_usd_value)
+        %td= number_to_currency(position.enter_local_value, :precision => 0, :unit => position.stock.unit)
+        %td= number_to_currency(position.enter_usd_value, :precision => 0)
 
         %td.fund{:style => "background-color: lightgray;"}
         %td
-          %small= position.note
+          = link_to position_path(position) do
+            %i.icon-search
 
 :javascript
   $(document).ready(function() {

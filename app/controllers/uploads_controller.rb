@@ -214,15 +214,15 @@ private
         # Do nothing if signals say enter long and short
 
       elsif stock_date.long_fund_signal == 'ENTER' and stock_date.long_tech_signal == 'ENTER'
-        note = "#{date} Enter long signals."
-        note << "\n Fundamentals. Rank #{stock_date.long_fund_rank}."
-        note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
+        note = "#{date} Enter long signal."
+        note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
+        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
         position = Position.create!(stock_id: stock.id, longshort: 'long', enter_signal_date: date, note: note)
 
       elsif stock_date.short_fund_signal == 'ENTER' and stock_date.short_tech_signal == 'ENTER'
-        note = "#{date} Enter short signals."
-        note << "\n Fundamentals. Rank #{stock_date.short_fund_rank}."
-        note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
+        note = "#{date} Enter short signal."
+        note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
+        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
         position = Position.create!(stock_id: stock.id, longshort: 'short', enter_signal_date: date, note: note)
       end
     end
@@ -239,7 +239,7 @@ private
         long_position.signal_exit!
         long_position.note_will_change!
         long_position.note << "\n#{date} Exit long signal."
-        long_position.note << "\n Fundamentals. Rank #{stock_date.long_fund_rank}."
+        long_position.note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
         long_position.save!
 
       # Exit long position due to technicals
@@ -248,7 +248,7 @@ private
         long_position.signal_exit!
         long_position.note_will_change!
         long_position.note << "\n#{date} Exit long signal."
-        long_position.note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
+        long_position.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
         long_position.save!
 
       # Exit short position due to fundamentals
@@ -257,7 +257,7 @@ private
         short_position.signal_exit!
         short_position.note_will_change!
         short_position.note << "\n#{date} Exit short signal."
-        short_position.note << "\n Fundamentals. Rank #{stock_date.short_fund_rank}."
+        short_position.note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
         short_position.save!
 
       # Exit short position due to technicals
@@ -266,7 +266,7 @@ private
         short_position.signal_exit!
         short_position.note_will_change!
         short_position.note << "\n#{date} Exit short signal."
-        long_position.note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
+        long_position.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
         short_position.save!
 
       end

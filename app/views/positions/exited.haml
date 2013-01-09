@@ -76,7 +76,8 @@
         %td= number_to_currency(position.exit_usd_value)
 
         %td.fund{:style => "background-color: lightgray;"}
-        %td= position.note
+        %td
+          %pre= position.note
 
 
 :javascript

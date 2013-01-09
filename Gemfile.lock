@@ -56,6 +56,9 @@ GEM
     erubis (2.7.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
+    font-awesome-sass-rails (3.0.0.1)
+      railties (>= 3.1.1)
+      sass-rails (>= 3.1.1)
     haml (3.1.7)
     haml-rails (0.3.5)
       actionpack (>= 3.1, < 4.1)
@@ -172,6 +175,7 @@ DEPENDENCIES
   capistrano
   coffee-rails (~> 3.2.1)
   debugger
+  font-awesome-sass-rails
   haml-rails
   jquery-rails
   jquery-tablesorter

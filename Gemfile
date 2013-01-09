@@ -29,6 +29,7 @@ gem 'jquery-tablesorter'
 gem 'jquery-ui-rails'
 
 gem 'simple_form'
+gem 'font-awesome-sass-rails'
 
 group :test, :development do
   gem 'rspec-rails'
