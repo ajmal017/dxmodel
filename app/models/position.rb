@@ -9,7 +9,7 @@ class Position < ActiveRecord::Base
 
 
   # ------------- Validations  --------------------
-  # entered_proposed state
+  # entered_signaled state
   with_options if: -> position { position.enter_signaled? or position.entered? or position.exit_signaled? or position.exited? } do |position|
     position.validates :stock_id, presence: true
     position.validates :longshort, presence: true
@@ -26,9 +26,13 @@ class Position < ActiveRecord::Base
     position.validates :enter_usd_value, presence: true
   end
 
-  # exit_proposed state
+  # exit_signaled state
   with_options if: -> position { position.exit_signaled? or position.exited?} do |position|
     position.validates :exit_signal_date, presence: true
+  end
+
+  # exited state
+  with_options if: -> position { position.exited? } do |position|
     position.validates :exit_date, presence: true
     position.validates :exit_local_price, presence: true
     position.validates :exit_usd_fx_rate, presence: true
