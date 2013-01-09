@@ -227,16 +227,16 @@ private
 
       # Exit long position due to fundamentals
       if stock_date.long_fund_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
-        long_position.signal_exit!
         long_position.exit_signal_date = date
+        long_position.signal_exit!
         long_position.note << "\n#{date} Exit long signal."
         long_position.note << "\n Fundamentals. Rank #{stock_date.long_fund_rank}."
         long_position.save!
 
       # Exit long position due to technicals
       elsif stock_date.long_tech_signal == 'EXIT' and long_position = stock.positions.entered.long.try(:first)
-        long_position.signal_exit!
         long_position.exit_signal_date = date
+        long_position.signal_exit!
         long_position.note << "\n#{date} Exit long signal."
         long_position.note << "\n Technicals. 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
         long_position.save!
