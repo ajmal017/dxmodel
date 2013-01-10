@@ -1,0 +1,20 @@
+= simple_form_for(@trade, :url => exit_trade_path(@trade), :defaults => {:required => false, :input_html => {:class => 'xlarge'}}) do |f|
+  %fieldset
+    %legend 
+      Exit 
+      = @trade.longshort
+      trade for
+      = link_to stock_path do
+        = @trade.stock.ticker
+        = @trade.stock.name
+
+    = f.input :exit_date, :as => :string
+    = f.input :quantity, :as => :string, :disabled => true
+    = f.input :exit_local_price, :label => 'Price'
+    = f.input :exit_usd_fx_rate, :label => 'FX rate'
+    = f.input :exit_local_value, :label => "#{@trade.stock.country} value"
+    = f.input :exit_usd_value, :label => 'Exit USD value'
+
+  .control-group
+    .controls
+      = f.button :submit, 'Exit trade'

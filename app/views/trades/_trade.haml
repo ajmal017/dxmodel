@@ -1,0 +1,40 @@
+%tr
+  -# Stock
+  %td= link_to trade.stock.ticker, stock_path(trade.stock_id)
+  %td= trade.stock.country
+  %td= link_to trade.stock.name, stock_path(trade.stock_id)
+  %td
+    %small= trade.industry.name
+
+
+  -# Entry
+  %td.fund.divider
+
+  -# Enter signals
+  - if local_assigns.has_key? :include_enter_signals
+    %td= trade.enter_signal_date.strftime("%Y-%m-%d") 
+
+  %td= trade.enter_date.strftime("%Y-%m-%d") if trade.enter_date
+  %td= trade.longshort.capitalize if trade.longshort
+  %td= number_with_delimiter(trade.quantity) if trade.quantity
+  %td= number_to_currency(trade.enter_local_price, :unit => trade.stock.unit) if trade.enter_local_price
+  %td= number_to_currency(trade.enter_local_value, :precision => 0, :unit => trade.stock.unit) if trade.enter_local_value
+  %td= number_to_currency(trade.enter_usd_value, :precision => 0) if trade.enter_usd_value
+
+  -# Exit
+  - if local_assigns.has_key? :include_exit
+    %td.fund.divider
+
+    -# Exit signals
+    - if local_assigns.has_key? :include_exit_signals
+      %td= trade.exit_signal_date.strftime("%Y-%m-%d") 
+
+    %td= trade.exit_date.strftime("%Y-%m-%d")
+    %td= number_to_currency(trade.exit_local_price, :unit => trade.stock.unit)
+    %td= number_to_currency(trade.exit_local_value, :precision => 0, :unit => trade.stock.unit)
+    %td= number_to_currency(trade.exit_usd_value, :precision => 0)
+
+
+  -# More
+  %td.fund.divider
+  %td= render partial: 'actions', locals: {trade: trade}

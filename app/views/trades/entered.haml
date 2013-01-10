@@ -1,11 +1,11 @@
-%legend Open positions 
+%legend Open trades 
 
-%table#entered_positions
+%table#entered_trades
   = render partial: 'headers'
 
   %tbody
-    - @entered_positions.each do |position|
-      = render partial: position
+    - @entered_trades.each do |trade|
+      = render partial: trade
 
 :javascript
   $(document).ready(function() {

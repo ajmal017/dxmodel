@@ -7,11 +7,10 @@
       .nav-collapse.collapse.navbar-responsive-collapse
         %ul.nav
 
-          %li{:class => "dropdown #{'active' if params[:controller] == 'fx_rates' and params[:action] == 'new'}"}
+          %li{:class => "dropdown #{'active' if params[:controller] == 'fx_rates'}"}
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
               FX rates
               %b.caret
-
             %ul.dropdown-menu
               %li= link_to 'Enter new', new_fx_rate_path
               %li= link_to 'History', fx_rates_path
@@ -22,24 +21,28 @@
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
               Stock data
               %b.caret
-
             %ul.dropdown-menu
               %li= link_to 'Upload', new_stock_date_path
               %li= link_to 'History', stock_dates_path
 
 
-
-
-          %li{:class => "dropdown #{'active' if params[:controller] == 'positions' and params[:action] == 'signaled'}"}
-            = link_to 'Signals', signaled_positions_path
-
-
-
-          %li{:class => "dropdown #{'active' if params[:controller] == 'positions' and params[:action] != 'signaled'}"}
+          %li{:class => "dropdown #{'active' if params[:controller] == 'trades'}"}
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-              Positions
+              Trades
+              %b.caret
+            %ul.dropdown-menu
+              %li= link_to 'Signals', signaled_trades_path
+              %li= link_to 'Open', entered_trades_path
+              %li= link_to 'Closed', exited_trades_path
+
+
+
+          %li{:class => "dropdown #{'active' if params[:controller] == 'reports'}"}
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              Reports
               %b.caret
 
             %ul.dropdown-menu
-              %li= link_to 'Open', entered_positions_path
-              %li= link_to 'Closed', exited_positions_path
+              %li= link_to 'Exposure', exposure_reports_path
+              %li= link_to 'Assets under management', aum_reports_path
+              %li= link_to 'Profit & loss', pl_reports_path

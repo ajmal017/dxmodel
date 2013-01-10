@@ -1,12 +1,12 @@
-= simple_form_for(@position, :url => enter_position_path(@position), :defaults => {:required => false, :input_html => {:class => 'xlarge'}}) do |f|
+= simple_form_for(@trade, :url => enter_trade_path(@trade), :defaults => {:required => false, :input_html => {:class => 'xlarge'}}) do |f|
   %fieldset
     %legend 
       Enter 
-      = @position.longshort
-      position for
+      = @trade.longshort
+      trade for
       = link_to stock_path do
-        = @position.stock.ticker
-        = @position.stock.name
+        = @trade.stock.ticker
+        = @trade.stock.name
 
 
     = f.input :enter_date, :as => :string
@@ -18,5 +18,5 @@
 
   .control-group
     .controls
-      = f.button :submit, 'Enter position'
+      = f.button :submit, 'Submit'
 

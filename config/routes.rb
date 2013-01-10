@@ -5,7 +5,7 @@ Dxmodel::Application.routes.draw do
   resources :stock_dates
   resources :stocks
   resources :industries
-  resources :positions do
+  resources :trades do
     collection do
       get 'signaled'
       get 'entered'
@@ -19,6 +19,8 @@ Dxmodel::Application.routes.draw do
     end
   end
 
-  match '/reports/:action', :controller => 'reports'
+  match '/reports/exposure', controller: 'reports', action: 'exposure', as: :exposure_reports
+  match '/reports/aum', controller: 'reports', action: 'aum', as: :aum_reports
+  match '/reports/pl', controller: 'reports', action: 'pl', as: :pl_reports
 
 end

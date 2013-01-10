@@ -1,12 +1,12 @@
-%legend Closed positions
+%legend Closed trades
 
-%table#exited_positions
+%table#exited_trades
   %thead
   = render partial: 'headers', locals: {include_exit: true}
 
   %tbody
-    - @exited_positions.each do |position|
-      = render partial: position, locals: {include_exit: true}
+    - @exited_trades.each do |trade|
+      = render partial: trade, locals: {include_exit: true}
 
 :javascript
   $(document).ready(function() {

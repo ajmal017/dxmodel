@@ -15,15 +15,15 @@
       %th{:class => "long {sorter: false}"}
 
     %tbody
-      - (@enter_signals + @exit_signals).each do |position|
+      - (@enter_signals + @exit_signals).each do |trade|
         %tr
-          %td= link_to position.stock.ticker, stock_path(position.stock_id)
-          %td= position.stock.country
-          %td= link_to position.stock.name, stock_path(position.stock_id)
+          %td= link_to trade.stock.ticker, stock_path(trade.stock_id)
+          %td= trade.stock.country
+          %td= link_to trade.stock.name, stock_path(trade.stock_id)
           %td
-            %small= position.industry.name
+            %small= trade.industry.name
 
-          %td= render partial: 'actions', locals: {position: position}
+          %td= render partial: 'actions', locals: {trade: trade}
 
 
 
@@ -32,7 +32,7 @@
       $('table').tablesorter({theme: 'blue'});
 
        $('#date').change(function(){
-         var newURL = window.location.protocol + "//" + window.location.host + "/positions/signaled?date=" + $(this).val()
+         var newURL = window.location.protocol + "//" + window.location.host + "/trades/signaled?date=" + $(this).val()
          window.location = newURL
        })
     })

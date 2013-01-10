@@ -1,0 +1,75 @@
+%legend
+  = @trade.state.humanize
+  = 'for' if @trade.state =~ /signaled/
+  = @trade.longshort
+  = link_to stock_path do
+    = @trade.stock.ticker
+    = @trade.stock.name
+  trade
+
+%p.lead Stock
+
+%dl.dl-horizontal
+  %dt Signal date
+  %dd= @trade.enter_signal_date.strftime("%Y-%m-%d")
+
+  %dt Ticker
+  %dd= link_to @trade.stock.ticker, stock_path(@trade.stock_id)
+
+  %dt Country
+  %dd= @trade.stock.country
+
+  %dt Name
+  %dd= @trade.stock.name
+
+  %dt Industry
+  %dd= @trade.industry.name
+
+
+%p.lead Entry
+%dl.dl-horizontal
+  %dt Long|Short
+  %dd= @trade.longshort.capitalize
+
+  %dt Date
+  %dd= @trade.enter_date.strftime("%B %d, %Y").to_s if @trade.enter_date
+  
+  %dt Quantity
+  %dd= number_with_delimiter(@trade.quantity)
+
+  %dt Price
+  %dd= number_to_currency(@trade.enter_local_price, :unit => @trade.stock.unit)
+
+  %dt Local value
+  %dd= number_to_currency(@trade.enter_local_value, :unit => @trade.stock.unit)
+
+  %dt USD FX rate
+  %dd= @trade.enter_usd_fx_rate
+
+  %dt USD value
+  %dd= number_to_currency(@trade.enter_usd_value)
+
+
+%p.lead Exit
+%dl.dl-horizontal
+  %dt Date
+  %dd= @trade.exit_date.strftime("%B %d, %Y").to_s if @trade.exit_date
+
+  %dt Price
+  %dd= number_to_currency(@trade.exit_local_price, :unit => @trade.stock.unit)
+  
+  %dt Local value
+  %dd= number_to_currency(@trade.exit_local_value, :unit => @trade.stock.unit)
+
+  %dt USD FX rate
+  %dd= @trade.exit_usd_fx_rate
+
+  %dt USD value
+  %dd= number_to_currency(@trade.exit_usd_value)
+
+
+%p.lead Other
+%dl.dl-horizontal
+  %dt Notes
+  %dd
+    %pre= @trade.note

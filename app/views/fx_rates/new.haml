@@ -1,0 +1,10 @@
+%legend New FX rate data
+
+= simple_form_for(@fx_rate, :defaults => {:required => false, :input_html => {:class => 'xlarge'}}) do |f|
+  = f.input :date, :as => :string
+  = f.input :usdsgd, :label => 'USDSGD'
+  = f.input :usdhkd, :label => 'USDHKD'
+
+  .control-group
+    .controls
+      = f.button :submit, 'Submit'

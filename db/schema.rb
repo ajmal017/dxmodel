@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130110090737) do
+ActiveRecord::Schema.define(:version => 20130110111106) do
 
   create_table "fx_rates", :force => true do |t|
     t.date     "date"
@@ -25,28 +25,6 @@ ActiveRecord::Schema.define(:version => 20130110090737) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "positions", :force => true do |t|
-    t.string   "state"
-    t.integer  "stock_id"
-    t.string   "longshort"
-    t.integer  "quantity"
-    t.date     "enter_signal_date"
-    t.date     "enter_date"
-    t.decimal  "enter_local_price", :precision => 8,  :scale => 6
-    t.decimal  "enter_local_value", :precision => 14, :scale => 6
-    t.decimal  "enter_usd_fx_rate", :precision => 14, :scale => 6
-    t.decimal  "enter_usd_value",   :precision => 14, :scale => 6
-    t.date     "exit_signal_date"
-    t.date     "exit_date"
-    t.decimal  "exit_local_price",  :precision => 14, :scale => 6
-    t.decimal  "exit_local_value",  :precision => 14, :scale => 6
-    t.decimal  "exit_usd_value",    :precision => 14, :scale => 6
-    t.decimal  "exit_usd_fx_rate",  :precision => 14, :scale => 6
-    t.string   "note"
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
   end
 
   create_table "stock_dates", :force => true do |t|
@@ -89,6 +67,28 @@ ActiveRecord::Schema.define(:version => 20130110090737) do
     t.integer  "industry_id"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+  end
+
+  create_table "trades", :force => true do |t|
+    t.string   "state"
+    t.integer  "stock_id"
+    t.string   "longshort"
+    t.integer  "quantity"
+    t.date     "enter_signal_date"
+    t.date     "enter_date"
+    t.decimal  "enter_local_price", :precision => 8,  :scale => 6
+    t.decimal  "enter_local_value", :precision => 14, :scale => 6
+    t.decimal  "enter_usd_fx_rate", :precision => 14, :scale => 6
+    t.decimal  "enter_usd_value",   :precision => 14, :scale => 6
+    t.date     "exit_signal_date"
+    t.date     "exit_date"
+    t.decimal  "exit_local_price",  :precision => 14, :scale => 6
+    t.decimal  "exit_local_value",  :precision => 14, :scale => 6
+    t.decimal  "exit_usd_value",    :precision => 14, :scale => 6
+    t.decimal  "exit_usd_fx_rate",  :precision => 14, :scale => 6
+    t.string   "note"
+    t.datetime "created_at",                                       :null => false
+    t.datetime "updated_at",                                       :null => false
   end
 
 end

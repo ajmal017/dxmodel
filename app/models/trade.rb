@@ -1,4 +1,4 @@
-class Position < ActiveRecord::Base
+class Trade < ActiveRecord::Base
   attr_accessible :state, :stock_id, :enter_signal_date, :quantity, :longshort, 
                   :enter_date, :enter_local_price, :enter_usd_value, :enter_local_value, :enter_usd_fx_rate,
                   :exit_signal_date, :exit_date, :exit_local_price, :exit_usd_value, :exit_local_value, :exit_usd_fx_rate, :note
@@ -10,34 +10,34 @@ class Position < ActiveRecord::Base
 
   # ------------- Validations  --------------------
   # entered_signaled state
-  with_options if: -> position { position.enter_signaled? or position.entered? or position.exit_signaled? or position.exited? } do |position|
-    position.validates :stock_id, presence: true
-    position.validates :longshort, presence: true
-    position.validates :enter_signal_date, presence: true
+  with_options if: -> trade { trade.enter_signaled? or trade.entered? or trade.exit_signaled? or trade.exited? } do |trade|
+    trade.validates :stock_id, presence: true
+    trade.validates :longshort, presence: true
+    trade.validates :enter_signal_date, presence: true
   end
 
   # entered state
-  with_options if: -> position { position.entered? or position.exit_signaled? or position.exited? } do |position|
-    position.validates :quantity, presence: true
-    position.validates :enter_date, presence: true
-    position.validates :enter_local_price, presence: true
-    position.validates :enter_usd_fx_rate, presence: true
-    position.validates :enter_local_value, presence: true
-    position.validates :enter_usd_value, presence: true
+  with_options if: -> trade { trade.entered? or trade.exit_signaled? or trade.exited? } do |trade|
+    trade.validates :quantity, presence: true
+    trade.validates :enter_date, presence: true
+    trade.validates :enter_local_price, presence: true
+    trade.validates :enter_usd_fx_rate, presence: true
+    trade.validates :enter_local_value, presence: true
+    trade.validates :enter_usd_value, presence: true
   end
 
   # exit_signaled state
-  with_options if: -> position { position.exit_signaled? or position.exited?} do |position|
-    position.validates :exit_signal_date, presence: true
+  with_options if: -> trade { trade.exit_signaled? or trade.exited?} do |trade|
+    trade.validates :exit_signal_date, presence: true
   end
 
   # exited state
-  with_options if: -> position { position.exited? } do |position|
-    position.validates :exit_date, presence: true
-    position.validates :exit_local_price, presence: true
-    position.validates :exit_usd_fx_rate, presence: true
-    position.validates :exit_local_value, presence: true
-    position.validates :exit_usd_value, presence: true
+  with_options if: -> trade { trade.exited? } do |trade|
+    trade.validates :exit_date, presence: true
+    trade.validates :exit_local_price, presence: true
+    trade.validates :exit_usd_fx_rate, presence: true
+    trade.validates :exit_local_value, presence: true
+    trade.validates :exit_usd_value, presence: true
   end
 
 

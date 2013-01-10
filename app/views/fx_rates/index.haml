@@ -1,0 +1,11 @@
+%table.table.table-hover.table-condensed
+  %thead
+    %th Date
+    %th USDSGD
+    %th USDHKD
+  %tbody
+    - @fx_rates.each do |fx_rate|
+      %tr
+        %td= fx_rate.date
+        %td= fx_rate.usdsgd
+        %td= fx_rate.usdhkd

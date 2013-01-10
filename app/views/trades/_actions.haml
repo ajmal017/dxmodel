@@ -1,0 +1,10 @@
+= link_to trade_path(trade), :class => 'btn btn-mini' do
+  %i.icon-search 
+
+- if trade.enter_signaled?
+  = link_to enter_trade_path(trade), :class => 'btn btn-mini' do
+    %i.icon-signin &nbsp;Enter
+
+- if trade.exit_signaled?
+  = link_to exit_trade_path(trade), :class => 'btn btn-mini' do
+    %i.icon-signout &nbsp;Exit
