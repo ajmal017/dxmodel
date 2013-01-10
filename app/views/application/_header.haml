@@ -1,20 +1,45 @@
 .navbar
   .navbar-inner
     .container
-      %span.brand DX Model
-      %ul.nav
-        %li{:class => "#{'active' if params[:controller] == 'uploads' and params[:action] == 'new'}"}
-          = link_to 'Upload data', new_upload_path
+      %span.brand 
+        = link_to "DX Model", root_path
+
+      .nav-collapse.collapse.navbar-responsive-collapse
+        %ul.nav
+
+          %li{:class => "dropdown #{'active' if params[:controller] == 'fx_rates' and params[:action] == 'new'}"}
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              FX rates
+              %b.caret
+
+            %ul.dropdown-menu
+              %li= link_to 'Enter new', new_fx_rate_path
+              %li= link_to 'History', fx_rates_path
 
 
-        %li{:class => "dropdown #{'active' if params[:controller] == 'positions' and params[:action] == 'signaled'}"}
-          = link_to 'Signals', signaled_positions_path
 
-        %li{:class => "#{'active' if params[:controller] == 'positions' and params[:action] == 'active'}"}
-          = link_to 'Positions', entered_positions_path
+          %li{:class => "dropdown #{'active' if params[:controller] == 'stock_dates'}"}
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              Stock data
+              %b.caret
 
-        %li{:class => "#{'active' if params[:controller] == 'positions' and params[:action] == 'exited'}"}
-          = link_to 'History', exited_positions_path
+            %ul.dropdown-menu
+              %li= link_to 'Upload', new_stock_date_path
+              %li= link_to 'History', stock_dates_path
 
-        %li{:class => "#{'active' if params[:controller] == 'stock_dates' and params[:action] == 'index'}"}
-          = link_to 'Raw data', stock_dates_path
+
+
+
+          %li{:class => "dropdown #{'active' if params[:controller] == 'positions' and params[:action] == 'signaled'}"}
+            = link_to 'Signals', signaled_positions_path
+
+
+
+          %li{:class => "dropdown #{'active' if params[:controller] == 'positions' and params[:action] != 'signaled'}"}
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              Positions
+              %b.caret
+
+            %ul.dropdown-menu
+              %li= link_to 'Open', entered_positions_path
+              %li= link_to 'Closed', exited_positions_path

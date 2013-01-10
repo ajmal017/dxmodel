@@ -1,0 +1,3 @@
+class FxRatesController < ApplicationController
+  
+end

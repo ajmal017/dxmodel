@@ -37,6 +37,8 @@ class PositionsController < ApplicationController
   end
 
 
+  # Members
+
   # Enter position (Move from enter_proposed to entered)
   def enter
     @position = Position.find params[:id] 

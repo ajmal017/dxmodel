@@ -1,20 +1,9 @@
 %legend
-  Raw data for
+  Historical stock data from
   = @date.strftime("%B %d, %Y").to_s if @date
 
 - dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
 = select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] })
-
-#filters
-  %strong Columns:
-  = check_box_tag 'long', 'long', true
-  Long
-  &nbsp;
-  = check_box_tag 'short', 'short', true
-  Short
-  &nbsp;
-  = check_box_tag 'fundamentals', 'fundamentals', false
-  Fundamentals
 
 
 %table#data
@@ -29,7 +18,7 @@
       %td{:class => "short {sorter: false}", :colspan => 5, :style => 'text-align: center;font-size: 14px;'} Short
 
       %td{:class => "fund {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "fund {sorter: false}", :colspan => 14, :style => 'text-align: center;font-size: 14px;'} Fundamentals
+      %td{:class => "fund {sorter: false}", :colspan => 14, :style => 'text-align: center;font-size: 14px;'} Data
 
     %tr
       %th Ticker
@@ -119,23 +108,5 @@
       var newURL = window.location.protocol + "//" + window.location.host + "/stock_dates?date=" + $(this).val()
       window.location = newURL
     })
-
-
-    show_hide_columns = function(){
-      if ( $('input#long').is(":checked") ){ $('td.long, th.long').show(); }
-      if (! $('input#long').is(":checked") ){ $('td.long, th.long').hide(); }
-
-      if ( $('input#short').is(":checked") ){ $('td.short, th.short').show(); }
-      if (! $('input#short').is(":checked") ){ $('td.short, th.short').hide(); }
-
-      if ( $('input#fundamentals').is(":checked") ){ $('td.fund, th.fund').show(); }
-      if (! $('input#fundamentals').is(":checked") ){ $('td.fund, th.fund').hide(); }
-    }
-
-    $('input#long, input#short, input#fundamentals').click(function() {
-      show_hide_columns();
-    });
-
-    show_hide_columns();
 
   })

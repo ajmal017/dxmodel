@@ -1,6 +1,7 @@
 Dxmodel::Application.routes.draw do
   root :to => "home#index" 
 
+  resources :fx_rates
   resources :stock_dates
   resources :stocks
   resources :industries
@@ -18,7 +19,6 @@ Dxmodel::Application.routes.draw do
     end
   end
 
-  match 'reports/index', :to => "reports#index", :as => :reports
+  match '/reports/:action', :controller => 'reports'
 
-  resources :uploads
 end
