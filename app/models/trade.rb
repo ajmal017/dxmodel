@@ -112,4 +112,27 @@ class Trade < ActiveRecord::Base
     end
   end
 
+  def long?
+    long_short == 'long'
+  end
+
+  def short?
+    long_short == 'short'
+  end
+
+  def usd_value_on_date date
+    fx_rate = FxRate.where date: date
+    raise "no fx_rate for date" unless fx_rate
+
+    local_value_one_date(date) * fx_rate.usdsgd if country ==  'SP'
+    local_value_one_date(date) * fx_rate.usdhkd if country == 'HK'
+  end
+
+
+  def local_value_on_date date
+    fx_rate = FxRate.where date: date
+    stock_date = StockDate.where("date < ?").order('date DESC').first # Get yesterday's close
+    enter_quantity * stock_date.close
+  end
+
 end

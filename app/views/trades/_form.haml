@@ -1,0 +1,28 @@
+%p.lead Trade
+= f.input :state, :label => 'State', :collection => Trade.state_machine.states.map(&:name).collect{|state|[state, state]}, :selected => (@trade.state || 'entered')
+= f.input :stock_id, :label => 'Stock', :collection => Stock.order('name ASC').collect{|s| [s.name, s.id] }, :selected => (@trade.stock_id || '')
+
+
+%p.lead Entry
+= f.input :enter_date, :as => :string
+= f.input :quantity
+= f.input :enter_local_price, :label => 'Price'
+= f.input :enter_usd_fx_rate, :label => 'FX rate'
+= f.input :enter_local_value, :label => 'Local value'
+= f.input :enter_usd_value, :label => 'USD value'
+
+
+%p.lead Exit
+= f.input :exit_date, :as => :string
+= f.input :exit_local_price, :label => 'Price'
+= f.input :exit_usd_fx_rate, :label => 'FX rate'
+= f.input :exit_local_value, :label => "Local value"
+= f.input :exit_usd_value, :label => 'USD value'
+
+
+%p.lead Other
+= f.input :note, :as => :text
+
+.control-group
+.controls
+  = f.submit "Submit", :class => 'btn btn-primary btn-large'

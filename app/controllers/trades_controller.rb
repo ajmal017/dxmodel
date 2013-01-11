@@ -14,6 +14,21 @@ class TradesController < ApplicationController
     end  
   end
 
+  def edit
+    @trade = Trade.find params[:id]
+  end
+
+  def update
+    @trade = Trade.find params[:id]
+    if @trade.update_attributes(params[:trade])  
+      flash[:success] = "Successfully updated trade."  
+      redirect_to exited_trades_path 
+    else
+      render :edit
+    end  
+  end
+
+
   # Collections
 
   def signaled
