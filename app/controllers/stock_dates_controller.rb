@@ -22,41 +22,66 @@ class StockDatesController < ApplicationController
       flash[:error] = "Date mising?"
       redirect_to new_upload_path
     else
-
       date = params[:date]
 
       Stock.transaction do
         long = CSV.parse(params[:long].read, {:headers => true})
         short = CSV.parse(params[:short].read, {:headers => true})
-        [long, short].each do |data|
-          create_industries data
-          create_stocks data
-          create_stock_dates data, date
+
+        errors = validate_data long, short
+        
+        if errors.present?
+          flash[:error] = errors.join('<br />').html_safe
+          render :new
+
+        else
+          [long, short].each do |data|
+            create_industries data
+            create_stocks data
+            create_stock_dates data, date
+          end
+
+          import_stock_data long, date, 'long'
+          import_stock_data short, date, 'short'
+
+          calc_fund_ranks_by_industry date 
+
+          calc_fund_ranks 'long', date 
+          calc_fund_ranks 'short', date 
+
+          calc_fund_signals date
+          calc_tech_signals date
+
+          propose_exits_for_missing_stocks date
+          propose_trade_entries date
+          propose_trade_exits date
+          propose_stop_loss_trades date
+
+          flash[:success] = "Upload successful"
+          redirect_to signaled_trades_path
         end
-
-        import_stock_data long, date, 'long'
-        import_stock_data short, date, 'short'
-
-        calc_fund_ranks_by_industry date 
-
-        calc_fund_ranks 'long', date 
-        calc_fund_ranks 'short', date 
-
-        calc_fund_signals date
-        calc_tech_signals date
-
-        propose_exits_for_missing_stocks date
-        propose_trade_entries date
-        propose_trade_exits date
-        propose_stop_loss_trades date
-
-        flash[:success] = "Upload successful"
-        redirect_to signaled_trades_path
       end
     end
   end
 
 private
+
+  def validate_data long, short
+    errors = []
+    #optional_fields =  ['Alpha:M-6', 'P/E', 'Live PE Chg', 'P/B', 'Live P/BK Chg', 'P/FCF', 'Live P/CF Chg', 'Diluted EPS - 5 Year Average Growth:Y', 'BEst ROE BF12M', 'BEst ROA BF12M', 'Average Traded Value 30days']
+    required_fields = ['Closing PX ', 'WMAVG', 'SMAVG', 'VWAP']
+
+
+    long.each_with_index do |row, index|
+      (required_fields + ['Ranking Model: Long Score']).each do |column| 
+        errors << "Long: row #{index + 1}: #{column} missing" if ['','N.A.',nil].include?(row[column]) 
+      end
+    end
+    short.each_with_index do |row, index|
+      (required_fields + ['Ranking Model: Short Score']).each { |column| errors << "Short: row #{index + 1}: #{column} missing" if ['','N.A.',nil].include?(row[column]) }
+    end
+    return errors
+  end
 
   def create_industries rows
     rows.each_with_index do |row, index|

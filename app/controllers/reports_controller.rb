@@ -9,8 +9,8 @@ class ReportsController < ApplicationController
       trades = Trade.where("enter_date < ? and (exit_date is null or exit_date > ?)", date.to_s(:db), date.to_s(:db))
 
       trades.each do |trade|
-        longs << trade.usd_value_on_date date if trade.long?
-        shorts << trade.usd_value_on_date date if trade.short?
+        longs << trade.usd_value_on_date(date) if trade.long?
+        shorts << trade.usd_value_on_date(date) if trade.short?
       end
     end
 
