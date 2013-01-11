@@ -202,9 +202,7 @@ private
       raise stock_date.inspect if stock_date.wmavg_10d.nil? or stock_date.smavg_10d.nil?
       if stock_date.wmavg_10d > stock_date.smavg_10d
         stock_date.long_tech_signal = 'ENTER'
-        stock_date.short_tech_signal = 'EXIT'
       elsif stock_date.wmavg_10d < stock_date.smavg_10d
-        stock_date.long_tech_signal = 'EXIT'
         stock_date.short_tech_signal = 'ENTER'
       end
       stock_date.save!
