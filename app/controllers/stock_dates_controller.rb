@@ -249,13 +249,13 @@ private
         long_trade.save!
 
       # Exit long trade due to technicals
-      elsif stock_date.long_tech_signal == 'EXIT' and long_trade = stock.trades.entered.long.try(:first)
-        long_trade.exit_signal_date = date
-        long_trade.signal_exit!
-        long_trade.note_will_change!
-        long_trade.note << "\n\n#{date} Exit long signal."
-        long_trade.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
-        long_trade.save!
+      #elsif stock_date.long_tech_signal == 'EXIT' and long_trade = stock.trades.entered.long.try(:first)
+        #long_trade.exit_signal_date = date
+        #long_trade.signal_exit!
+        #long_trade.note_will_change!
+        #long_trade.note << "\n\n#{date} Exit long signal."
+        #long_trade.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
+        #long_trade.save!
 
       # Exit short trade due to fundamentals
       elsif stock_date.short_fund_signal == 'EXIT' and short_trade = stock.trades.entered.short.try(:first)
@@ -267,13 +267,13 @@ private
         short_trade.save!
 
       # Exit short trade due to technicals
-      elsif stock_date.short_tech_signal == 'EXIT' and short_trade = stock.trades.entered.short.try(:first)
-        short_trade.exit_signal_date = date
-        short_trade.signal_exit!
-        short_trade.note_will_change!
-        short_trade.note << "\n\n#{date} Exit short signal."
-        short_trade.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
-        short_trade.save!
+      #elsif stock_date.short_tech_signal == 'EXIT' and short_trade = stock.trades.entered.short.try(:first)
+        #short_trade.exit_signal_date = date
+        #short_trade.signal_exit!
+        #short_trade.note_will_change!
+        #short_trade.note << "\n\n#{date} Exit short signal."
+        #short_trade.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
+        #short_trade.save!
 
       end
     end

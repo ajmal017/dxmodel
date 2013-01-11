@@ -1,0 +1,37 @@
+#exposure_chart
+
+:javascript
+  $(function () {  
+      new Highcharts.Chart({
+          title: { text: 'Exposure' },
+          chart: { renderTo: 'exposure_chart' },
+          xAxis: { type: 'datetime' },
+
+          yAxis: [{
+              title: { text: 'Short', style: { color: '#89A54E' } },
+              labels: { style: { color: '#89A54E' } },
+              tickInterval: 1
+          },{
+              title: { text: 'Long', style: { color: '#4572A7' } },
+              labels: { style: { color: '#4572A7' } },
+              tickInterval: 1,
+              opposite: true
+          }],
+
+          series: [{
+              yAxis: 1,
+              name: 'Short',
+              type: 'spline',
+              color: '#4572A7',
+              pointInterval: #{ 1.day * 1000 },
+              pointStart: #{ capacity_days.days.ago.at_midnight.to_i * 1000 },
+              data: #{ @features_new_by_day }
+          },{
+              name: 'Long',
+              type: 'spline',
+              color: '#89A54E',
+              pointInterval: #{ 1.day * 1000 },
+              pointStart: #{ capacity_days.days.ago.at_midnight.to_i * 1000 },
+              data: #{ @features_total_by_day }
+          }]
+      });
