@@ -14,13 +14,25 @@ class StockDatesController < ApplicationController
 
 
   def create
-    if not params[:long] and not params[:short] 
-      flash[:error] = "Failed to parse filename.  Does it follow this convention  20121205L.csv or 20121205S.csv?"
-      redirect_to new_upload_path
+    date_obj = Date.strptime(params[:date], "%Y-%m-%d")
+    filename_date = date_obj.strftime("%Y%m%d")
+
+    if params[:long].original_filename != (filename_date + 'L.csv') or params[:short].original_filename != (filename_date + 'S.csv')
+      flash[:error] = "Expected #{filename_date}L.csv and #{filename_date}S.csv.  Got #{params[:long].original_filename} and #{params[:short].original_filename}"
+      redirect_to new_stock_date_path
+
+    # Test long and short files end in L and S + .csv
+    elsif not long_filename =~ /L.csv/ or not short_filename =~ /S.csv/
+      flash[:error] = "Expected long file to end in L.csv and short S.csv. Got long file name #{long_filename} or short filename #{short_filename}."
+      redirect_to new_stock_date_path
+
+    elsif short_filename_date != long_filename_date
+      flash[:error] = "Long file name date didn't match  short file name date"
+      redirect_to new_stock_date_path
 
     elsif not params[:date].present?
       flash[:error] = "Date mising?"
-      redirect_to new_upload_path
+      redirect_to new_stock_date_path
     else
       date = params[:date]
 
