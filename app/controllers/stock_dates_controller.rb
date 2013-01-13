@@ -14,7 +14,7 @@ class StockDatesController < ApplicationController
 
 
   def create
-    if parmas[:date]
+    if params[:date]
       date_obj = Date.strptime(params[:date], "%Y-%m-%d")
       filename_date = date_obj.strftime("%Y%m%d")
     end
