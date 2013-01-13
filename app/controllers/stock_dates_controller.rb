@@ -73,12 +73,12 @@ private
 
 
     long.each_with_index do |row, index|
-      (required_fields + ['Ranking Model: Long Score']).each do |column| 
+      (required_fields).each do |column| 
         errors << "Long: row #{index + 1}: #{column} missing" if ['','N.A.',nil].include?(row[column]) 
       end
     end
     short.each_with_index do |row, index|
-      (required_fields + ['Ranking Model: Short Score']).each { |column| errors << "Short: row #{index + 1}: #{column} missing" if ['','N.A.',nil].include?(row[column]) }
+      (required_fields).each { |column| errors << "Short: row #{index + 1}: #{column} missing" if ['','N.A.',nil].include?(row[column]) }
     end
     return errors
   end
@@ -155,7 +155,7 @@ private
   def calc_fund_ranks_by_industry date
     Industry.all.each do |industry|
       # Long
-      industry.stock_dates.where("stock_dates.date = '#{date.to_s}'").order("stock_dates.long_fund_score DESC").each_with_index do |stock_dates, index|
+      industry.stock_dates.where("stock_dates.date = '#{date.to_s}'").order("stock_dates.ong_fund_score DESC").each_with_index do |stock_dates, index|
         stock_dates["long_fund_rank_by_industry"] = index + 1
         stock_dates.save!
       end
