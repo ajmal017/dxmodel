@@ -22,6 +22,8 @@ group :assets do
 
   gem "therubyracer", '~> 0.10.2'
   gem "twitter-bootstrap-rails"
+
+  gem "highcharts-rails", "~> 2.3.0"
 end
 
 gem 'jquery-rails'
@@ -34,8 +36,6 @@ gem 'font-awesome-sass-rails'
 group :test, :development do
   gem 'rspec-rails'
 end
-
-
 
 
 
