@@ -321,7 +321,6 @@ private
     Trade.entered.each do |trade|
       stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
       if trade.stop_loss_triggered? stock_date.close
-raise trade.id
         trade.exit_signal_date = date
         trade.signal_exit! 
         trade.note_will_change!
