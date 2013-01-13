@@ -73,12 +73,10 @@ private
 
 
     long.each_with_index do |row, index|
-      (required_fields).each do |column| 
-        errors << "Long: row #{index + 1}: #{column} missing" if ['','N.A.',nil].include?(row[column]) 
-      end
+      (required_fields).each { |column| errors << "Long: row #{index + 2}: #{column} missing" if ['','N.A.',nil].include?(row[column])  }
     end
     short.each_with_index do |row, index|
-      (required_fields).each { |column| errors << "Short: row #{index + 1}: #{column} missing" if ['','N.A.',nil].include?(row[column]) }
+      (required_fields).each { |column| errors << "Short: row #{index + 2}: #{column} missing" if ['','N.A.',nil].include?(row[column]) }
     end
     return errors
   end
