@@ -324,7 +324,11 @@ private
         trade.exit_signal_date = date
         trade.signal_exit! 
         trade.note_will_change!
-        trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{trade.holding_period_high}.  Stop loss value: #{trade.stop_loss_value}."
+        if trade.longshort == 'long'
+          trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{trade.holding_period_high}.  Stop loss value: #{trade.stop_loss_value}."
+        elsif trade.longshort == 'short'
+          trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period low: #{trade.holding_period_low}.  Stop loss value: #{trade.stop_loss_value}."
+        end
         trade.save!
       end
     end
