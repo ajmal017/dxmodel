@@ -321,10 +321,11 @@ private
     Trade.entered.each do |trade|
       stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
       if trade.stop_loss_triggered? stock_date.close
+raise trade.id
         trade.exit_signal_date = date
         trade.signal_exit! 
         trade.note_will_change!
-        trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{trade.holding_period_high}.  Stop loss value: #{stop_loss_value}."
+        trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{trade.holding_period_high}.  Stop loss value: #{trade.stop_loss_value}."
         trade.save!
       end
     end
