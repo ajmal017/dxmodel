@@ -153,7 +153,7 @@ private
   def calc_fund_ranks_by_industry date
     Industry.all.each do |industry|
       # Long
-      industry.stock_dates.where("stock_dates.date = '#{date.to_s}'").order("stock_dates.ong_fund_score DESC").each_with_index do |stock_dates, index|
+      industry.stock_dates.where("stock_dates.date = '#{date.to_s}'").order("stock_dates.long_fund_score DESC").each_with_index do |stock_dates, index|
         stock_dates["long_fund_rank_by_industry"] = index + 1
         stock_dates.save!
       end
