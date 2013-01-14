@@ -15,13 +15,4 @@
 //= require twitter/bootstrap
 //= require jquery-tablesorter
 //= require jquery.ui.all
-
-//= require highcharts
-//= require highcharts/highcharts-more
-//= require highcharts/themes/dark-blue
-//= require highcharts/themes/dark-green
-//= require highcharts/themes/gray
-//= require highcharts/themes/grid
-//= require highcharts/themes/skies
-
 //= require_tree .

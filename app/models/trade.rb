@@ -124,14 +124,17 @@ class Trade < ActiveRecord::Base
     fx_rate = FxRate.where(date: date).first
     raise "no fx_rate for date" unless fx_rate
 
-    local_value_on_date(date) * fx_rate.usdsgd if stock.country ==  'SP'
-    local_value_on_date(date) * fx_rate.usdhkd if stock.country == 'HK'
+    case stock.country
+    when 'SP'
+      local_value_on_date(date) * fx_rate.usdsgd 
+    when 'HK'
+      local_value_on_date(date) * fx_rate.usdhkd 
+    end
   end
 
 
   def local_value_on_date date
-    fx_rate = FxRate.where date: date
-    stock_date = StockDate.where("date < ?", date).order('date DESC').first # Get yesterday's close
+    stock_date = StockDate.where("stock_id = ? and date < ?", stock_id, date).order('date DESC').first # Get yesterday's close
     quantity * stock_date.close
   end
 

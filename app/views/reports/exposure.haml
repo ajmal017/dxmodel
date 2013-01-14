@@ -1,24 +1,44 @@
-#exposure_chart
+= javascript_include_tag "http://code.highcharts.com/stock/highstock.js"
+= javascript_include_tag "http://code.highcharts.com/stock/modules/exporting.js"
+= javascript_include_tag "http://www.highcharts.com/samples/data/three-series-1000-points.js"
+
+#container{:style => "height: 400px; min-width: 600px"}
+
+
 
 :javascript
-  $(function () {  
-      new Highcharts.Chart({
-          title: { text: 'Exposure' },
-          chart: { renderTo: 'exposure_chart' },
-          xAxis: { type: 'datetime' },
-          yAxis: {
-              title: { text: 'Short', style: { color: '#89A54E' } },
-              labels: { style: { color: '#89A54E' } },
-              tickInterval: 1
-          },
+  $(function() {  
+    var chart = new Highcharts.Chart({  
+      chart: {  
+        renderTo: 'container',
+        type: 'spline'
+      },  
 
-          series: {
-              yAxis: 1,
-              name: 'Short',
-              type: 'spline',
-              color: '#4572A7',
-              pointInterval: 1,
-              pointStart: 1,
-              data: "[1,2]"
-          }
-      });
+      title: {
+        text: 'Exposure',
+        x: -20 //center
+      },
+
+      subtitle: {
+        text: 'USD',
+        x: -20 //center
+      },
+
+      series: [{  
+        name: 'Long',  
+        data: #{@long_exposures}
+      },{  
+        name: 'Short',  
+        data: #{@short_exposures}
+      }],  
+
+      xAxis: {
+        type: 'datetime',
+      },
+      yAxis: {
+        min: 0,
+        title: {text: null}
+      }
+
+    });  
+  });
