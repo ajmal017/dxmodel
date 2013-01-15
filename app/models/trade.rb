@@ -126,16 +126,24 @@ class Trade < ActiveRecord::Base
 
     case stock.country
     when 'SP'
-      local_value_on_date(date) * fx_rate.usdsgd 
+      local_value_on_date(date) / fx_rate.usdsgd 
     when 'HK'
-      local_value_on_date(date) * fx_rate.usdhkd 
+      local_value_on_date(date) / fx_rate.usdhkd 
     end
   end
-
 
   def local_value_on_date date
     stock_date = StockDate.where("stock_id = ? and date < ?", stock_id, date).order('date DESC').first # Get yesterday's close
     quantity * stock_date.close
+  end
+
+  def usd_pnl_on_date date
+    if exit_date and date > exit_date
+      exit_usd_value - enter_usd_value
+      
+    else
+      usd_value_on_date(date) - enter_usd_value
+    end
   end
 
 end

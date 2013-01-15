@@ -67,6 +67,16 @@
   %dt USD value
   %dd= number_to_currency(@trade.exit_usd_value)
 
+- unless @trade.enter_signaled?
+  %p.lead P&L
+  %dl.dl-horizontal
+    %dt 
+      P&L (USD)
+    %dd
+      = number_to_currency(@trade.usd_pnl_on_date(FxRate.latest.date), :precision => 2) 
+      %small= "&nbsp;&nbsp;(As of #{FxRate.latest.date})".html_safe unless @trade.exited?
+
+
 
 %p.lead Other
 %dl.dl-horizontal

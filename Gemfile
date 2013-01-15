@@ -9,8 +9,6 @@ gem 'haml-rails'
 gem 'state_machine'
 
 gem 'thor'
-
-gem 'debugger'
 gem 'pry'
 
 # Gems used only for assets and not required in production environments by default.
@@ -36,6 +34,10 @@ group :test, :development do
 end
 
 
+group :development do
+  gem "debugger"
+  gem "rack-mini-profiler"
+end
 
 
 

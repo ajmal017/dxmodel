@@ -21,6 +21,13 @@
   %td= number_to_currency(trade.enter_local_value, :precision => 0, :unit => trade.stock.unit) if trade.enter_local_value
   %td= number_to_currency(trade.enter_usd_value, :precision => 0) if trade.enter_usd_value
 
+
+  -# Unrealized P&L
+  - if local_assigns.has_key? :include_unrealized_pnl and local_assigns.has_key? :date
+    %td.fund.divider
+    %td= number_to_currency(trade.usd_pnl_on_date(date), :precision => 2)
+
+
   -# Exit
   - if local_assigns.has_key? :include_exit
     %td.fund.divider

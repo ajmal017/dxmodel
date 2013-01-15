@@ -1,11 +1,16 @@
+- fx_rate = FxRate.first
+
 %legend Open trades 
 
 %table#entered_trades
-  = render partial: 'headers'
+  = render partial: 'headers', locals: {include_unrealized_pnl: true}
 
   %tbody
     - @entered_trades.each do |trade|
-      = render partial: trade
+      = render partial: trade, locals: {include_unrealized_pnl: true, date: fx_rate.date}
+
+%small= "Unrealized P&L based on #{fx_rate.date} FX rates. USDSGD #{fx_rate.usdsgd}. USDHKD #{fx_rate.usdhkd}."
+
 
 :javascript
   $(document).ready(function() {

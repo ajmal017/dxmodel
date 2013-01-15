@@ -25,7 +25,27 @@ class ReportsController < ApplicationController
     render :text => 'todo'
   end
 
-  def pl
-    render :text => 'todo'
+  def pnl
+    dates = FxRate.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
+    @realized = []
+    @unrealized = []
+    @total = []
+
+    dates.each do |date|
+      trades = Trade.where("enter_date < ?", date)
+
+      date_realized = 0
+      date_unrealized = 0
+
+      trades.each do |trade|
+        date_realized = date_realized + trade.usd_pnl_on_date(date) if trade.exited?
+        date_unrealized = date_unrealized + trade.usd_pnl_on_date(date) if not trade.exited?
+      end
+
+      @realized << [date.to_datetime.to_i * 1000, date_realized.to_f]
+      @unrealized << [date.to_datetime.to_i * 1000, date_unrealized.to_f]
+      @total << [date.to_datetime.to_i * 1000, date_unrealized.to_f + date_realized.to_f]
+    end
   end
+
 end
