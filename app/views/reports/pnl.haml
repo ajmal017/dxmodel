@@ -1,0 +1,69 @@
+= javascript_include_tag "http://code.highcharts.com/stock/highstock.js"
+= javascript_include_tag "http://code.highcharts.com/stock/modules/exporting.js"
+
+%h1 Profit and loss
+#percentage_pnl
+#usd_pnl{:style => "margin-top: 60px"}
+
+
+
+:javascript
+  $(function() {  
+    var usd_pnl_chart = new Highcharts.Chart({  
+      chart: {  
+        renderTo: 'usd_pnl',
+        borderWidth: 2,
+        borderRadius: 5,
+        borderColor: '#ccc',
+        type: 'spline',
+        zoomType: 'x'
+      },  
+
+      title: { text: 'USD', x: -20 },
+
+      series: [{  
+        name: 'Unrealized',  
+        data: #{@unrealized}
+      },{  
+        name: 'Total',  
+        data: #{@totals}
+      }],  
+
+      xAxis: { 
+        name: { text: 'Date' },
+        type: 'datetime' 
+      },
+
+      yAxis: { 
+        name: { text: 'P&L' },
+        title: { text: null } 
+      }
+
+    });
+
+
+
+
+
+
+
+    var percentages = new Highcharts.Chart({  
+      chart: {  
+        renderTo: 'percentage_pnl',
+        borderWidth: 2,
+        borderRadius: 5,
+        borderColor: '#ccc',
+        type: 'spline'
+      },  
+
+      title: { text: 'Percentage', x: -20 },
+
+      series: [{  
+        data: #{@percentages}
+      }],  
+
+      xAxis: { type: 'datetime' },
+
+      yAxis: { title: { text: null } }
+    });
+  });

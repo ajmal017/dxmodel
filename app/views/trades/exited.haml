@@ -1,4 +1,4 @@
-%legend Closed trades
+%h1 Closed trades
 
 %table#exited_trades
   = render partial: 'headers', locals: {include_exit: false}
@@ -9,6 +9,6 @@
 
 :javascript
   $(document).ready(function() {
-    $('table').tablesorter({theme: 'blue'});
+    $('table').tablesorter({theme: 'dxmodel'});
   })
 

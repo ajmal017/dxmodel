@@ -2,8 +2,26 @@
 %html
   %head
     %title DX Model
+
+    =# stylesheet_link_tag    "//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css", :media => "all"
+    =# stylesheet_link_tag    "//netdna.bootstrapcdn.com/bootswatch/2.1.1/cosmo/bootstrap.min.css", :media => "all"
+    =# stylesheet_link_tag    "//netdna.bootstrapcdn.com/bootswatch/2.1.1/simplex/bootstrap.min.css", :media => "all"
+    =# stylesheet_link_tag    "//netdna.bootstrapcdn.com/bootswatch/2.1.1/superhero/bootstrap.min.css", :media => "all"
+    =# stylesheet_link_tag    "//netdna.bootstrapcdn.com/bootswatch/2.1.1/journal/bootstrap.min.css", :media => "all"
+    = stylesheet_link_tag    "//netdna.bootstrapcdn.com/bootswatch/2.1.1/spacelab/bootstrap.min.css", :media => "all"
+    = stylesheet_link_tag    "//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css", :media => "all"
+
     = stylesheet_link_tag    "application", :media => "all"
+
+
+    = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"
+    = javascript_include_tag "//ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"
+    = javascript_include_tag "//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"
     = javascript_include_tag "application"
+
+
+
+
     = csrf_meta_tags
   %body
     = render :partial => 'header'

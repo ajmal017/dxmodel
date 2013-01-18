@@ -1,47 +1,193 @@
-%legend
-  Data for 
+= javascript_include_tag "http://code.highcharts.com/stock/highstock.js"
+
+%h1
   = @stock.name
   %small.mute= "(#{@stock.ticker} #{@stock.country} - #{@stock.industry.name})"
+
+%h2
+  Scores, ranks, and signals
 
 
 %table#data
   %thead
     %tr
       %th Date
-      %th Position at open
-      %th 
+      %th.divider 
       %th Long fund. signal 
       %th Long fund. rank
       %th Long fund. score
       %th Long industry rank
-      %th 
+      %th.divider
       %th Short fund. signal 
       %th Short fund. rank
       %th Short fund. score
       %th Short industry rank
+      %th.divider
+      %th 10d SMAVG
+      %th 10d WMAVG
 
 
   %tbody
     - @stock_dates.each do |stock_date|
       %tr
-        %td
-          = link_to stock_date.date, reports_path(:date => stock_date.date)
-        %td= stock_date.open_position
-        %td{:style => "background-color: lightgray;"}
+        %td= stock_date.date
+        %td.divider
         %td= stock_date.long_fund_signal.try(:capitalize) || ''
         %td= stock_date.long_fund_rank || ''
         %td= stock_date.long_fund_score || ''
         %td= stock_date.long_fund_rank_by_industry || ''
-        %td{:style => "background-color: lightgray;"}
+        %td.divider
         %td= stock_date.short_fund_signal.try(:capitalize) || ''
         %td= stock_date.short_fund_rank || ''
         %td= stock_date.short_fund_score || ''
         %td= stock_date.short_fund_rank_by_industry || ''
+        %td.divider
+        %td= stock_date.smavg_10d
+        %td= stock_date.wmavg_10d
+
+.hide
+  %h2 Chart
+  #container
+  %small Chart based on Yahoo! Finance.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score, rank, and signals based on Bloomberg.
+
+%textarea#textarea1.hide
+%textarea#textarea2.hide
+%textarea#textarea3.hide
 
 :javascript
-  $('#data').tablesorter({theme: 'blue'});
-  $('#date').change(function(){
-    var newURL = window.location.protocol + "//" + window.location.host + "/stock_dates?date=" + $(this).val()
-    window.location = newURL
-  })
+  $(document).ready(function() {
+    $('#data').tablesorter({theme: 'dxmodel'});
 
+    $(function() {
+        var seriesOptions = [],
+            yAxisOptions = [],
+            seriesCounter = 0,
+            names = ['#{yahoo_ticker(stock)}'],
+            colors = Highcharts.getOptions().colors;
+
+            $.each(names, function(i, name) {
+
+            var YQL = format_YQL_request(name);
+            var textarea2 = document.getElementById("textarea2");
+            textarea2.innerHTML = textarea2.innerHTML + "\n" + YQL;
+
+            $.getJSON(YQL, function(data) {
+
+                    var yahooData = parseYahooData(data);
+
+                    seriesOptions[i] = {
+                        name: name,
+                        data: yahooData
+                    };
+
+                    // As we're loading the data asynchronously, we don't know what order it will arrive. So
+                    // we keep a counter and create the chart when all the data is loaded.
+                    seriesCounter++;
+
+                    if (seriesCounter == names.length) {
+                         createChart();
+                    }
+                });
+            });
+
+
+        function format_YQL_request(symbol, start_date, end_date) {
+
+            // a = Begin month (starting at offset 0 = January)
+            // b = Begin day
+            // c = Begin year
+            // d,e,f = End (same as above) = Defaults to "today" if blank
+
+            // start_date = new Date(2000,1,1);    
+            start_date = new Date(start_date || "2011/01/01");
+            end_date   = new Date(end_date || Date() );
+        
+            var URL = 'http://ichart.finance.yahoo.com/table.csv?s='
+                + symbol 
+                + '%26a=' + start_date.getMonth() 
+                + '%26b=' + start_date.getDate() 
+                + '%26c=' + start_date.getFullYear() 
+                + '%26d=' + end_date.getMonth() 
+                + '%26e=' + end_date.getDate() 
+                + '%26f=' + end_date.getFullYear() 
+                + '%26g=d%26ignore=.csv';
+
+            var textarea1 = document.getElementById("textarea1");
+            textarea1.innerHTML = textarea1.innerHTML + "\n" + URL;
+
+            var YQL = 'http://query.yahooapis.com/v1/public/yql?q='
+                      + 'select col0, col4 from csv where url=';
+
+            YQL = YQL + "'" + URL + "'" + '&format=json&callback=?';
+
+
+            return YQL;
+
+        }
+
+        function parseYahooData(data) {
+
+              var rows = data.query.results.row;
+            rows.shift();        // remove first row of headers
+        
+            var yahooData = new Array();
+
+            var textarea3 = document.getElementById("textarea3");
+
+            $.each(rows, function(key,val) {
+                
+                var date  = + new Date(val.col0);
+                var price = parseFloat(val.col4); 
+
+                textarea3.innerHTML = textarea3.innerHTML + "\n" + date.valueOf() + "==>" + price;
+                yahooData.push([date, price]);
+
+            });
+            
+            return yahooData.reverse();
+        }
+
+        // create the chart when all data is loaded
+        function createChart() {
+
+            chart = new Highcharts.StockChart({
+                chart: {
+                    borderWidth: 2,
+                    borderRadius: 5,
+                    borderColor: '#ccc',
+                    renderTo: 'container'
+                },
+
+                rangeSelector: {
+                    selected: 4
+                      },
+                yAxis: {
+                    labels: {
+                        formatter: function() {
+                            return (this.value > 0 ? '+' : '') + this.value + '%';
+                        }
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 2,
+                        color: 'silver'
+                    }]
+                },
+                
+                plotOptions: {
+                    series: {
+                        compare: 'percent'
+                    }
+                },
+                
+                tooltip: {
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+                    yDecimals: 2
+                },
+                
+                series: seriesOptions
+            });
+        }
+
+    });
+  })

@@ -1,4 +1,4 @@
-%legend
+%h1
   Historical stock data from
   = @date.strftime("%B %d, %Y").to_s if @date
 
@@ -9,39 +9,38 @@
 %table#data
   %thead
     %tr
-      %td{:class => "{sorter: false}", :colspan => 5}
+      %td{:class => "{sorter: false}", :colspan => 4}
 
-      %td{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "long {sorter: false}", :colspan => 5, :style => 'text-align: center;font-size: 14px;'} Long
+      %td{:class => "divider long {sorter: false}"}
+      %td{:class => "long {sorter: false}", :colspan => 5} Long
 
-      %td{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "short {sorter: false}", :colspan => 5, :style => 'text-align: center;font-size: 14px;'} Short
+      %td{:class => "divider short {sorter: false}"}
+      %td{:class => "short {sorter: false}", :colspan => 5} Short
 
-      %td{:class => "fund {sorter: false}", :style => "background-color: lightgray;"}
-      %td{:class => "fund {sorter: false}", :colspan => 14, :style => 'text-align: center;font-size: 14px;'} Data
+      %td{:class => "divider fund {sorter: false}"}
+      %td{:class => "fund {sorter: false}", :colspan => 14} Data
 
     %tr
       %th Ticker
       %th Country
       %th Name
       %th Industry
-      %th Position at open
 
-      %th{:class => "long {sorter: false}", :style => "background-color: lightgray;"}
+      %th{:class => "divider long {sorter: false}"}
       %th.long Tech. signal 
       %th.long Fund. signal 
       %th.long Rank
       %th.long Score
       %th.long Industry rank
 
-      %th{:class => "short {sorter: false}", :style => "background-color: lightgray;"}
+      %th{:class => "divider short {sorter: false}"}
       %th.short Tech. signal 
       %th.short Fund. signal 
       %th.short Rank
       %th.short Score
       %th.short Industry rank
       
-      %th{:class => "fund {sorter: false}", :style => "background-color: lightgray;"}
+      %th{:class => "divider fund {sorter: false}"}
       %th.fund Alpha
       %th.fund PER
       %th.fund PER change
@@ -67,7 +66,6 @@
         %td= stock_date.stock.country
         %td= stock_date.stock.name
         %td= stock_date.industry.name
-        %td= stock_date.open_position
 
         %td.long{:style => "background-color: lightgray;"}
         %td.long= stock_date.long_tech_signal.try(:capitalize) || ''
@@ -103,7 +101,7 @@
 
 :javascript
   $(document).ready(function() {
-    $('#data').tablesorter({theme: 'blue'});
+    $('#data').tablesorter({theme: 'dxmodel'});
     $('#date').change(function(){
       var newURL = window.location.protocol + "//" + window.location.host + "/stock_dates?date=" + $(this).val()
       window.location = newURL

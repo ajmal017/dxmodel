@@ -1,6 +1,6 @@
-- fx_rate = FxRate.first
+%h1 Open trades 
 
-%legend Open trades 
+- fx_rate = FxRate.first
 
 %table#entered_trades
   = render partial: 'headers', locals: {include_unrealized_pnl: true}
@@ -14,5 +14,5 @@
 
 :javascript
   $(document).ready(function() {
-    $('table').tablesorter({theme: 'blue'});
+    $('table').tablesorter({theme: 'dxmodel'});
   })

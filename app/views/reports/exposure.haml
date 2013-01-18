@@ -1,10 +1,10 @@
-= javascript_include_tag "http://code.highcharts.com/stock/highstock.js"
-= javascript_include_tag "http://code.highcharts.com/stock/modules/exporting.js"
-= javascript_include_tag "http://www.highcharts.com/samples/data/three-series-1000-points.js"
+= javascript_include_tag "http://code.highcharts.com/highcharts.js"
+= javascript_include_tag "http://code.highcharts.com/modules/exporting.js"
+
+
+%h1 Exposure
 
 #container{:style => "height: 400px; min-width: 600px"}
-
-
 
 :javascript
   $(function() {  
@@ -24,21 +24,22 @@
         x: -20 //center
       },
 
+      xAxis: {
+        title: { text: 'Date' },
+        type: 'datetime'
+      },
+      yAxis: {
+        min: 0,
+        title: {text: null}
+      },
+
       series: [{  
         name: 'Long',  
         data: #{@long_exposures}
       },{  
         name: 'Short',  
         data: #{@short_exposures}
-      }],  
-
-      xAxis: {
-        type: 'datetime',
-      },
-      yAxis: {
-        min: 0,
-        title: {text: null}
-      }
+      }]  
 
     });  
   });
