@@ -11,5 +11,6 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 
+//= require dxmodel
 //= require jquery_ujs
 //= require jquery-tablesorter

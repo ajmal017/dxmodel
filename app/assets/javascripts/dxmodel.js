@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
   // Enter fx rate
-  $( "#fx_rate_date" ).datepicker({ dateFormat: "yy-mm-dd" });
+  $( "[id$='_date']" ).datepicker({ dateFormat: "yy-mm-dd" });
 
   // Enter trade form fields
   $( "#trade_enter_date" ).datepicker({ dateFormat: "yy-mm-dd" });
