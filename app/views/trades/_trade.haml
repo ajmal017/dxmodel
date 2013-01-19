@@ -25,7 +25,8 @@
   -# Unrealized P&L
   - if local_assigns.has_key? :include_unrealized_pnl and local_assigns.has_key? :date
     %td.fund.divider
-    %td= number_to_currency(trade.usd_pnl_on_date(date), :precision => 2)
+    %td{:class => trade.usd_pnl_on_date(date) < 0 ? 'negative' : 'positive' }  
+      = number_to_currency(trade.usd_pnl_on_date(date), :precision => 2)
 
 
   -# Exit

@@ -8,3 +8,9 @@
   .control-group
     .controls
       = f.button :submit, 'Submit'
+
+
+:javascript
+  $(function() {
+    $( "#fx_rate_date" ).datepicker({ dateFormat: "yy-mm-dd" });
+  });
