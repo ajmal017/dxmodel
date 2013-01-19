@@ -43,6 +43,13 @@
     %td= number_to_currency(trade.exit_usd_value, :precision => 0)
 
 
+  -# Realized P&L
+  - if local_assigns.has_key? :include_realized_pnl and local_assigns.has_key? :date
+    %td.fund.divider
+    %td{:class => trade.usd_pnl_on_date(date) < 0 ? 'negative' : 'positive' }  
+      = number_to_currency(trade.usd_pnl_on_date(date), :precision => 2)
+
+
   -# More
   %td.fund.divider
   %td= render partial: 'actions', locals: {trade: trade}

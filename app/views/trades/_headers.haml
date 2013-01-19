@@ -7,7 +7,7 @@
     - colspan = (local_assigns.has_key? :include_enter_signal) ? 7 : 6
     %td{:class => "{sorter: false}", :colspan => "#{colspan}"} Entry
 
-    - if local_assigns.has_key? :include_unrealized_pnl 
+    - if local_assigns.has_key? :include_unrealized_pnl
       %td{:class => "divider {sorter: false}"}
       %td{:class => "{sorter: false}"} 
 
@@ -15,6 +15,11 @@
       %td{:class => "divider {sorter: false}"}
       - colspan = (local_assigns.has_key? :include_exit_signal) ? 5 : 4
       %td{:class => "{sorter: false}", :colspan => "#{colspan}"} Exit
+    
+    - if local_assigns.has_key? :include_realized_pnl
+      %td{:class => "divider {sorter: false}"}
+      %td{:class => "{sorter: false}"} 
+
 
     %td{:class => "divider {sorter: false}"}
     %td{:class => "{sorter: false}" } Actions
@@ -47,6 +52,10 @@
       %th Price
       %th Local value
       %th USD value
+
+    - if local_assigns.has_key? :include_realized_pnl
+      %th{:class => "divider {sorter: false}"}
+      %th Realized P&L (USD)
 
     %th{:class => "divider {sorter: false}"}
     %th{:class => "{sorter: false}"}

@@ -1,14 +1,17 @@
 %h1 Closed trades
 
+- fx_rate = FxRate.first
+
 %table#exited_trades
-  = render partial: 'headers', locals: {include_exit: false}
+  = render partial: 'headers', locals: {include_exit: true, include_realized_pnl: true}
 
   %tbody
     - @exited_trades.each do |trade|
-      = render partial: trade, locals: {include_exit: false}
+      = render partial: trade, locals: {include_exit: true, include_realized_pnl: true, date: fx_rate.date}
+
+%small= "Realized P&L based on #{fx_rate.date} FX rates. USDSGD #{fx_rate.usdsgd}. USDHKD #{fx_rate.usdhkd}."
 
 :javascript
   $(document).ready(function() {
     $('table').tablesorter({theme: 'dxmodel'});
   })
-
