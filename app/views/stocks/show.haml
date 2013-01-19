@@ -45,149 +45,32 @@
         %td= stock_date.smavg_10d
         %td= stock_date.wmavg_10d
 
-.hide
-  %h2 Chart
-  #container
-  %small Chart based on Yahoo! Finance.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Score, rank, and signals based on Bloomberg.
+%h2 Chart
+#container
 
-%textarea#textarea1.hide
-%textarea#textarea2.hide
-%textarea#textarea3.hide
-
-:javascript
-  $(document).ready(function() {
-    $('#data').tablesorter({theme: 'dxmodel'});
-
+- begin
+  :javascript
     $(function() {
-        var seriesOptions = [],
-            yAxisOptions = [],
-            seriesCounter = 0,
-            names = ['#{yahoo_ticker(@stock)}'],
-            colors = Highcharts.getOptions().colors;
+      window.chart = new Highcharts.StockChart({
+        chart : {
+          renderTo : 'container'
+        },
 
-            $.each(names, function(i, name) {
+        rangeSelector : {
+          selected : 1
+        },
 
-            var YQL = format_YQL_request(name);
-            var textarea2 = document.getElementById("textarea2");
-            textarea2.innerHTML = textarea2.innerHTML + "\n" + YQL;
-
-            $.getJSON(YQL, function(data) {
-
-                    var yahooData = parseYahooData(data);
-
-                    seriesOptions[i] = {
-                        name: name,
-                        data: yahooData
-                    };
-
-                    // As we're loading the data asynchronously, we don't know what order it will arrive. So
-                    // we keep a counter and create the chart when all the data is loaded.
-                    seriesCounter++;
-
-                    if (seriesCounter == names.length) {
-                         createChart();
-                    }
-                });
-            });
-
-
-        function format_YQL_request(symbol, start_date, end_date) {
-
-            // a = Begin month (starting at offset 0 = January)
-            // b = Begin day
-            // c = Begin year
-            // d,e,f = End (same as above) = Defaults to "today" if blank
-
-            // start_date = new Date(2000,1,1);    
-            start_date = new Date(start_date || "2011/01/01");
-            end_date   = new Date(end_date || Date() );
+        title : {
+          text : '#{@stock.name}'
+        },
         
-            var URL = 'http://ichart.finance.yahoo.com/table.csv?s='
-                + symbol 
-                + '%26a=' + start_date.getMonth() 
-                + '%26b=' + start_date.getDate() 
-                + '%26c=' + start_date.getFullYear() 
-                + '%26d=' + end_date.getMonth() 
-                + '%26e=' + end_date.getDate() 
-                + '%26f=' + end_date.getFullYear() 
-                + '%26g=d%26ignore=.csv';
-
-            var textarea1 = document.getElementById("textarea1");
-            textarea1.innerHTML = textarea1.innerHTML + "\n" + URL;
-
-            var YQL = 'http://query.yahooapis.com/v1/public/yql?q='
-                      + 'select col0, col4 from csv where url=';
-
-            YQL = YQL + "'" + URL + "'" + '&format=json&callback=?';
-
-
-            return YQL;
-
-        }
-
-        function parseYahooData(data) {
-
-              var rows = data.query.results.row;
-            rows.shift();        // remove first row of headers
-        
-            var yahooData = new Array();
-
-            var textarea3 = document.getElementById("textarea3");
-
-            $.each(rows, function(key,val) {
-                
-                var date  = + new Date(val.col0);
-                var price = parseFloat(val.col4); 
-
-                textarea3.innerHTML = textarea3.innerHTML + "\n" + date.valueOf() + "==>" + price;
-                yahooData.push([date, price]);
-
-            });
-            
-            return yahooData.reverse();
-        }
-
-        // create the chart when all data is loaded
-        function createChart() {
-
-            chart = new Highcharts.StockChart({
-                chart: {
-                    borderWidth: 2,
-                    borderRadius: 5,
-                    borderColor: '#ccc',
-                    renderTo: 'container'
-                },
-
-                rangeSelector: {
-                    selected: 4
-                      },
-                yAxis: {
-                    labels: {
-                        formatter: function() {
-                            return (this.value > 0 ? '+' : '') + this.value + '%';
-                        }
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 2,
-                        color: 'silver'
-                    }]
-                },
-                
-                plotOptions: {
-                    series: {
-                        compare: 'percent'
-                    }
-                },
-                
-                tooltip: {
-                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
-                    yDecimals: 2
-                },
-                
-                series: seriesOptions
-            });
-        }
-
+        series : [{
+          name : '#{@stock.name}',
+          data : #{@stock_close_prices},
+          tooltip: {
+            valueDecimals: 2
+          }
+        }]
+      });
     });
-  })
+- rescue
