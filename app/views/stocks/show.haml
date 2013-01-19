@@ -45,32 +45,4 @@
         %td= stock_date.smavg_10d
         %td= stock_date.wmavg_10d
 
-%h2 Chart
-#container
-
-- begin
-  :javascript
-    $(function() {
-      window.chart = new Highcharts.StockChart({
-        chart : {
-          renderTo : 'container'
-        },
-
-        rangeSelector : {
-          selected : 1
-        },
-
-        title : {
-          text : '#{@stock.name}'
-        },
-        
-        series : [{
-          name : '#{@stock.name}',
-          data : #{@stock_close_prices},
-          tooltip: {
-            valueDecimals: 2
-          }
-        }]
-      });
-    });
-- rescue
+= render partial: 'chart', locals: {stock: @stock}

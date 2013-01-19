@@ -1,0 +1,41 @@
+= javascript_include_tag "http://code.highcharts.com/stock/highstock.js"
+
+- begin
+  - url = "http://www.bloomberg.com/markets/chart/data/1Y/#{stock.ticker}:#{stock.country}"
+  - require 'open-uri'
+  - json_string = open(url).read
+  - parsed_json = ActiveSupport::JSON.decode(json_string)
+
+  - stock_close_prices = parsed_json['data_values']
+
+
+  %h2 Chart
+  #chart
+
+  :javascript
+    $(function() {
+      window.chart = new Highcharts.StockChart({
+        chart : {
+          renderTo : 'chart'
+        },
+
+        rangeSelector : {
+          selected : 1
+        },
+
+        title : {
+          text : '#{stock.name}'
+        },
+        
+        series : [{
+          name : '#{stock.name}',
+          data : #{stock_close_prices},
+          tooltip: {
+            valueDecimals: 2
+          }
+        }]
+      });
+    });
+
+
+- rescue

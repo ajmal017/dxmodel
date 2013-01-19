@@ -7,7 +7,7 @@
     = @trade.stock.name
   trade
 
-%p.lead Stock
+%h2 Stock
 
 %dl.dl-horizontal
   %dt Signal date
@@ -26,7 +26,7 @@
   %dd= @trade.industry.name
 
 
-%p.lead Entry
+%h2 Entry
 %dl.dl-horizontal
   %dt Long|Short
   %dd= @trade.longshort.capitalize
@@ -50,7 +50,7 @@
   %dd= number_to_currency(@trade.enter_usd_value)
 
 
-%p.lead Exit
+%h2 Exit
 %dl.dl-horizontal
   %dt Date
   %dd= @trade.exit_date.strftime("%B %d, %Y").to_s if @trade.exit_date
@@ -78,11 +78,15 @@
 
 
 
-%p.lead Other
+%h2 Other
 %dl.dl-horizontal
   %dt Notes
   %dd
     %pre= @trade.note
+
+
+= render partial: 'stocks/chart', locals: {stock: @trade.stock}
+
 
 
 = link_to 'Edit', edit_trade_path(@trade), :class => 'btn btn-primary'
