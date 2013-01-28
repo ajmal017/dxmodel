@@ -109,15 +109,41 @@ describe Trade do
   describe '#stop_loss_value' do
     it 'should return 10% below holding period high for long trades' do
       @trade = FactoryGirl.create :trade, :entered, :long
-      @trade.should_receive(:holding_period_high).at_least(1).times.and_return(100)
+      @trade.stub!(:holding_period_high).and_return(100)
       @trade.stop_loss_value.should eql 90.0
     end
     it 'should return 5% above holding period low for short trades' do
       @trade = FactoryGirl.create :trade, :entered, :short
-      @trade.should_receive(:holding_period_low).at_least(1).times.and_return(100)
+      @trade.stub!(:holding_period_low).and_return(100)
       @trade.stop_loss_value.should eql 105.0
     end
   end
+
+  
+  describe '#stop_loss_triggered?' do
+    it 'should return true if price is < stop loss value for long trade' do
+      @trade = FactoryGirl.create :trade, :entered, :long
+      @trade.stub!(:stop_loss_value).and_return(90)
+      @trade.stop_loss_triggered?(90).should be_true
+    end
+    it 'should not return true if price is > stop loss value for long trade' do
+      @trade = FactoryGirl.create :trade, :entered, :long
+      @trade.stub!(:stop_loss_value).and_return(90)
+      @trade.stop_loss_triggered?(91).should be_false
+    end
+
+    it 'should return true if price is > stop loss value for short trade' do
+      @trade = FactoryGirl.create :trade, :entered, :short
+      @trade.stub!(:stop_loss_value).and_return(105)
+      @trade.stop_loss_triggered?(105).should be_true
+    end
+    it 'should not return true if price is < stop loss value for short trade' do
+      @trade = FactoryGirl.create :trade, :entered, :short
+      @trade.stub!(:stop_loss_value).and_return(105)
+      @trade.stop_loss_triggered?(104).should be_false
+    end
+  end
+
 
 end
 

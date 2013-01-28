@@ -109,10 +109,10 @@ class Trade < ActiveRecord::Base
 
   def stop_loss_triggered? price
     if longshort == 'long' and stop_loss_value
-      return price < stop_loss_value 
+      return price <= stop_loss_value 
 
     elsif longshort == 'short' and stop_loss_value
-      return price > stop_loss_value 
+      return price >= stop_loss_value 
 
     else
       return false
