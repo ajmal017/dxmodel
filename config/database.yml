@@ -9,9 +9,9 @@ development:
   <<: *base
   database: dxmodel_dev
 
-#test:
-#  <<: *base
-#  database: dxmodel_test
+test:
+  <<: *base
+  database: dxmodel_test
 
 staging:
   <<: *base

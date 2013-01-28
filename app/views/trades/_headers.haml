@@ -1,6 +1,6 @@
 %thead
   %tr
-    %td{:class => "{sorter: false}", :colspan => 4, :style => 'text-align: center;font-size: 14px;'} Stock
+    %td{:class => "{sorter: false}", :colspan => 3, :style => 'text-align: center;font-size: 14px;'} Stock
 
 
     %td{:class => "divider {sorter: false}"}
@@ -28,7 +28,6 @@
     %th Ticker
     %th Country
     %th Name
-    %th Industry
 
     %th{:class => "divider {sorter: false}"}
     - if local_assigns.has_key? :include_entry_signal

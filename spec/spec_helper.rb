@@ -5,10 +5,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'factory_girl'
 require 'database_cleaner'
-
-# Database cleaner
-DatabaseCleaner.strategy = :truncation
-DatabaseCleaner.clean
+require 'ruby-debug'
 
 # Require support scripts
 Dir["#{Rails.root}/spec/support/*rb"].each {|f| require f}
@@ -17,32 +14,18 @@ RSpec.configure do |config|
   config.mock_with :rspec
   config.fixture_path = "#{Rails.root}/spec/fixtures"
 
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
 
-  # Model specific configs
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
 
-
-  # Controller specific configs
-  config.include ControllerTestHelpers, :type => :controller
-
-
-  # View specific configs
-
-
-  # Helper specific configs
-
-
-  # Request specific configs
-
-
-  # Reset cookies and local storage before each request spec.
-  config.before(:each, :type => :request) do
+  config.after(:each) do
     DatabaseCleaner.clean
   end
-
-  config.after(:each, :type => :request) do
-  end
-
-
 
   # Allow focusing on individual specs with :focus
   config.treat_symbols_as_metadata_keys_with_true_values = true  

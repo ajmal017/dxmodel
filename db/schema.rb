@@ -40,7 +40,6 @@ ActiveRecord::Schema.define(:version => 20130110111106) do
     t.integer  "short_fund_rank"
     t.string   "short_fund_signal"
     t.string   "short_tech_signal"
-    t.string   "open_position"
     t.datetime "created_at",                                                                   :null => false
     t.datetime "updated_at",                                                                   :null => false
     t.decimal  "alpha",                        :precision => 4,  :scale => 4, :default => 0.0

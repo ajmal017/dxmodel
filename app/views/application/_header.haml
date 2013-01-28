@@ -46,5 +46,6 @@
               %li= link_to 'Exposure', exposure_reports_path
               %li= link_to 'Assets under management', aum_reports_path
               %li= link_to 'Profit & loss', pnl_reports_path
+              %li= link_to 'Day', day_reports_path
 
       %span.date= "EOD #{@date.strftime("%b %d, %Y").to_s}" if @date

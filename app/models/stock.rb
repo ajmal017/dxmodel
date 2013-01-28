@@ -21,4 +21,11 @@ class Stock < ActiveRecord::Base
       ''
     end
   end
+
+
+  def price_on_date date
+    stock_date = StockDate.where("stock_id = ? and date <= ?", id, date).order('date DESC').first 
+    stock_date.close
+  end
+
 end

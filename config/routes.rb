@@ -22,5 +22,6 @@ Dxmodel::Application.routes.draw do
   match '/reports/exposure', controller: 'reports', action: 'exposure', as: :exposure_reports
   match '/reports/aum', controller: 'reports', action: 'aum', as: :aum_reports
   match '/reports/pnl', controller: 'reports', action: 'pnl', as: :pnl_reports
+  match '/reports/day', controller: 'reports', action: 'day', as: :day_reports
 
 end

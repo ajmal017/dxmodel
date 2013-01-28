@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 gem 'capistrano'
 gem 'rvm-capistrano'
 
-gem 'rails', '3.2.9'
+gem 'rails'
 gem 'mysql2'
 gem 'haml-rails'
 gem 'state_machine'
@@ -27,17 +27,26 @@ gem 'jquery-ui-rails'
 
 gem 'simple_form'
 
-group :test, :development do
-  gem 'rspec-rails'
-end
-
 
 group :development do
   gem "debugger"
   gem "rack-mini-profiler"
 end
 
-
+group :test do
+  gem "rspec-rails", ">= 2.7.0"
+  gem 'rb-fsevent'
+  gem "factory_girl_rails", ">= 1.3.0"
+  gem "capybara", ">= 1.1.1"
+  gem "database_cleaner", ">= 0.6.7"
+  gem "launchy", ">= 2.0.5"
+  gem 'shoulda-matchers'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'guard-bundler'
+  gem 'rack_session_access'
+  gem "debugger"
+end
 
 
 

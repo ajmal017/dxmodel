@@ -79,10 +79,10 @@ private
 
 
     long.each_with_index do |row, index|
-      (required_fields).each { |column| errors << "Long: row #{index + 2}: #{column} missing" if ['','N.A.',nil].include?(row[column])  }
+      (required_fields + ['Ranking Model: Long Score']).each { |column| errors << "Long: row #{index + 2}: #{column} missing" if ['','N.A.',nil].include?(row[column])  }
     end
     short.each_with_index do |row, index|
-      (required_fields).each { |column| errors << "Short: row #{index + 2}: #{column} missing" if ['','N.A.',nil].include?(row[column]) }
+      (required_fields + ['Ranking Model: Short Score']).each { |column| errors << "Short: row #{index + 2}: #{column} missing" if ['','N.A.',nil].include?(row[column]) }
     end
     return errors
   end
@@ -211,7 +211,6 @@ private
       elsif stock_date.long_fund_rank > EXIT_RANK_THRESHOLD 
         stock_date.long_fund_signal = 'EXIT'
       end
-
       if stock_date.short_fund_rank <= ENTER_RANK_THRESHOLD 
         stock_date.short_fund_signal = 'ENTER'
 

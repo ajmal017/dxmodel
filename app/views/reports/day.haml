@@ -1,0 +1,104 @@
+- @day_pnl ||= 0.0
+- @total_pnl ||= 0.0
+
+%h1 
+  Profit and loss on 
+  = @date.strftime("%B %d, %Y").to_s
+
+%table
+  %thead
+    %tr
+      %td{:class => "{sorter: false}", :colspan => 3, :style => 'text-align: center;font-size: 14px;'} Stock
+
+
+      %td{:class => "divider {sorter: false}"}
+      %td{:class => "{sorter: false}", :colspan => 6} Entry
+
+      %td{:class => "divider {sorter: false}"}
+      %td{:class => "{sorter: false}", :colspan => 3} 
+        = @date.strftime("%B %d, %Y").to_s
+
+      %td{:class => "divider {sorter: false}"}
+      %td{:class => "{sorter: false}", :colspan => 2} 
+
+    %tr
+      %th Ticker
+      %th Country
+      %th Name
+
+      %th{:class => "divider {sorter: false}"}
+      - if local_assigns.has_key? :include_entry_signal
+        %th Signal date
+      %th Date
+      %th Long Short
+      %th Quantity
+      %th Price
+      %th Local value
+      %th USD value
+
+
+      %th{:class => "divider {sorter: false}"}
+      %th Price
+      %th Local value
+      %th USD value
+
+      %th{:class => "divider {sorter: false}"}
+      %th P&L
+      %th Day change (USD)
+
+
+  %tbody
+    - @trades.each do |trade|
+      %tr
+        %td= link_to trade.stock.ticker, stock_path(trade.stock_id)
+        %td= trade.stock.country
+        %td= trade.stock.name
+
+
+        -# Entry
+        %td.divider
+        %td= trade.enter_date.strftime("%Y-%m-%d") 
+        %td= trade.longshort.capitalize 
+        %td= number_with_delimiter(trade.quantity) 
+
+        %td= number_to_currency(trade.enter_local_price, :unit => trade.stock.unit, :precision => 4)
+        %td= number_to_currency(trade.enter_local_value, :precision => 0, :unit => trade.stock.unit) 
+        %td= number_to_currency(trade.enter_usd_value, :precision => 0) 
+
+
+        -# On date
+        %td.divider
+        %td= number_to_currency(trade.stock.price_on_date(@date), :unit => trade.stock.unit, :precision => 4)
+        %td= number_to_currency(trade.local_value_on_date(@date), :precision => 0, :unit => trade.stock.unit) 
+        %td= number_to_currency(trade.usd_value_on_date(@date), :precision => 0) 
+
+
+        -# Total and Day P&L
+        %td.divider
+
+        - usd_pnl_on_date = trade.usd_pnl_on_date(@date)
+        - klass = (usd_pnl_on_date < 0 ? 'negative' : 'positive')
+        - @total_pnl = @total_pnl + usd_pnl_on_date
+        %td{:class => klass}= number_to_currency(usd_pnl_on_date, :precision => 2)
+
+
+
+        - usd_pnl_on_date = trade.usd_pnl_on_date(@date)
+        - previous_usd_pnl_on_date = trade.usd_pnl_on_date(@previous_date)
+        - day_pnl = previous_usd_pnl_on_date - usd_pnl_on_date 
+        - klass = (usd_pnl_on_date < previous_usd_pnl_on_date ? 'negative' : 'positive')
+        - @day_pnl = @day_pnl + day_pnl
+        %td{:class => klass}= number_to_currency(day_pnl, :precision => 2)
+
+
+Day P&L:
+= number_to_currency(@day_pnl, :precision => 2)
+%br
+Total P&L:
+= number_to_currency(@total_pnl, :precision => 2)
+
+
+:javascript
+  $(document).ready(function() {
+    $('table').tablesorter({theme: 'dxmodel'});
+  })

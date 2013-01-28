@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
     @short_exposures = []
 
     dates.each do |date|
-      trades = Trade.where("enter_date < ? and (exit_date is null or exit_date > ?)", date, date)
+      trades = Trade.open_on(date)
 
       date_long_exposure = 0
       date_short_exposure = 0
@@ -54,9 +54,17 @@ class ReportsController < ApplicationController
       @unrealized << [date.to_datetime.to_i * 1000, date_unrealized.to_f.round]
       @totals << [date.to_datetime.to_i * 1000, date_total.to_f.round]
       @percentages << [date.to_datetime.to_i * 1000, date_percentage.to_f.round(2)]
-
-
     end
+  end
+
+
+  def day
+    dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
+    @date = params[:date] ? Date.strptime(params[:date], "%Y-%m-%d") : dates[1]
+    @previous_date = dates[ dates.index(@date) - 1 ]
+    
+    @trades = Trade.closed_on(@date)
+    @trades.concat(Trade.open_on(@date))
   end
 
 end

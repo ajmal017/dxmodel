@@ -71,6 +71,8 @@ class Trade < ActiveRecord::Base
   scope :long, where("longshort = 'long'")
   scope :short, where("longshort = 'short'")
 
+  scope :open_on, lambda{|date| where( "trades.enter_date < ? and (trades.exit_date is null or trades.exit_date > ?)", date, date) }
+  scope :closed_on, lambda{|date| where( "trades.exit_date = ?", date) }
 
 
   # ------------- Class Methods --------------------
@@ -80,13 +82,18 @@ class Trade < ActiveRecord::Base
 
   # ------------- Instance Methods -----------------
   def holding_period_high
-    stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close DESC').first
-    return stock_date_since_entry_with_highest_high.nil? ? nil : stock_date_since_entry_with_highest_high.close
+    stock_date = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s)
+    stock_date = stock_date.where("stock_dates.date < ?", exit_date.to_s) if exited?
+    stock_date = stock_date.order('stock_dates.close DESC')
+    return stock_date.first.nil? ? nil : stock_date.first.close
   end
 
+
   def holding_period_low
-    stock_date_since_entry_with_highest_high = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s(:db)).order('stock_dates.close ASC').first
-    return stock_date_since_entry_with_highest_high.nil? ? nil : stock_date_since_entry_with_highest_high.close
+    stock_date = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s)
+    stock_date = stock_date.where("stock_dates.date < ?", exit_date.to_s) if exited?
+    stock_date = stock_date.order('stock_dates.close ASC')
+    return stock_date.first.nil? ? nil : stock_date.first.close
   end
 
   def stop_loss_value
@@ -120,6 +127,7 @@ class Trade < ActiveRecord::Base
     longshort == 'short'
   end
 
+  # USD value at close
   def usd_value_on_date date
     fx_rate = FxRate.where(date: date).first
     raise "no fx_rate for date" unless fx_rate
@@ -132,17 +140,19 @@ class Trade < ActiveRecord::Base
     end
   end
 
+  # Value at close
   def local_value_on_date date
-    stock_date = StockDate.where("stock_id = ? and date < ?", stock_id, date).order('date DESC').first # Get yesterday's close
-    quantity * stock_date.close
+    quantity * stock.price_on_date(date)
   end
 
   def usd_pnl_on_date date
-    if exit_date and date > exit_date
-      exit_usd_value - enter_usd_value
-      
-    else
-      usd_value_on_date(date) - enter_usd_value
+    exit_value = (exited? ? exit_usd_value : usd_value_on_date(date))  # If exited use exit(vwap) price, else use price at close
+    if long?
+      exit_value - enter_usd_value
+
+    elsif short?
+      enter_usd_value - exit_value 
+
     end
   end
 
