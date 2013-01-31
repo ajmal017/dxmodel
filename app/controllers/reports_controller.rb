@@ -48,10 +48,9 @@ class ReportsController < ApplicationController
       end
       date_total = date_unrealized + date_realized 
 
-      date_percentage = (date_total.to_f / (date_enter_total.to_f.nonzero? || 1)) * 100.0
-#    total_pnl/20m
+      date_percentage = (date_total.to_f / AUM) * 100.0
 
-      @realized << [date.to_datetime.to_i * 1000, sprintf("%0.02f", date_realized.to_f.round)]
+      @realized << [date.to_datetime.to_i * 1000, date_realized.to_f.round]
       @unrealized << [date.to_datetime.to_i * 1000, date_unrealized.to_f.round]
       @totals << [date.to_datetime.to_i * 1000, date_total.to_f.round]
       @percentages << [date.to_datetime.to_i * 1000, date_percentage.to_f.round(2)]
