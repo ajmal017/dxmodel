@@ -58,4 +58,9 @@ FactoryGirl.define do
     exit_usd_value 30.0
   end
 
+  factory :fx_rate do
+    date 10.days.ago
+    usdsgd 2
+    usdhkd 1
+  end
 end

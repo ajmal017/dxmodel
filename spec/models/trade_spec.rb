@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe Trade do
   before :each do
-    @trade = FactoryGirl.build :trade
+    @stock = FactoryGirl.create :stock
+    @trade = FactoryGirl.build :trade, :long, stock: @stock
+    @ten_days_ago = 10.days.ago.to_date
   end
 
   describe "Defaults" do
@@ -57,7 +59,7 @@ describe Trade do
     before :each do
       @stock = FactoryGirl.create :stock
 
-      FactoryGirl.create :stock_date, stock: @stock, date: 10.days.ago.to_date, close: 20.0
+      FactoryGirl.create :stock_date, stock: @stock, date: @ten_days_ago, close: 20.0
       FactoryGirl.create :stock_date, stock: @stock, date: 9.days.ago.to_date, close: 5.0
       FactoryGirl.create :stock_date, stock: @stock, date: 8.days.ago.to_date, close: 6.0
       FactoryGirl.create :stock_date, stock: @stock, date: 7.days.ago.to_date, close: 7.0
@@ -83,7 +85,7 @@ describe Trade do
     before :each do
       @stock = FactoryGirl.create :stock
 
-      FactoryGirl.create :stock_date, stock: @stock, date: 10.days.ago.to_date, close: 20.0
+      FactoryGirl.create :stock_date, stock: @stock, date: @ten_days_ago, close: 20.0
       FactoryGirl.create :stock_date, stock: @stock, date: 9.days.ago.to_date, close: 5.0
       FactoryGirl.create :stock_date, stock: @stock, date: 8.days.ago.to_date, close: 6.0
       FactoryGirl.create :stock_date, stock: @stock, date: 7.days.ago.to_date, close: 7.0
@@ -144,6 +146,68 @@ describe Trade do
     end
   end
 
+  describe '#usd_value_on_date' do
+    before :each do
+      @trade.stub!(:local_value_on_date).and_return(1000)
+      @fx_rate = FactoryGirl.create :fx_rate
+      FxRate.stub!(:where).and_return([@fx_rate])
+    end
+    it 'should get the fx rates on given date' do
+      FxRate.should_receive(:where).with(date: @ten_days_ago).and_return([@fx_rate])
+      @trade.usd_value_on_date(@ten_days_ago)
+    end
+    it 'should get the local value on date' do
+      @trade.should_receive(:local_value_on_date).and_return(1000.0)
+      @trade.usd_value_on_date(@ten_days_ago)
+    end
+    it 'should use the usdsgd rate if trade is for Singapore stock' do
+      @stock.stub!(:country).and_return('SP')
+      @fx_rate.should_receive(:usdsgd).and_return(2)
+      @trade.usd_value_on_date(@ten_days_ago)
+    end
+    it 'should use the usdhkd rate if trade is for Hong Kong stock' do
+      @stock.stub!(:country).and_return('HK')
+      @fx_rate.should_receive(:usdhkd).and_return(2)
+      @trade.usd_value_on_date(@ten_days_ago)
+    end
+  end
 
+  describe '#local_value_on_date' do
+    it "should get price on date" do
+      @stock.should_receive(:price_on_date).with(@ten_days_ago).and_return(10)
+      @trade.local_value_on_date(@ten_days_ago)
+    end
+    it "should multiply price on date by quantity" do
+      @stock.stub!(:price_on_date).and_return(10)
+      @trade.quantity = 10
+      @trade.local_value_on_date(@ten_days_ago).should eql 100
+    end
+  end
+
+  describe '#usd_pnl_on_date date' do
+    describe 'for a long trade' do
+      it 'should return correct value for exited trade' do
+        @trade = FactoryGirl.build :trade, :exited, :long, stock: @stock, enter_usd_value: 500.0, exit_usd_value: 1000.0
+        @trade.stub!(:usd_value_on_date).and_return(1500.0)
+        @trade.usd_pnl_on_date(@ten_days_ago).to_f.should eql 500.0
+      end
+      it 'should return correct value for not exited trade' do
+        @trade = FactoryGirl.build :trade, :entered, :long, stock: @stock, enter_usd_value: 500.0, exit_usd_value: 1000.0
+        @trade.stub!(:usd_value_on_date).and_return(1500.0)
+        @trade.usd_pnl_on_date(@ten_days_ago).to_f.should eql 1000.0
+      end
+    end
+    describe 'for a short trade' do
+      it 'should return correct value for exited trade' do
+        @trade = FactoryGirl.build :trade, :exited, :short, stock: @stock, enter_usd_value: 500.0, exit_usd_value: 1000.0
+        @trade.stub!(:usd_value_on_date).and_return(1500.0)
+        @trade.usd_pnl_on_date(@ten_days_ago).to_f.should eql -500.0
+      end
+      it 'should return correct value for not exited trade' do
+        @trade = FactoryGirl.build :trade, :entered, :short, stock: @stock, enter_usd_value: 500.0, exit_usd_value: 1000.0
+        @trade.stub!(:usd_value_on_date).and_return(1500.0)
+        @trade.usd_pnl_on_date(@ten_days_ago).to_f.should eql -1000.0
+      end
+    end
+  end
 end
-
