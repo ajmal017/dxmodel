@@ -5,6 +5,7 @@ class Trade < ActiveRecord::Base
 
   # ------------- Associations  --------------------
   belongs_to :stock
+  has_many :stock_dates, :through => :stock
   has_one :industry, :through => :stock
 
 
@@ -130,7 +131,7 @@ class Trade < ActiveRecord::Base
   # USD value at close
   def usd_value_on_date date
     fx_rate = FxRate.where(date: date).first
-    raise "no fx_rate for date" unless fx_rate
+    raise "no fx_rate for #{date}" unless fx_rate
 
     case stock.country
     when 'SP'
@@ -154,6 +155,12 @@ class Trade < ActiveRecord::Base
       enter_usd_value - exit_value 
 
     end
+  end
+
+
+  def usd_pnl_percentage_on_date date
+    value = (usd_pnl_on_date(date) / enter_usd_value) * 100
+    value.round(2)
   end
 
 end

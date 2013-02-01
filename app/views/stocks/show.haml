@@ -5,6 +5,18 @@
   %small.mute= "(#{@stock.ticker} #{@stock.country} - #{@stock.industry.name})"
 
 %h2
+  Trades
+
+- fx_rate = FxRate.first
+%table
+  = render partial: '/trades/headers', locals: {include_unrealized_pnl: true}
+
+  %tbody
+    - @stock.trades.each do |trade|
+      = render partial: trade, locals: {include_unrealized_pnl: true, date: fx_rate.date}
+
+
+%h2
   Scores, ranks, and signals
 
 
@@ -23,6 +35,7 @@
       %th Short fund. score
       %th Short industry rank
       %th.divider
+      %th Close
       %th 10d SMAVG
       %th 10d WMAVG
 
@@ -42,7 +55,9 @@
         %td= stock_date.short_fund_score || ''
         %td= stock_date.short_fund_rank_by_industry || ''
         %td.divider
+        %td= stock_date.close
         %td= stock_date.smavg_10d
         %td= stock_date.wmavg_10d
+
 
 = render partial: 'chart', locals: {stock: @stock}

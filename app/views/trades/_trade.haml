@@ -24,7 +24,7 @@
   - if local_assigns.has_key? :include_unrealized_pnl and local_assigns.has_key? :date
     %td.fund.divider
     %td{:class => trade.usd_pnl_on_date(date) < 0 ? 'negative' : 'positive' }  
-      = number_to_currency(trade.usd_pnl_on_date(date), :precision => 2)
+      = "#{trade.usd_pnl_percentage_on_date(date).to_s}%"
 
 
   -# Exit
@@ -45,9 +45,9 @@
   - if local_assigns.has_key? :include_realized_pnl and local_assigns.has_key? :date
     %td.fund.divider
     %td{:class => trade.usd_pnl_on_date(date) < 0 ? 'negative' : 'positive' }  
-      = number_to_currency(trade.usd_pnl_on_date(date), :precision => 2)
-
+      = "#{trade.usd_pnl_percentage_on_date(date).to_s}%"
+      
 
   -# More
   %td.fund.divider
-  %td= render partial: 'actions', locals: {trade: trade}
+  %td= render partial: '/trades/actions', locals: {trade: trade}

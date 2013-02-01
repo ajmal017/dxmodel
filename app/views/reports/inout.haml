@@ -1,0 +1,29 @@
+- dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)
+- stocks = Stock.includes(:trades).order('trades.enter_date ASC')
+
+%table.inout
+  %tr
+    %td Ticker
+    %td Name
+    - dates.each do |date|
+      %td
+        %small= date.strftime("%m %d")
+
+  %tbody
+    - stocks.each do |stock|
+      %tr
+        %td= stock.ticker
+        %td= stock.name
+        - dates.each do |date|
+          %td
+            - trade = stock.trades.first
+            - if trade and trade.enter_date
+              - icon = 'icon-play' if trade.enter_date == date
+              - icon = 'icon-stop' if (trade.exit_date  and trade.exit_date == date)
+              = link_to trade_path(trade) do
+                %i{:class => icon}
+
+              -# Remove the trade if it's on last day 
+              - stock.trades.shift if stock.trades.first.exit_date == date
+            - else
+              &nbsp;

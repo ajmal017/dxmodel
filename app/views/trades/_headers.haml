@@ -41,7 +41,7 @@
 
     - if local_assigns.has_key? :include_unrealized_pnl
       %th{:class => "divider {sorter: false}"}
-      %th Unrealized P&L (USD)
+      %th P&L (Unrealized)
 
     - if local_assigns.has_key? :include_exit
       %th{:class => "divider {sorter: false}"}
@@ -54,7 +54,7 @@
 
     - if local_assigns.has_key? :include_realized_pnl
       %th{:class => "divider {sorter: false}"}
-      %th Realized P&L (USD)
+      %th P&L (Realized)
 
     %th{:class => "divider {sorter: false}"}
     %th{:class => "{sorter: false}"}

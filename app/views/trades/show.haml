@@ -73,7 +73,7 @@
     %dt 
       P&L (USD)
     %dd
-      = number_to_currency(@trade.usd_pnl_on_date(FxRate.latest.date), :precision => 2) 
+      - usd_pnl_on_date_with_percentage(@trade, FxRate.latest.date)
       %small= "&nbsp;&nbsp;(As of #{FxRate.latest.date})".html_safe unless @trade.exited?
 
 

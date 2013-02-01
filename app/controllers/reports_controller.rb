@@ -59,12 +59,15 @@ class ReportsController < ApplicationController
 
 
   def day
-    dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
-    @date = params[:date] ? Date.strptime(params[:date], "%Y-%m-%d") : dates[1]
-    @previous_date = dates[ dates.index(@date) - 1 ]
+    dates = FxRate.select('distinct date').order('date DESC').collect(&:date)
+    @date = params[:date] ? Date.strptime(params[:date], "%Y-%m-%d") : dates[0]
+    @previous_date = dates[ dates.index(@date) + 1 ]
     
     @trades = Trade.closed_on(@date)
     @trades.concat(Trade.open_on(@date))
+  end
+
+  def inout
   end
 
 end
