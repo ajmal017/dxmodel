@@ -8,6 +8,7 @@ class Stock < ActiveRecord::Base
   validates :ticker, :presence => true, :uniqueness => {:scope => :country}
   validates :name, :presence => true 
   validates :country, :presence => true
+  validates :currency, :presence => true
 
 
 

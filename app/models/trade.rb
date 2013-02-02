@@ -63,11 +63,13 @@ class Trade < ActiveRecord::Base
   end
 
   # ------------- Scopes  --------------------
-  scope :signaled, where("state = 'enter_signaled' or state = 'exit_signaled'")
   scope :enter_signaled, where("state = 'enter_signaled'")
   scope :entered, where("state = 'entered'")
   scope :exit_signaled, where("state = 'exit_signaled'")
   scope :exited, where("state = 'exited'")
+
+  scope :signaled, where("state = 'enter_signaled' or state = 'exit_signaled'")
+  scope :active, where("state = 'entered' or state = 'exit_signaled'")
 
   scope :long, where("longshort = 'long'")
   scope :short, where("longshort = 'short'")
@@ -178,6 +180,39 @@ class Trade < ActiveRecord::Base
       end
     end
 
+    def process_enter_signals date
+      Trade.enter_signaled.each do |trade|
+        stock_date = StockDate.where('stock_id = ? and date > ?', trade.stock_id, date).order('date ASC').first
+        fx_rate = FxRate.where('and date > ?', date).order('date ASC').first.send('USD' + stock.currency)
+        enter_local_budget = MAX_PER_ENTRY * trade.fx_rate
+
+        trade.enter_date = date
+        trade.enter_fx_rate = fx_rate
+        trade.enter_local_price = stock_date.vwap
+        trade.quantity = (enter_local_budget / trade.enter_local_price).floor
+
+        trade.enter_local_value = trade.quantity * trade.enter_local_price
+        trade.enter_usd_value = trade.enter_local_value * trade.enter_fx_rate
+        trade.state = 'entered'
+        trade.save!
+      end
+    end
+
+    def process_exit_signals date
+      Trade.exit_signaled.each do |trade|
+        stock_date = StockDate.where('stock_id = ? and date > ?', trade.stock_id, date).order('date ASC').first
+        fx_rate = FxRate.where('and date > ?', date).order('date ASC').first.send('USD' + stock.currency)
+
+        trade.exit_date = date
+        trade.exit_fx_rate = fx_rate
+        trade.exit_local_price = stock_date.vwap
+
+        trade.exit_local_value = trade.quantity * trade.exit_local_price
+        trade.exit_usd_value = trade.exit_local_value * trade.exit_fx_rate
+        trade.state = 'exited'
+        trade.save!
+      end
+    end
   end
 
 

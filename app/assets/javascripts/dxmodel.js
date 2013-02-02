@@ -15,7 +15,7 @@ $(document).ready(function() {
   }
 
   $('#trade_quantity, #trade_enter_local_price').keyup( calc_enter_local_value );
-  $('#trade_enter_usd_fx_rate, #trade_enter_local_value').keyup( calc_enter_usd_value );
+  $('#trade_quantity, #trade_enter_usd_fx_rate, #trade_enter_local_value').keyup( calc_enter_usd_value );
 
 
 
@@ -31,7 +31,7 @@ $(document).ready(function() {
   }
 
   $('#trade_quantity, #trade_exit_local_price').keyup( calc_exit_local_value );
-  $('#trade_exit_usd_fx_rate, #trade_exit_local_value').keyup( calc_exit_usd_value );
+  $('#trade_quantity, #trade_exit_usd_fx_rate, #trade_exit_local_value').keyup( calc_exit_usd_value );
 
 })
 

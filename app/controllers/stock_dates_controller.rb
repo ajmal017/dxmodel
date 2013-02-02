@@ -101,11 +101,11 @@ private
 
   def create_stocks rows
     rows.each_with_index do |row, index|
-      ticker, country, name, industry_name = data_from_row row
+      ticker, country, name, industry_name, currency = data_from_row row
       stock = Stock.where(ticker: ticker, country: country).first
       if stock.nil?
         industry = Industry.where(name: industry_name).first
-        stock = Stock.new(ticker: ticker, country: country, industry_id: industry.id, name: name) 
+        stock = Stock.new(ticker: ticker, country: country, industry_id: industry.id, name: name, currency: currency) 
         stock.save! 
       end
     end
@@ -247,7 +247,8 @@ private
     country = row['Ticker'].split(/\s+/)[1]
     name = row['Short Name']
     industry_name = row['GICS Sector']
-    return ticker, country, name, industry_name
+    currency = row['Currency']
+    return ticker, country, name, industry_name, currency
   end
 
 end
