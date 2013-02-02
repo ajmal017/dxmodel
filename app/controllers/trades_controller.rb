@@ -100,5 +100,4 @@ class TradesController < ApplicationController
     end
   end
 
-
 end

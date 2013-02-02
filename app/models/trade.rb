@@ -78,6 +78,106 @@ class Trade < ActiveRecord::Base
 
   # ------------- Class Methods --------------------
   class << self
+
+    def propose_trade_entries date
+      Stock.all.each do |stock|
+        stock_date = StockDate.where({stock_id: stock.id, date: date}).first
+        next if stock_date.nil?  # skip unless we have rank data for stock on date
+        next if stock.trades.entered.first # Skip if we already entered a trade
+        
+        if stock_date.long_fund_signal == 'ENTER' and stock_date.short_fund_signal == 'ENTER' 
+          # Do nothing if signals say enter long and short
+
+        elsif stock_date.long_fund_signal == 'ENTER' and stock_date.long_tech_signal == 'ENTER'
+          note = "#{date} Enter long signal."
+          note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
+          note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
+          trade = Trade.create!(stock_id: stock.id, longshort: 'long', enter_signal_date: date, note: note)
+
+        elsif stock_date.short_fund_signal == 'ENTER' and stock_date.short_tech_signal == 'ENTER'
+          note = "#{date} Enter short signal."
+          note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
+          note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
+          trade = Trade.create!(stock_id: stock.id, longshort: 'short', enter_signal_date: date, note: note)
+        end
+      end
+    end
+
+    def propose_trade_exits date
+      Stock.all.each do |stock|
+        stock_date = StockDate.where({stock_id: stock.id, date: date}).first
+        next if stock_date.nil?  # skip unless we have rank data for stock on date
+
+        # Exit long trade due to fundamentals
+        if stock_date.long_fund_signal == 'EXIT' and long_trade = stock.trades.entered.long.try(:first)
+          long_trade.exit_signal_date = date
+          long_trade.signal_exit!
+          long_trade.note_will_change!
+          long_trade.note << "\n\n#{date} Exit long signal."
+          long_trade.note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
+          long_trade.save!
+
+        # Exit long trade due to technicals
+        #elsif stock_date.long_tech_signal == 'EXIT' and long_trade = stock.trades.entered.long.try(:first)
+          #long_trade.exit_signal_date = date
+          #long_trade.signal_exit!
+          #long_trade.note_will_change!
+          #long_trade.note << "\n\n#{date} Exit long signal."
+          #long_trade.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
+          #long_trade.save!
+
+        # Exit short trade due to fundamentals
+        elsif stock_date.short_fund_signal == 'EXIT' and short_trade = stock.trades.entered.short.try(:first)
+          short_trade.exit_signal_date = date
+          short_trade.signal_exit!
+          short_trade.note_will_change!
+          short_trade.note << "\n\n#{date} Exit short signal."
+          short_trade.note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
+          short_trade.save!
+
+        # Exit short trade due to technicals
+        #elsif stock_date.short_tech_signal == 'EXIT' and short_trade = stock.trades.entered.short.try(:first)
+          #short_trade.exit_signal_date = date
+          #short_trade.signal_exit!
+          #short_trade.note_will_change!
+          #short_trade.note << "\n\n#{date} Exit short signal."
+          #short_trade.note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
+          #short_trade.save!
+
+        end
+      end
+    end
+
+    def propose_exits_for_missing_stocks date
+      Trade.entered.each do |trade|
+        stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
+        unless stock_date
+          trade.exit_signal_date = date
+          trade.signal_exit! 
+          trade.note_will_change!
+          trade.note << "\n\n#{date} Exit signal due to no data in upload."
+          trade.save!
+        end
+      end
+    end
+
+    def propose_stop_loss_trades date
+      Trade.entered.each do |trade|
+        stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
+        if trade.stop_loss_triggered? stock_date.close
+          trade.exit_signal_date = date
+          trade.signal_exit! 
+          trade.note_will_change!
+          if trade.longshort == 'long'
+            trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{trade.holding_period_high}.  Stop loss value: #{trade.stop_loss_value}."
+          elsif trade.longshort == 'short'
+            trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period low: #{trade.holding_period_low}.  Stop loss value: #{trade.stop_loss_value}."
+          end
+          trade.save!
+        end
+      end
+    end
+
   end
 
 
