@@ -1,5 +1,5 @@
 class FxRate < ActiveRecord::Base
-  attr_accessible :date, :usdsgd, :usdhkd
+  attr_accessible :date, :usdsgd, :usdhkd, :usdcny
 
   validates :date, :presence => true
   validates :usdsgd, :presence => true, :uniqueness => {:scope => :date}
