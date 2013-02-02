@@ -61,8 +61,8 @@
         %td= trade.longshort.capitalize 
         %td= number_with_delimiter(trade.quantity) 
 
-        %td= number_to_currency(trade.enter_local_price, :unit => trade.stock.unit, :precision => 4)
-        %td= number_to_currency(trade.enter_local_value, :precision => 0, :unit => trade.stock.unit) 
+        %td= number_to_currency(trade.enter_local_price, :unit => trade.stock.currency, :precision => 4)
+        %td= number_to_currency(trade.enter_local_value, :precision => 0, :unit => trade.stock.currency) 
         %td= number_to_currency(trade.enter_usd_value, :precision => 0) 
 
 

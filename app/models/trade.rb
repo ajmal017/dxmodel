@@ -268,11 +268,13 @@ class Trade < ActiveRecord::Base
     fx_rate = FxRate.where(date: date).first
     raise "no fx_rate for #{date}" unless fx_rate
 
-    case stock.country
-    when 'SP'
+    case stock.currency
+    when 'SGD'
       local_value_on_date(date) / fx_rate.usdsgd 
-    when 'HK'
+    when 'HKD'
       local_value_on_date(date) / fx_rate.usdhkd 
+    when 'CNY'
+      local_value_on_date(date) / fx_rate.usdcny 
     end
   end
 

@@ -15,8 +15,7 @@
           %td= link_to trade.stock.ticker, stock_path(trade.stock_id)
           %td= trade.stock.country
           %td= link_to trade.stock.name, stock_path(trade.stock_id)
-          %td
-            %small= trade.industry.name
+          %td= trade.industry.name
 
           %td= render partial: 'actions', locals: {trade: trade}
 

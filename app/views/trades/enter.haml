@@ -14,8 +14,8 @@
     = f.input :enter_date, :as => :string
     = f.input :quantity
     = f.input :enter_local_price, :label => 'Price'
-    = f.input :enter_usd_fx_rate, :label => 'FX rate'
-    = f.input :enter_local_value, :label => 'Enter local value'
+    = f.input :enter_usd_fx_rate, :label => "FX rate (USD#{@trade.stock.currency})"
+    = f.input :enter_local_value, :label => "Enter #{@trade.stock.currency} value"
     = f.input :enter_usd_value, :label => 'Enter USD value'
 
   .control-group

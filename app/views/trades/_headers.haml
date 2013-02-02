@@ -26,17 +26,17 @@
 
   %tr
     %th Ticker
-    %th Country
     %th Name
+    %th Currency
 
     %th{:class => "divider {sorter: false}"}
     - if local_assigns.has_key? :include_entry_signal
       %th Signal date
     %th Date
-    %th Long Short
+    %th Long
     %th Quantity
     %th Price
-    %th Local value
+    %th Value
     %th USD value
 
     - if local_assigns.has_key? :include_unrealized_pnl
@@ -49,7 +49,7 @@
         %th Signal date
       %th Date
       %th Price
-      %th Local value
+      %th Value
       %th USD value
 
     - if local_assigns.has_key? :include_realized_pnl

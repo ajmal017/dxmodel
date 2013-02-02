@@ -12,21 +12,12 @@ class Stock < ActiveRecord::Base
 
 
 
-  def unit
-    case country
-    when 'SP'
-      'S$'
-    when 'HK'
-      'HK$'
-    else
-      ''
-    end
-  end
-
-
   def price_on_date date
     stock_date = StockDate.where("stock_id = ? and date <= ?", id, date).order('date DESC').first 
     stock_date.close
   end
 
+  def unit
+    currency + '&nbsp;'.html_safe
+  end
 end

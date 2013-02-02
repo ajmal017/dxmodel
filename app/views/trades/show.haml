@@ -38,16 +38,16 @@
   %dd= number_with_delimiter(@trade.quantity)
 
   %dt Price
-  %dd= number_to_currency(@trade.enter_local_price, :unit => @trade.stock.unit, :precision => 4)
+  %dd= number_to_currency(@trade.enter_local_price, :unit => @trade.stock.currency, :precision => 4, :unit => @trade.stock.unit)
 
   %dt Local value
-  %dd= number_to_currency(@trade.enter_local_value, :unit => @trade.stock.unit)
+  %dd= number_to_currency(@trade.enter_local_value, :unit => @trade.stock.currency, :unit => @trade.stock.unit)
 
   %dt USD FX rate
   %dd= @trade.enter_usd_fx_rate
 
   %dt USD value
-  %dd= number_to_currency(@trade.enter_usd_value)
+  %dd= number_to_currency(@trade.enter_usd_value, :unit => '')
 
 
 %h2 Exit
@@ -56,16 +56,16 @@
   %dd= @trade.exit_date.strftime("%B %d, %Y").to_s if @trade.exit_date
 
   %dt Price
-  %dd= number_to_currency(@trade.exit_local_price, :unit => @trade.stock.unit, :precision => 4)
+  %dd= number_to_currency(@trade.exit_local_price, :unit => @trade.stock.currency, :precision => 4, :unit => @trade.stock.unit)
   
   %dt Local value
-  %dd= number_to_currency(@trade.exit_local_value, :unit => @trade.stock.unit)
+  %dd= number_to_currency(@trade.exit_local_value, :unit => @trade.stock.currency, :unit => @trade.stock.unit)
 
   %dt USD FX rate
   %dd= @trade.exit_usd_fx_rate
 
   %dt USD value
-  %dd= number_to_currency(@trade.exit_usd_value)
+  %dd= number_to_currency(@trade.exit_usd_value, :unit => '')
 
 - unless @trade.enter_signaled?
   %p.lead P&L

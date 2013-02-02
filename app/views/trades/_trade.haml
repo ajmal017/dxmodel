@@ -1,8 +1,11 @@
 %tr
   -# Stock
-  %td= link_to trade.stock.ticker, stock_path(trade.stock_id)
-  %td= trade.stock.country
+  %td
+    = link_to stock_path(trade.stock_id) do
+      = trade.stock.country
+      = trade.stock.ticker
   %td= trade.stock.name
+  %td= trade.stock.currency
 
 
   -# Entry
@@ -15,8 +18,8 @@
   %td= trade.enter_date.strftime("%Y-%m-%d") if trade.enter_date
   %td= trade.longshort.capitalize if trade.longshort
   %td= number_with_delimiter(trade.quantity) if trade.quantity
-  %td= number_to_currency(trade.enter_local_price, :unit => trade.stock.unit, :precision => 4) if trade.enter_local_price
-  %td= number_to_currency(trade.enter_local_value, :precision => 0, :unit => trade.stock.unit) if trade.enter_local_value
+  %td= number_to_currency(trade.enter_local_price, :precision => 4) if trade.enter_local_price
+  %td= number_to_currency(trade.enter_local_value, :precision => 0) if trade.enter_local_value
   %td= number_to_currency(trade.enter_usd_value, :precision => 0) if trade.enter_usd_value
 
 
@@ -36,8 +39,8 @@
       %td= trade.exit_signal_date.strftime("%Y-%m-%d") 
 
     %td= trade.exit_date.strftime("%Y-%m-%d")
-    %td= number_to_currency(trade.exit_local_price, :unit => trade.stock.unit, :precision => 4)
-    %td= number_to_currency(trade.exit_local_value, :precision => 0, :unit => trade.stock.unit)
+    %td= number_to_currency(trade.exit_local_price, :precision => 4)
+    %td= number_to_currency(trade.exit_local_value, :precision => 0)
     %td= number_to_currency(trade.exit_usd_value, :precision => 0)
 
 
