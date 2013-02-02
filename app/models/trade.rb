@@ -1,5 +1,5 @@
 class Trade < ActiveRecord::Base
-  attr_accessible :state, :stock_id, :enter_signal_date, :quantity, :longshort, 
+  attr_accessible :state, :stock_id, :enter_signal_date, :quantity, :longshort, :currency,
                   :enter_date, :enter_local_price, :enter_usd_value, :enter_local_value, :enter_usd_fx_rate,
                   :exit_signal_date, :exit_date, :exit_local_price, :exit_usd_value, :exit_local_value, :exit_usd_fx_rate, :note
 
