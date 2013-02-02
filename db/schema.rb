@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130202063741) do
+ActiveRecord::Schema.define(:version => 20130202074856) do
 
   create_table "fx_rates", :force => true do |t|
     t.date     "date"
@@ -60,6 +60,9 @@ ActiveRecord::Schema.define(:version => 20130202063741) do
     t.decimal  "vwap",                         :precision => 8,  :scale => 6
   end
 
+  add_index "stock_dates", ["date"], :name => "index_stock_dates_on_date"
+  add_index "stock_dates", ["stock_id"], :name => "index_stock_dates_on_stock_id"
+
   create_table "stocks", :force => true do |t|
     t.string   "ticker"
     t.string   "name"
@@ -91,5 +94,10 @@ ActiveRecord::Schema.define(:version => 20130202063741) do
     t.datetime "created_at",                                       :null => false
     t.datetime "updated_at",                                       :null => false
   end
+
+  add_index "trades", ["enter_date"], :name => "index_trades_on_enter_date"
+  add_index "trades", ["exit_date"], :name => "index_trades_on_exit_date"
+  add_index "trades", ["state"], :name => "index_trades_on_state"
+  add_index "trades", ["stock_id"], :name => "index_trades_on_stock_id"
 
 end
