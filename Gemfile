@@ -27,6 +27,7 @@ gem 'jquery-ui-rails'
 
 gem 'simple_form'
 
+gem "bcrypt-ruby", :require => "bcrypt"
 
 group :development do
   gem "debugger"

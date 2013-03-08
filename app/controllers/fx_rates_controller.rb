@@ -1,5 +1,5 @@
 class FxRatesController < ApplicationController
-  
+
   def new
     @fx_rate = FxRate.new
   end

@@ -2,6 +2,4 @@
 
 = simple_form_for(@trade, :defaults => {:required => false, :input_html => {:class => 'input-xxlarge'}}) do |f|
   %fieldset
-    %legend New trade
-
     = render partial: 'form', locals: {f: f}

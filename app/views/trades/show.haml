@@ -87,6 +87,4 @@
 
 = render partial: 'stocks/chart', locals: {stock: @trade.stock}
 
-
-
-= link_to 'Edit', edit_trade_path(@trade), :class => 'btn btn-primary'
+= link_to 'Edit', edit_trade_path(@trade), :class => 'btn btn-primary' if current_user

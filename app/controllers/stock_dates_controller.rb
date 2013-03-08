@@ -248,7 +248,6 @@ private
     name = row['Short Name']
     industry_name = row['GICS Sector']
     currency = row['Currency']
-debugger if currency.nil?
     return ticker, country, name, industry_name, currency
   end
 
