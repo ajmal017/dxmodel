@@ -1,5 +1,7 @@
 class FxRatesController < ApplicationController
 
+  before_filter :require_user, :only => [:create, :destroy]
+
   def new
     @fx_rate = FxRate.new
   end

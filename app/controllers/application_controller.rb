@@ -3,8 +3,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
   
-  before_filter :require_user, :only => [:create, :destroy]
-
   private
 
   def current_user

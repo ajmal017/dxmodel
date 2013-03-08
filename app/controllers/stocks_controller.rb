@@ -1,5 +1,7 @@
 class StocksController < ApplicationController
 
+  before_filter :require_user, :only => [:create, :destroy]
+
   
   def show
     @stock = Stock.find params[:id]

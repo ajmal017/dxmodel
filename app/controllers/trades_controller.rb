@@ -1,5 +1,7 @@
 class TradesController < ApplicationController
   
+  before_filter :require_user, :only => [:create, :destroy]
+
   def new
     @trade = Trade.new(:state => 'entered')
   end
