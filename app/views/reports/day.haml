@@ -2,8 +2,10 @@
 - @total_pnl ||= 0.0
 
 %h1 
-  Profit and loss on 
-  = @date.strftime("%B %d, %Y").to_s
+  Profit and loss
+
+- dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
+= select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] }, @date)
 
 %table
   %thead
@@ -85,20 +87,15 @@
 
         - usd_pnl_on_date = trade.usd_pnl_on_date(@date)
         - previous_usd_pnl_on_date = trade.usd_pnl_on_date(@previous_date)
-        - day_pnl = previous_usd_pnl_on_date - usd_pnl_on_date 
+        - day_pnl = previous_usd_pnl_on_date + usd_pnl_on_date 
         - klass = (day_pnl < 0 ? 'negative' : 'positive')
         - @day_pnl = @day_pnl + day_pnl
         %td{:class => klass}= number_to_currency(day_pnl, :precision => 2)
 
+#totals
+  Day P&L:
+  = number_to_currency(@day_pnl, :precision => 2)
+  %br
+  Total P&L:
+  = number_to_currency(@total_pnl, :precision => 2)
 
-Day P&L:
-= number_to_currency(@day_pnl, :precision => 2)
-%br
-Total P&L:
-= number_to_currency(@total_pnl, :precision => 2)
-
-
-:javascript
-  $(document).ready(function() {
-    $('table').tablesorter({theme: 'dxmodel'});
-  })

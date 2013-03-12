@@ -33,5 +33,23 @@ $(document).ready(function() {
   $('#trade_quantity, #trade_exit_local_price').keyup( calc_exit_local_value );
   $('#trade_quantity, #trade_exit_usd_fx_rate, #trade_exit_local_value').keyup( calc_exit_usd_value );
 
+  // Date dropdown
+  $('#date').change(function(){
+
+      var queryParameters = {}, queryString = location.search.substring(1),
+      re = /([^&=]+)=([^&]*)/g, m;
+
+      while (m = re.exec(queryString)) {
+          queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+      }
+
+      // Add new parameters or update existing ones
+      queryParameters['date'] = $(this).val();
+      location.search = $.param(queryParameters);
+  })
+
+
+  // Table sorter
+  $('table').tablesorter({theme: 'dxmodel'});
 })
 

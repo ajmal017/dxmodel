@@ -95,15 +95,3 @@
         %td.fund= stock_date.close
         %td.fund= stock_date.wmavg_10d
         %td.fund= stock_date.smavg_10d
-
-
-
-:javascript
-  $(document).ready(function() {
-    $('#data').tablesorter({theme: 'dxmodel'});
-    $('#date').change(function(){
-      var newURL = window.location.protocol + "//" + window.location.host + "/stock_dates?date=" + $(this).val()
-      window.location = newURL
-    })
-
-  })

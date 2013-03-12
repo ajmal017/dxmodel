@@ -21,15 +21,3 @@
           %td= trade.industry.name
 
           %td= render partial: 'actions', locals: {trade: trade}
-
-
-
-  :javascript
-    $(document).ready(function() {
-      $('table').tablesorter({theme: 'dxmodel'});
-
-       $('#date').change(function(){
-         var newURL = window.location.protocol + "//" + window.location.host + "/trades/signaled?date=" + $(this).val()
-         window.location = newURL
-       })
-    })
