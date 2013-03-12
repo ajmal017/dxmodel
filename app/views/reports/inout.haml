@@ -1,5 +1,5 @@
 - dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)
-- stocks = Stock.includes(:trades).order('trades.enter_date ASC')
+- stocks = Stock.includes(:trades).order('trades.enter_date ASC').where("trades.stock_id is not NULL")
 
 %table.inout
   %tr
