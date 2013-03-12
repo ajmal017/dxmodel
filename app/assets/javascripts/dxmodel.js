@@ -34,7 +34,7 @@ $(document).ready(function() {
   $('#trade_quantity, #trade_exit_usd_fx_rate, #trade_exit_local_value').keyup( calc_exit_usd_value );
 
   // Date dropdown
-  $('#date').change(function(){
+  $('select#date').change(function(){
 
       var queryParameters = {}, queryString = location.search.substring(1),
       re = /([^&=]+)=([^&]*)/g, m;
