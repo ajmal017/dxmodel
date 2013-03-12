@@ -275,6 +275,8 @@ class Trade < ActiveRecord::Base
       local_value_on_date(date) / fx_rate.usdhkd 
     when 'CNY'
       local_value_on_date(date) / fx_rate.usdcny 
+    when 'USD'
+      local_value_on_date(date)
     end
   end
 
@@ -284,8 +286,10 @@ class Trade < ActiveRecord::Base
   end
 
   def usd_pnl_on_date date
-    exit_value = (exited? ? exit_usd_value : usd_value_on_date(date))  # If exited use exit(vwap) price, else use price at close
+    exit_value = (exited_on_or_before?(date) ? exit_usd_value : usd_value_on_date(date))  # If exited use exit(vwap) price, else use price at close
     if long?
+      debugger if exit_value.nil?
+      debugger if enter_usd_value.nil?
       exit_value - enter_usd_value
 
     elsif short?
@@ -300,7 +304,7 @@ class Trade < ActiveRecord::Base
     value.round(2)
   end
 
-  def exited_on_or_before date
+  def exited_on_or_before? date
     exit_date and exit_date <= date
   end
 end
