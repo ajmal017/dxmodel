@@ -37,8 +37,8 @@ class TradesController < ApplicationController
     dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
     @date = params[:date] ? Date.strptime(params[:date], "%Y-%m-%d") : dates[0]
 
-    @enter_signals = Trade.enter_signaled.where(enter_signal_date: @date)
-    @exit_signals = Trade.exit_signaled.where(exit_signal_date: @date)
+    @enter_signals = Trade.where(enter_signal_date: @date)
+    @exit_signals = Trade.where(exit_signal_date: @date)
   end
 
   def entered

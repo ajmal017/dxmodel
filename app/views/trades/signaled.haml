@@ -1,5 +1,8 @@
 %h1 Signals
 
+- dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
+= select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] }, @date)
+
 %table#signals
   %thead
     %tr

@@ -1,9 +1,8 @@
 %h1
-  Historical stock data from
-  = @date.strftime("%B %d, %Y").to_s if @date
+  Historical stock data
 
 - dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
-= select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] })
+= select_tag 'date', options_for_select(['Change date'] + dates.each{|d| [d, d] }, @date)
 
 
 %table#data
