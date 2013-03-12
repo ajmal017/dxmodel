@@ -42,8 +42,8 @@ class ReportsController < ApplicationController
       date_enter_total = 0 # price paid for stocks held on date
 
       trades.each do |trade|
-        date_realized = date_realized + trade.usd_pnl_on_date(date) if trade.exited?
-        date_unrealized = date_unrealized + trade.usd_pnl_on_date(date) if not trade.exited?
+        date_realized = date_realized + trade.usd_pnl_on_date(date) if trade.exited_on_or_before(date)
+        date_unrealized = date_unrealized + trade.usd_pnl_on_date(date) if not trade.exited_on_or_before(date)
         date_enter_total = date_enter_total + trade.enter_usd_value 
       end
       date_total = date_unrealized + date_realized 

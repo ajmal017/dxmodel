@@ -300,4 +300,7 @@ class Trade < ActiveRecord::Base
     value.round(2)
   end
 
+  def exited_on_or_before date
+    exit_date and exit_date <= date
+  end
 end
