@@ -89,8 +89,7 @@
         - usd_pnl_on_date = trade.usd_pnl_on_date(@date)
         - previous_usd_pnl_on_date = trade.usd_pnl_on_date(@previous_date)
 
-        - day_pnl = previous_usd_pnl_on_date - usd_pnl_on_date 
-
+        - day_pnl = usd_pnl_on_date - previous_usd_pnl_on_date 
 
         - klass = (day_pnl < 0 ? 'negative' : 'positive')
         - @day_pnl = @day_pnl + day_pnl
