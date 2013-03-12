@@ -1,8 +1,8 @@
 class Stock < ActiveRecord::Base
   attr_accessible :ticker, :country, :industry_id, :name, :risk_funda_screen1_score, :currency
 
-  has_many :stock_dates
-  has_many :trades
+  has_many :stock_dates, :dependent => :destroy
+  has_many :trades, :dependent => :destroy
   belongs_to :industry
 
   validates :ticker, :presence => true, :uniqueness => {:scope => :country}
