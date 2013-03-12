@@ -21,7 +21,7 @@
         = @date.strftime("%B %d, %Y").to_s
 
       %td{:class => "divider {sorter: false}"}
-      %td{:class => "{sorter: false}", :colspan => 2} 
+      %td{:class => "{sorter: false}", :colspan => 3} 
 
     %tr
       %th Ticker
@@ -47,6 +47,7 @@
       %th{:class => "divider {sorter: false}"}
       %th P&L
       %th Day change (USD)
+      %th{:class => "{sorter: false}"}
 
 
   %tbody
@@ -94,6 +95,10 @@
         - klass = (day_pnl < 0 ? 'negative' : 'positive')
         - @day_pnl = @day_pnl + day_pnl
         %td{:class => klass}= number_to_currency(day_pnl, :precision => 2)
+
+        %td
+          = link_to trade_path(trade), :class => 'btn btn-mini', :style => "width:12px;" do
+            %i.icon-search 
 
 #totals
   Day P&L:
