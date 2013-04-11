@@ -13,7 +13,7 @@
 
   %tbody
     - @stock.trades.each do |trade|
-      = render partial: trade, locals: {include_unrealized_pnl: true, date: fx_rate.date}
+      = render partial: trade, locals: {include_unrealized_pnl: true, date: fx_rate.date} unless trade.state == 'enter_signaled'
 
 
 %h2
