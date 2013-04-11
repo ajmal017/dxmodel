@@ -23,32 +23,32 @@
   %td= number_to_currency(trade.enter_usd_value, :precision => 0) if trade.enter_usd_value
 
 
-  -# Unrealized P&L
-  - if local_assigns.has_key? :include_unrealized_pnl and local_assigns.has_key? :date
-    %td.fund.divider
-    %td{:class => trade.usd_pnl_on_date(date) < 0 ? 'negative' : 'positive' }  
-      = "#{trade.usd_pnl_percentage_on_date(date).to_s}%"
-
-
   -# Exit
-  - if local_assigns.has_key? :include_exit
+  - if local_assigns.has_key? :include_exit 
     %td.fund.divider
 
     -# Exit signals
     - if local_assigns.has_key? :include_exit_signals
-      %td= trade.exit_signal_date.strftime("%Y-%m-%d") 
+      %td= trade.exit_signal_date.strftime("%Y-%m-%d") if trade.exit_signal_date.present?
 
-    %td= trade.exit_date.strftime("%Y-%m-%d")
-    %td= number_to_currency(trade.exit_local_price, :precision => 4)
-    %td= number_to_currency(trade.exit_local_value, :precision => 0)
-    %td= number_to_currency(trade.exit_usd_value, :precision => 0)
+    %td= trade.exit_date.strftime("%Y-%m-%d") if trade.exit_signal_date.present?
+    %td= number_to_currency(trade.exit_local_price, :precision => 4) if trade.exit_signal_date.present?
+    %td= number_to_currency(trade.exit_local_value, :precision => 0) if trade.exit_signal_date.present?
+    %td= number_to_currency(trade.exit_usd_value, :precision => 0) if trade.exit_signal_date.present?
+
+
+  -# Unrealized P&L
+  - if local_assigns.has_key? :include_unrealized_pnl and local_assigns.has_key? :date 
+    %td.fund.divider
+    %td{:class => trade.usd_pnl_on_date(date) < 0 ? 'negative' : 'positive' }  
+      = "#{trade.usd_pnl_percentage_on_date(date).to_s}%" if trade.exit_date.blank?
 
 
   -# Realized P&L
-  - if local_assigns.has_key? :include_realized_pnl and local_assigns.has_key? :date
+  - if local_assigns.has_key? :include_realized_pnl and local_assigns.has_key? :date 
     %td.fund.divider
     %td{:class => trade.usd_pnl_on_date(date) < 0 ? 'negative' : 'positive' }  
-      = "#{trade.usd_pnl_percentage_on_date(date).to_s}%"
+      = "#{trade.usd_pnl_percentage_on_date(date).to_s}%" if trade.exit_date.present?
       
 
   -# More

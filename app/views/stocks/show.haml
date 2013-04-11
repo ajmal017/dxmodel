@@ -9,11 +9,11 @@
 
 - fx_rate = FxRate.first
 %table
-  = render partial: '/trades/headers', locals: {include_unrealized_pnl: true}
+  = render partial: '/trades/headers', locals: {include_unrealized_pnl: true, include_realized_pnl: true, include_exit: true}
 
   %tbody
     - @stock.trades.each do |trade|
-      = render partial: trade, locals: {include_unrealized_pnl: true, date: fx_rate.date} unless trade.state == 'enter_signaled'
+      = render partial: trade, locals: {include_unrealized_pnl: true, include_realized_pnl: true, date: fx_rate.date, :include_exit => true} unless trade.state == 'enter_signaled'
 
 
 %h2
