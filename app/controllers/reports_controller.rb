@@ -2,7 +2,8 @@ class ReportsController < ApplicationController
   include ActionView::Helpers::NumberHelper
   
   def exposure
-    dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
+    #dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
+    dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)
     @long_exposures = []
     @short_exposures = []
 
@@ -27,7 +28,8 @@ class ReportsController < ApplicationController
   end
 
   def pnl
-    dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
+    #dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
+    dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)
     @realized = []
     @unrealized = []
     @totals = []
