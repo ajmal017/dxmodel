@@ -10,6 +10,7 @@ class TradesController < ApplicationController
     @trade = Trade.new(params[:trade])  
     if @trade.save  
       flash[:success] = "Successfully created trade."  
+      expire_report_page_caches
       redirect_to entered_trades_path 
     else
       render :new

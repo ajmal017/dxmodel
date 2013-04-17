@@ -224,6 +224,7 @@ private
         stock_date.short_fund_signal = 'EXIT'
       end
 
+      expire_report_page_caches
       stock_date.save!
     end
   end

@@ -1,5 +1,7 @@
 class ReportsController < ApplicationController
   include ActionView::Helpers::NumberHelper
+
+  caches_page :exposure, :pnl, :day, :inout
   
   def exposure
     #dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)

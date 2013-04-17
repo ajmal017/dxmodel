@@ -17,4 +17,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def expire_report_page_caches
+    expire_page pnl_reports_path
+    expire_page inout_reports_path
+    expire_page day_reports_path
+    expire_page exposure_reports_path
+  end
 end

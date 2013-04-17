@@ -1,12 +1,12 @@
 source 'https://rubygems.org'
 
 gem 'capistrano'
-gem 'rvm-capistrano'
 
 gem 'rails'
 gem 'mysql2'
 gem 'haml-rails'
 gem 'state_machine'
+gem 'thin'
 
 gem 'thor'
 gem 'pry'
@@ -31,7 +31,7 @@ gem "bcrypt-ruby", :require => "bcrypt"
 
 group :development do
   gem "debugger"
-  gem "rack-mini-profiler"
+  #gem "rack-mini-profiler"
 end
 
 group :test do
