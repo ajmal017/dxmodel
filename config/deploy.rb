@@ -26,7 +26,7 @@ $:.unshift File.join(File.dirname(__FILE__), './deploy')
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
 set :deploy_via, :remote_cache
-set(:deploy_to) { "/var/www/#{rails_env}" }
+set(:deploy_to) { "/var/www/#{rails_env}.andywatts.com" }
 set :user, "dxmodel"
 set :use_sudo, false
 
