@@ -16,8 +16,8 @@ load 'deploy/assets'
 require 'bundler/capistrano'
 require 'capistrano/ext/multistage'
 
-set :stages, %w(production_apac production_europe production_na)
-set :default_stage, "production_apac"
+set :stages, %w(ap.dxmodel eu.dxmodel na.dxmodel)
+set :default_stage, "ap.dxmodel"
 
 # Database
 $:.unshift File.join(File.dirname(__FILE__), './deploy') 
