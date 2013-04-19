@@ -16,7 +16,7 @@ load 'deploy/assets'
 require 'bundler/capistrano'
 require 'capistrano/ext/multistage'
 
-set :stages, %w(production_apac production_europe production_us)
+set :stages, %w(production_apac production_europe production_na)
 set :default_stage, "production_apac"
 
 # Database

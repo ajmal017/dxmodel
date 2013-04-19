@@ -34,6 +34,6 @@ production_eu:
 
 production_us:
   <<: *base
-  database: dxmodel_production_us
+  database: dxmodel_production_na
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
