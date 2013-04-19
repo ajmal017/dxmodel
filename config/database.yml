@@ -19,8 +19,21 @@ staging:
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
+
 production:
   <<: *base
   database: dxmodel_prod
+  password: enter12
+  socket: /var/run/mysqld/mysqld.sock #Ubuntu
+
+production_eu:
+  <<: *base
+  database: dxmodel_prod_eu
+  password: enter12
+  socket: /var/run/mysqld/mysqld.sock #Ubuntu
+
+production_us:
+  <<: *base
+  database: dxmodel_production_us
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu

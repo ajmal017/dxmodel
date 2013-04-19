@@ -14,25 +14,21 @@
 
 load 'deploy/assets'
 require 'bundler/capistrano'
+require 'capistrano/ext/multistage'
+
+set :stages, %w(production_apac production_europe production_us)
+set :default_stage, "production_apac"
 
 # Database
 $:.unshift File.join(File.dirname(__FILE__), './deploy') 
 
-# Main Details
-set :application, "dxmodel_prod"
-role :web, "dxmodel.andywatts.com"
-role :app, "dxmodel.andywatts.com"
-role :db,  "dxmodel.andywatts.com", :primary => true
-
 # Server Details
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
-set :deploy_to, "/var/www/dxmodel.andywatts.com"
 set :deploy_via, :remote_cache
+set(:deploy_to) { "/home/#{user}/web/#{rails_env}" }
 set :user, "dxmodel"
 set :use_sudo, false
-
-set :rails_env, "production"
 
 # Bundler
 set :bundle_without, [:darwin, :development, :test]  # Don't install dev, or test gems
