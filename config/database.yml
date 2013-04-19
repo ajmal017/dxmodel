@@ -20,9 +20,9 @@ staging:
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 
-production_apac:
+production_ap:
   <<: *base
-  database: dxmodel_prod_apac
+  database: dxmodel_prod_ap
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
