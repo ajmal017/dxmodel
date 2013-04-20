@@ -16,7 +16,7 @@ load 'deploy/assets'
 require 'bundler/capistrano'
 require 'capistrano/ext/multistage'
 
-set :stages, %w(ap.dxmodel eu.dxmodel na.dxmodel)
+set :stages, %w(ap.dxmodel uk.dxmodel us.dxmodel)
 set :default_stage, "ap.dxmodel"
 
 # Database
