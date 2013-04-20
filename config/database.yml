@@ -26,14 +26,14 @@ ap.dxmodel:
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-eu.dxmodel:
+uk.dxmodel:
   <<: *base
-  database: eu.dxmodel
+  database: uk.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-na.dxmodel:
+us.dxmodel:
   <<: *base
-  database: na.dxmodel
+  database: us.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
