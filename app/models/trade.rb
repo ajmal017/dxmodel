@@ -275,6 +275,10 @@ class Trade < ActiveRecord::Base
       local_value_on_date(date) / fx_rate.usdhkd 
     when 'CNY'
       local_value_on_date(date) / fx_rate.usdcny 
+    when 'GBP'
+      local_value_on_date(date) / fx_rate.usdgbp 
+    when 'EUR'
+      local_value_on_date(date) / fx_rate.usdeur 
     when 'USD'
       local_value_on_date(date)
     end

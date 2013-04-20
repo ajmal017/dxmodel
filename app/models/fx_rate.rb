@@ -4,6 +4,8 @@ class FxRate < ActiveRecord::Base
   validates :date, :presence => true
 #  validates :usdsgd, :presence => true, :uniqueness => {:scope => :date}
 #  validates :usdhkd, :presence => true, :uniqueness => {:scope => :date}
+#  validates :usdgbp, :presence => true, :uniqueness => {:scope => :date}
+#  validates :usdeur, :presence => true, :uniqueness => {:scope => :date}
 
   default_scope order('fx_rates.date DESC')
 
