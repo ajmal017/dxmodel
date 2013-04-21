@@ -38,7 +38,6 @@ set :scm, :git
 set :scm_verbose, true
 set :scm_username, "andywatts"
 set :repository, "git@github.com:andywatts/dxmodel.git"
-set :branch, "master"
 set :git_enable_submodules, 1
 set :git_shallow_clone, 1
 
