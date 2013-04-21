@@ -6,6 +6,8 @@
     %th USDSGD
     %th USDHKD
     %th USDCNY
+    %th USDGBP
+    %th USDEUR
   %tbody
     - @fx_rates.each do |fx_rate|
       %tr
@@ -13,3 +15,5 @@
         %td= fx_rate.usdsgd
         %td= fx_rate.usdhkd
         %td= fx_rate.usdcny
+        %td= fx_rate.usdgbp
+        %td= fx_rate.usdeur
