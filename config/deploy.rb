@@ -17,7 +17,7 @@ require 'bundler/capistrano'
 require 'capistrano/ext/multistage'
 
 set :stages, %w(ap.dxmodel uk.dxmodel us.dxmodel jp.dxmodel)
-set :default_stage, "ap.dxmodel"
+set :default_stage, "uk.dxmodel"
 
 # Database
 $:.unshift File.join(File.dirname(__FILE__), './deploy') 
