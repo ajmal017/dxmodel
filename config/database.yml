@@ -37,3 +37,9 @@ us.dxmodel:
   database: us.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
+
+jp.dxmodel:
+  <<: *base
+  database: jp.dxmodel
+  password: enter12
+  socket: /var/run/mysqld/mysqld.sock #Ubuntu

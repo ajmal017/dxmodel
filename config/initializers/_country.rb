@@ -1,2 +1,0 @@
-COUNTRY = "JP"
-CURRENCIES = ["JPY"]
