@@ -1,0 +1,2 @@
+COUNTRY = "AP"
+CURRENCIES = ["USD", "SGD", "HKD"]
