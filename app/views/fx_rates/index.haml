@@ -11,8 +11,8 @@
       %th USDHKD
     - if CURRENCIES.include?('CNY')
       %th USDCNY
-    - if CURRENCIES.include?('GBP')
-      %th USDGBP
+    - if CURRENCIES.include?('GBp')
+      %th USDGBp
     - if CURRENCIES.include?('EUR')
       %th USDEUR
     - if CURRENCIES.include?('JPY')
@@ -21,13 +21,15 @@
     - @fx_rates.each do |fx_rate|
       %tr
         %td= fx_rate.date
+        - if CURRENCIES.include?('USD')
+          %td= fx_rate.usdusd
         - if CURRENCIES.include?('SGD')
           %td= fx_rate.usdsgd
         - if CURRENCIES.include?('HKD')
           %td= fx_rate.usdhkd
         - if CURRENCIES.include?('CNY')
           %td= fx_rate.usdcny
-        - if CURRENCIES.include?('GBP')
+        - if CURRENCIES.include?('GBp')
           %td= fx_rate.usdgbp
         - if CURRENCIES.include?('EUR')
           %td= fx_rate.usdeur
