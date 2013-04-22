@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422063737) do
+ActiveRecord::Schema.define(:version => 20130422235011) do
 
   create_table "fx_rates", :force => true do |t|
     t.date     "date"
@@ -57,20 +57,20 @@ ActiveRecord::Schema.define(:version => 20130422063737) do
     t.string   "short_tech_signal"
     t.datetime "created_at",                                                                   :null => false
     t.datetime "updated_at",                                                                   :null => false
-    t.decimal  "alpha",                        :precision => 4,  :scale => 4, :default => 0.0
-    t.decimal  "per",                          :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "per_change",                   :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "alpha",                        :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "per",                          :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "per_change",                   :precision => 14, :scale => 6, :default => 0.0
     t.decimal  "pbr",                          :precision => 8,  :scale => 4, :default => 0.0
     t.decimal  "pbr_change",                   :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "pfcf",                         :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "pfcf_change",                  :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "eps_5yr_growth",               :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "roe_bf12m",                    :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "roa_bf12m",                    :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "average_traded_value_30_days", :precision => 12, :scale => 4, :default => 0.0
-    t.decimal  "close",                        :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "wmavg_10d",                    :precision => 8,  :scale => 4, :default => 0.0
-    t.decimal  "smavg_10d",                    :precision => 8,  :scale => 4, :default => 0.0
+    t.decimal  "pfcf",                         :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "pfcf_change",                  :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "eps_5yr_growth",               :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "roe_bf12m",                    :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "roa_bf12m",                    :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "average_traded_value_30_days", :precision => 20, :scale => 6, :default => 0.0
+    t.decimal  "close",                        :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "wmavg_10d",                    :precision => 14, :scale => 6, :default => 0.0
+    t.decimal  "smavg_10d",                    :precision => 14, :scale => 6, :default => 0.0
     t.decimal  "vwap",                         :precision => 8,  :scale => 6
   end
 
