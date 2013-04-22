@@ -13,6 +13,8 @@
       %th USDGBP
     - if CURRENCIES.include?('EUR')
       %th USDEUR
+    - if CURRENCIES.include?('JPY')
+      %th USDJPY
   %tbody
     - @fx_rates.each do |fx_rate|
       %tr
@@ -27,3 +29,5 @@
           %td= fx_rate.usdgbp
         - if CURRENCIES.include?('EUR')
           %td= fx_rate.usdeur
+        - if CURRENCIES.include?('JPY')
+          %td= fx_rate.usdjpy
