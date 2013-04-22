@@ -1,2 +1,2 @@
 COUNTRY = "UK"
-CURRENCIES = ["GBP","EUR"]
+CURRENCIES = ["GBp","EUR"]
