@@ -1,2 +1,2 @@
 COUNTRY = "AP"
-CURRENCIES = ["USD", "SGD", "HKD"]
+CURRENCIES = ["USD", "SGD", "HKD", "CNY"]
