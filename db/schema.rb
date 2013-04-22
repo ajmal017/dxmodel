@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130420114712) do
+ActiveRecord::Schema.define(:version => 20130422045724) do
 
   create_table "fx_rates", :force => true do |t|
     t.date     "date"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20130420114712) do
     t.decimal  "usdusd",     :precision => 14, :scale => 6, :default => 1.0
     t.decimal  "usdgbp",     :precision => 14, :scale => 6
     t.decimal  "usdeur",     :precision => 14, :scale => 6
+    t.decimal  "usdjpy",     :precision => 14, :scale => 6
   end
 
   create_table "industries", :force => true do |t|
