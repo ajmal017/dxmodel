@@ -3,17 +3,31 @@
 %table.table.table-hover.table-condensed
   %thead
     %th Date
-    %th USDSGD
-    %th USDHKD
-    %th USDCNY
-    %th USDGBP
-    %th USDEUR
+    - if CURRENCIES.include?('SGD')
+      %th USDSGD 
+    - if CURRENCIES.include?('HKD')
+      %th USDHKD
+    - if CURRENCIES.include?('CNY')
+      %th USDCNY
+    - if CURRENCIES.include?('GBP')
+      %th USDGBP
+    - if CURRENCIES.include?('EUR')
+      %th USDEUR
+    - if CURRENCIES.include?('JPY')
+      %th USDJPY
   %tbody
     - @fx_rates.each do |fx_rate|
       %tr
         %td= fx_rate.date
-        %td= fx_rate.usdsgd
-        %td= fx_rate.usdhkd
-        %td= fx_rate.usdcny
-        %td= fx_rate.usdgbp
-        %td= fx_rate.usdeur
+        - if CURRENCIES.include?('SGD')
+          %td= fx_rate.usdsgd
+        - if CURRENCIES.include?('HKD')
+          %td= fx_rate.usdhkd
+        - if CURRENCIES.include?('CNY')
+          %td= fx_rate.usdcny
+        - if CURRENCIES.include?('GBP')
+          %td= fx_rate.usdgbp
+        - if CURRENCIES.include?('EUR')
+          %td= fx_rate.usdeur
+        - if CURRENCIES.include?('JPY')
+          %td= fx_rate.usdjpy
