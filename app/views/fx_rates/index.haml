@@ -3,6 +3,8 @@
 %table.table.table-hover.table-condensed
   %thead
     %th Date
+    - if CURRENCIES.include?('USD')
+      %th USDUSD 
     - if CURRENCIES.include?('SGD')
       %th USDSGD 
     - if CURRENCIES.include?('HKD')
