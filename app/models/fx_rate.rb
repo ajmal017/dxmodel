@@ -1,5 +1,5 @@
 class FxRate < ActiveRecord::Base
-  attr_accessible :date, :usdsgd, :usdhkd, :usdcny
+  attr_accessible :date, :usdsgd, :usdhkd, :usdcny, :usdjpy, :usdgbp, :usdeur
 
   validates :date, :presence => true
   validates :usdsgd, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('SGD') }
