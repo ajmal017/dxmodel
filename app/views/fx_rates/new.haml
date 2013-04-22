@@ -2,6 +2,7 @@
 
 = simple_form_for(@fx_rate, :defaults => {:required => false, :input_html => {:class => 'xlarge'}}) do |f|
   = f.input :date, :as => :string
+  = f.input :usdsgd, :label => 'USDUSD' if CURRENCIES.include?('USD')
   = f.input :usdsgd, :label => 'USDSGD' if CURRENCIES.include?('SGD')
   = f.input :usdhkd, :label => 'USDHKD' if CURRENCIES.include?('HKD')
   = f.input :usdcny, :label => 'USDCNY' if CURRENCIES.include?('CNY')
