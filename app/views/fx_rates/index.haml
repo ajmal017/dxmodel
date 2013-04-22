@@ -11,8 +11,8 @@
       %th USDHKD
     - if CURRENCIES.include?('CNY')
       %th USDCNY
-    - if CURRENCIES.include?('GBP')
-      %th USDGBP
+    - if CURRENCIES.include?('GBp')
+      %th USDGBp
     - if CURRENCIES.include?('EUR')
       %th USDEUR
     - if CURRENCIES.include?('JPY')
@@ -29,7 +29,7 @@
           %td= fx_rate.usdhkd
         - if CURRENCIES.include?('CNY')
           %td= fx_rate.usdcny
-        - if CURRENCIES.include?('GBP')
+        - if CURRENCIES.include?('GBp')
           %td= fx_rate.usdgbp
         - if CURRENCIES.include?('EUR')
           %td= fx_rate.usdeur

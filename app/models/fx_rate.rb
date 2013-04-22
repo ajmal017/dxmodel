@@ -6,7 +6,7 @@ class FxRate < ActiveRecord::Base
   validates :usdhkd, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('HKD') }
   validates :usdcny, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('CNY') }
   validates :usdjpy, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('JPY') }
-  validates :usdgbp, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('GBP') }
+  validates :usdgbp, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('GBp') }
   validates :usdeur, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('EUR') }
 
 
