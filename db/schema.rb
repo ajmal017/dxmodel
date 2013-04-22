@@ -11,19 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422045724) do
+ActiveRecord::Schema.define(:version => 20130422063737) do
 
   create_table "fx_rates", :force => true do |t|
     t.date     "date"
     t.decimal  "usdsgd",     :precision => 14, :scale => 6
     t.decimal  "usdhkd",     :precision => 14, :scale => 6
-    t.datetime "created_at",                                                 :null => false
-    t.datetime "updated_at",                                                 :null => false
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
     t.decimal  "usdcny",     :precision => 14, :scale => 6
-    t.decimal  "usdusd",     :precision => 14, :scale => 6, :default => 1.0
     t.decimal  "usdgbp",     :precision => 14, :scale => 6
     t.decimal  "usdeur",     :precision => 14, :scale => 6
     t.decimal  "usdjpy",     :precision => 14, :scale => 6
+    t.decimal  "usdusd",     :precision => 14, :scale => 6
   end
 
   create_table "industries", :force => true do |t|
@@ -55,7 +55,6 @@ ActiveRecord::Schema.define(:version => 20130422045724) do
     t.integer  "short_fund_rank"
     t.string   "short_fund_signal"
     t.string   "short_tech_signal"
-    t.string   "open_position"
     t.datetime "created_at",                                                                   :null => false
     t.datetime "updated_at",                                                                   :null => false
     t.decimal  "alpha",                        :precision => 4,  :scale => 4, :default => 0.0
@@ -95,7 +94,7 @@ ActiveRecord::Schema.define(:version => 20130422045724) do
     t.integer  "quantity"
     t.date     "enter_signal_date"
     t.date     "enter_date"
-    t.decimal  "enter_local_price", :precision => 8,  :scale => 6
+    t.decimal  "enter_local_price", :precision => 14, :scale => 6
     t.decimal  "enter_local_value", :precision => 14, :scale => 6
     t.decimal  "enter_usd_fx_rate", :precision => 14, :scale => 6
     t.decimal  "enter_usd_value",   :precision => 14, :scale => 6
