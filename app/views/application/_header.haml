@@ -2,7 +2,7 @@
   .navbar-inner
     .container
       %span.brand 
-        = link_to "DX Model #{ Rails.env.scan(/(uk|us|ap).dxmodel/).try(:first).try(:first).try(:upcase) || '' }", root_path
+        = link_to "DX Model #{ Rails.env.scan(/(uk|us|ap|jp).dxmodel/).try(:first).try(:first).try(:upcase) || '' }", root_path
 
       .nav-collapse.collapse.navbar-responsive-collapse
         %ul.nav
