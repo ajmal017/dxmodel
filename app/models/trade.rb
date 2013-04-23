@@ -291,12 +291,17 @@ class Trade < ActiveRecord::Base
 
   def usd_pnl_on_date date
     exit_value = (exited_on_or_before?(date) ? exit_usd_value : usd_value_on_date(date))  # If exited use exit(vwap) price, else use price at close
+    begin
     if long?
       exit_value - enter_usd_value
 
     elsif short?
       enter_usd_value - exit_value 
 
+    end
+    rescue
+    debugger
+    puts ''
     end
   end
 
@@ -307,6 +312,6 @@ class Trade < ActiveRecord::Base
   end
 
   def exited_on_or_before? date
-    exit_date and exit_date <= date
+    exit_date.present? and exit_date <= date
   end
 end
