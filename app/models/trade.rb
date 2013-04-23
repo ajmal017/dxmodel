@@ -273,6 +273,8 @@ class Trade < ActiveRecord::Base
       local_value_on_date(date) / fx_rate.usdsgd 
     when 'HKD'
       local_value_on_date(date) / fx_rate.usdhkd 
+    when 'JPY'
+      local_value_on_date(date) / fx_rate.usdjpy 
     when 'CNY'
       local_value_on_date(date) / fx_rate.usdcny 
     when 'GBp'
