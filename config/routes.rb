@@ -7,6 +7,7 @@ Dxmodel::Application.routes.draw do
 
   resources :fx_rates
   resources :stock_dates
+  resources :index_dates
   resources :stocks
   resources :industries
   resources :trades do

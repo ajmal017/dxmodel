@@ -62,7 +62,11 @@
       title: { text: 'Percentage', x: -20 },
 
       series: [{  
+        name: 'DX Model',
         data: #{@percentages}
+      },{
+        name: '#{INDEX}',  
+        data: #{@index}
       }],  
 
       xAxis: { type: 'datetime' },
