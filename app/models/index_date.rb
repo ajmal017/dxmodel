@@ -8,7 +8,7 @@ class IndexDate < ActiveRecord::Base
 
   # ------------- Validations  --------------------
   validates :index, presence: true
-  validates :date, presence: true
+  validates :date, :presence => true, :uniqueness => {:scope => :index}
   validates :close, presence: true
 
 
