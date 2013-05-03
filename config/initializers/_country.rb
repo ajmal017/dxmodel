@@ -1,2 +1,3 @@
 COUNTRY = "JP"
+COUNTRY = "NKY"
 CURRENCIES = ["JPY", "USD"]
