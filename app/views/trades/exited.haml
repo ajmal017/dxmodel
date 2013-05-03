@@ -9,5 +9,4 @@
     - @exited_trades.each do |trade|
       = render partial: trade, locals: {include_exit: true, include_realized_pnl: true, date: fx_rate.date}
 
-%small= "Realized P&L based on #{fx_rate.date} FX rates. USDSGD #{fx_rate.usdsgd}. USDHKD #{fx_rate.usdhkd}."
-
+%small= "Realized P&L based on #{fx_rate.date} FX rates."

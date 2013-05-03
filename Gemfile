@@ -26,6 +26,7 @@ gem 'jquery-tablesorter'
 gem 'jquery-ui-rails'
 
 gem 'simple_form'
+gem 'httparty'
 
 gem "bcrypt-ruby", :require => "bcrypt"
 

@@ -9,4 +9,4 @@
     - @entered_trades.each do |trade|
       = render partial: trade, locals: {include_unrealized_pnl: true, date: fx_rate.date}
 
-%small= "Unrealized P&L based on #{fx_rate.date} FX rates. USDSGD #{fx_rate.usdsgd}. USDHKD #{fx_rate.usdhkd}."
+%small= "Unrealized P&L based on #{fx_rate.date} FX rates."
