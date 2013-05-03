@@ -1,0 +1,13 @@
+%table
+  %thead
+    %tr
+      %th Index
+      %th Date
+      %th Close
+  %tbody
+    - @index_dates.each do |index_date|
+      %tr
+        %td= index_date.index
+        %td= index_date.date
+        %td= index_date.close
+          

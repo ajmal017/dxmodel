@@ -6,24 +6,21 @@
 
       .nav-collapse.collapse.navbar-responsive-collapse
         %ul.nav
+          %li{:class => "dropdown #{ 'active' if ['stock_dates','fx_rates','index_dates'].include?(params[:controller]) }"}
 
-          %li{:class => "dropdown #{'active' if params[:controller] == 'fx_rates'}"}
+
             %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-              FX rates
+              Data
               %b.caret
             %ul.dropdown-menu
-              %li= link_to 'Enter new', new_fx_rate_path if current_user
-              %li= link_to 'History', fx_rates_path
+              - if current_user
+                %li= link_to 'Enter FX data', new_fx_rate_path
+                %li= link_to 'Upload stock data', new_stock_date_path 
+                %li.divider
 
-
-
-          %li{:class => "dropdown #{'active' if params[:controller] == 'stock_dates'}"}
-            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
-              Stock data
-              %b.caret
-            %ul.dropdown-menu
-              %li= link_to 'Upload data', new_stock_date_path if current_user
-              %li= link_to 'History', stock_dates_path
+              %li= link_to 'Index history', index_dates_path
+              %li= link_to 'FX history', fx_rates_path
+              %li= link_to 'Stock history', stock_dates_path
 
 
           %li{:class => "dropdown #{'active' if params[:controller] == 'trades'}"}

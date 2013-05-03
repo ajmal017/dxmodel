@@ -19,6 +19,10 @@ require 'capistrano/ext/multistage'
 set :stages, %w(ap.dxmodel uk.dxmodel us.dxmodel jp.dxmodel)
 set :default_stage, "jp.dxmodel"
 
+#Whenever/cron
+set :whenever_command, "bundle exec whenever"
+require 'whenever/capistrano'
+
 # Database
 $:.unshift File.join(File.dirname(__FILE__), './deploy') 
 
