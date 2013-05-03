@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
 
 
 
-      index_date = IndexDate.first(conditions: {date: date, index: INDEX})
+      index_date = IndexDate.first(conditions: {date: date, index: INDEX_TICKER})
       @first_index_date ||= index_date
       if index_date.present? 
         date_index_percentage_change = ( (index_date.close.to_f - @first_index_date.close.to_f) / @first_index_date.close.to_f ) * 100
