@@ -1,2 +1,3 @@
 COUNTRY = "AP"
+INDEX = 'HSI'
 CURRENCIES = ["USD", "SGD", "HKD", "CNY"]
