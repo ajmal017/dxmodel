@@ -9,6 +9,7 @@ FactoryGirl.define do
     sequence(:ticker)
     sequence(:name)
     country 'HK'
+    currency 'HKD'
   end
 
   factory :stock_date do

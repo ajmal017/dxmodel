@@ -81,37 +81,46 @@ class Trade < ActiveRecord::Base
   # ------------- Class Methods --------------------
   class << self
 
-    def propose_trade_entries date
-      Stock.all.each do |stock|
-        stock_date = StockDate.where({stock_id: stock.id, date: date}).first
-        next if stock_date.nil?  # skip unless we have rank data for stock on date
-        next if stock.trades.entered.first # Skip if we already entered a trade
-        
-        if stock_date.long_fund_signal == 'ENTER' and stock_date.short_fund_signal == 'ENTER' 
-          # Do nothing if signals say enter long and short
+    def propose_entries_long date
+      num_trades_required = MAX_NUMBER_OF_STOCKS - Trade.long.active.count + Trade.long.exit_signaled.count
 
-        elsif stock_date.long_fund_signal == 'ENTER' and stock_date.long_tech_signal == 'ENTER'
-          note = "#{date} Enter long signal."
-          note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
-          note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
-          trade = Trade.create!(stock_id: stock.id, longshort: 'long', enter_signal_date: date, note: note)
-
-        elsif stock_date.short_fund_signal == 'ENTER' and stock_date.short_tech_signal == 'ENTER'
-          note = "#{date} Enter short signal."
-          note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
-          note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
-          trade = Trade.create!(stock_id: stock.id, longshort: 'short', enter_signal_date: date, note: note)
-        end
+      # Only get # of new trades required
+      stock_dates = StockDate.where(date: date, fund_long_enter: true, tech_long_enter: true, fund_short_enter: false).('order by long_fund_rank ASC')
+      stock_dates.each_with_index do |stock_date|
+        next if stock_date.stock.trades.entered.first # Skip if we already entered a trade
+        break if num_trades_required == 0
+        note = "#{date} Enter long signal."
+        note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
+        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
+        trade = Trade.create!(stock_id: stock.id, longshort: 'long', enter_signal_date: date, note: note)
+        num_trades_required = num_trades_required - 1
       end
     end
 
-    def propose_trade_exits date
+    def propose_entries_short date
+      num_trades_required = MAX_NUMBER_OF_STOCKS - Trade.short.active.count + Trade.short.exit_signaled.count
+
+      # Only get # of new trades required
+      stock_dates = StockDate.where(date: date, fund_short_enter: true, tech_short_enter: true, fund_long_enter: false).('order by short_fund_rank ASC')
+      stock_dates.each_with_index do |stock_date|
+        next if stock_date.stock.trades.entered.first # Skip if we already entered a trade
+        break if num_trades_required == 0
+        note = "#{date} Enter short signal."
+        note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
+        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
+        trade = Trade.create!(stock_id: stock.id, longshort: 'short', enter_signal_date: date, note: note)
+        num_trades_required = num_trades_required - 1
+      end
+    end
+
+
+    def propose_exits_fundamental date
       Stock.all.each do |stock|
         stock_date = StockDate.where({stock_id: stock.id, date: date}).first
         next if stock_date.nil?  # skip unless we have rank data for stock on date
 
         # Exit long trade due to fundamentals
-        if stock_date.long_fund_signal == 'EXIT' and long_trade = stock.trades.entered.long.try(:first)
+        if stock_date.fund_long_exit and long_trade = stock.trades.entered.long.try(:first)
           long_trade.exit_signal_date = date
           long_trade.signal_exit!
           long_trade.note_will_change!
@@ -120,7 +129,7 @@ class Trade < ActiveRecord::Base
           long_trade.save!
 
         # Exit long trade due to technicals
-        #elsif stock_date.long_tech_signal == 'EXIT' and long_trade = stock.trades.entered.long.try(:first)
+        #elsif stock_date.tech_long_exit and long_trade = stock.trades.entered.long.try(:first)
           #long_trade.exit_signal_date = date
           #long_trade.signal_exit!
           #long_trade.note_will_change!
@@ -129,7 +138,7 @@ class Trade < ActiveRecord::Base
           #long_trade.save!
 
         # Exit short trade due to fundamentals
-        elsif stock_date.short_fund_signal == 'EXIT' and short_trade = stock.trades.entered.short.try(:first)
+        elsif stock_date.fund_short_exit and short_trade = stock.trades.entered.short.try(:first)
           short_trade.exit_signal_date = date
           short_trade.signal_exit!
           short_trade.note_will_change!
@@ -138,7 +147,7 @@ class Trade < ActiveRecord::Base
           short_trade.save!
 
         # Exit short trade due to technicals
-        #elsif stock_date.short_tech_signal == 'EXIT' and short_trade = stock.trades.entered.short.try(:first)
+        #elsif stock_date.tech_short_exit and short_trade = stock.trades.entered.short.try(:first)
           #short_trade.exit_signal_date = date
           #short_trade.signal_exit!
           #short_trade.note_will_change!
@@ -150,7 +159,7 @@ class Trade < ActiveRecord::Base
       end
     end
 
-    def propose_exits_for_missing_stocks date
+    def propose_exits_missing_stocks date
       Trade.entered.each do |trade|
         stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
         unless stock_date
@@ -163,7 +172,7 @@ class Trade < ActiveRecord::Base
       end
     end
 
-    def propose_stop_loss_trades date
+    def propose_exits_stop_loss date
       Trade.entered.each do |trade|
         stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
         if trade.stop_loss_triggered? stock_date.close
