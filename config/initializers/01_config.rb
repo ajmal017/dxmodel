@@ -1,0 +1,39 @@
+AUM = 20000000.0
+MAX_PER_ENTRY = 1000000
+MAX_NUMBER_OF_STOCKS = 30  # E.g. 30 long AND 30 short
+
+
+# Country
+COUNTRY = "US"
+CURRENCIES = ["USD"]
+
+# Index
+INDEX_TICKER = "INDU"
+INDEX_NAME = "Dow Jones Industrial Average"
+
+
+# Fundamentals
+ENTER_RANK_THRESHOLD = 20
+EXIT_RANK_THRESHOLD = 75
+
+LONG_ENTER_RANK_THRESHOLD  = 20
+LONG_EXIT_RANK_THRESHOLD   = 75
+SHORT_ENTER_RANK_THRESHOLD = 20
+SHORT_EXIT_RANK_THRESHOLD  = 75
+
+
+#Technicals
+MA = true
+MA_LONG_ENTER  = true  # Use MA signal to enter long?
+MA_LONG_EXIT   = false # Use MA signal to exit long?
+MA_SHORT_ENTER = true  # Use MA signal to enter short?
+MA_SHORT_EXIT  = false # Use MA signal to exit short?
+
+
+RSI = true
+RSI_OVERBOUGHT  = 70.0
+RSI_OVERSOLD    = 35.0
+RSI_LONG_ENTER  = true  # Use RSI signal to enter long?
+RSI_LONG_EXIT   = false # Use RSI signal to exit long?
+RSI_SHORT_ENTER = true  # Use RSI signal to enter long?
+RSI_SHORT_EXIT  = false # Use RSI signal to exit short?

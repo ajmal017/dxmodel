@@ -1,8 +1,0 @@
-COUNTRY = "US"
-CURRENCIES = ["USD"]
-INDEX_TICKER = "INDU"
-INDEX_NAME = "Dow Jones Industrial Average"
-
-# Fundamentals
-ENTER_RANK_THRESHOLD = 20
-EXIT_RANK_THRESHOLD = 75
