@@ -61,13 +61,24 @@ class StockDatesController < ApplicationController
           calc_fund_ranks 'long', date 
           calc_fund_ranks 'short', date 
 
-          calc_fund_signals date
-          calc_tech_signals date
+          Stock.all.each do |stock|
+            stock_date = StockDate.where({stock_id: stock.id, date: date}).first
+            next if stock_date.nil?  # skip unless we have rank data for stock on date
 
-          Trade.propose_exits_for_missing_stocks date
-          Trade.propose_trade_entries date
-          Trade.propose_trade_exits date
-          Trade.propose_stop_loss_trades date
+            stock_date.calc_fund_signal
+
+            stock_date.calc_ma_signal if MA
+            stock_date.calc_rsi_signal if RSI
+            stock_date.calc_tech_signal
+            stock_date.save!
+          end
+
+          Trade.propose_exits_missing_stocks date
+          Trade.propose_exits_fundamental date
+          Trade.propose_exits_stop_loss date
+
+          Trade.propose_entries_long date
+          Trade.propose_entries_short date
 
           flash[:success] = "Upload successful"
           redirect_to signaled_trades_path
@@ -156,6 +167,8 @@ private
       stock_dates.wmavg_10d =  ['','N.A.',nil].include?(row['WMAVG']) ? nil : row['WMAVG']
       stock_dates.smavg_10d =  ['','N.A.',nil].include?(row['SMAVG']) ? nil : row['SMAVG']
 
+      stock_dates.rsi =  ['','N.A.',nil].include?(row['RSI']) ? nil : row['RSI']
+
       stock_dates.vwap =  ['','N.A.',nil].include?(row['VWAP']) ? nil : row['VWAP']
 
       stock_dates.save! 
@@ -205,45 +218,7 @@ private
     end
   end
 
-  def calc_fund_signals date
-    Stock.all.each do |stock|
-      stock_date = StockDate.where({stock_id: stock.id, date: date}).first
-      # skip unless we have rank data for stock on date
-      next if stock_date.nil? 
 
-      if stock_date.long_fund_rank <= ENTER_RANK_THRESHOLD 
-        stock_date.long_fund_signal = 'ENTER'
-
-      elsif stock_date.long_fund_rank > EXIT_RANK_THRESHOLD 
-        stock_date.long_fund_signal = 'EXIT'
-      end
-      if stock_date.short_fund_rank <= ENTER_RANK_THRESHOLD 
-        stock_date.short_fund_signal = 'ENTER'
-
-      elsif stock_date.short_fund_rank > EXIT_RANK_THRESHOLD 
-        stock_date.short_fund_signal = 'EXIT'
-      end
-
-      expire_report_page_caches
-      stock_date.save!
-    end
-  end
-
-  def calc_tech_signals date
-    Stock.all.each do |stock|
-      stock_date = StockDate.where({stock_id: stock.id, date: date}).first
-      # skip unless we have rank data for stock on date
-      next if stock_date.nil? 
-      raise stock_date.inspect if stock_date.wmavg_10d.nil? or stock_date.smavg_10d.nil?
-      if stock_date.wmavg_10d > stock_date.smavg_10d
-        stock_date.long_tech_signal = 'ENTER'
-      elsif stock_date.wmavg_10d < stock_date.smavg_10d
-        stock_date.short_tech_signal = 'ENTER'
-      end
-      stock_date.save!
-
-    end
-  end
 
   def data_from_row row
     ticker = row['Ticker'].split(/\s+/)[0]
