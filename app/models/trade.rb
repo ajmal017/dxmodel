@@ -85,14 +85,15 @@ class Trade < ActiveRecord::Base
       num_trades_required = MAX_NUMBER_OF_STOCKS - Trade.long.active.count + Trade.long.exit_signaled.count
 
       # Only get # of new trades required
-      stock_dates = StockDate.where(date: date, fund_long_enter: true, tech_long_enter: true, fund_short_enter: false).('order by long_fund_rank ASC')
+      stock_dates = StockDate.where(date: date, fund_long_enter: true, tech_long_enter: true, fund_short_enter: false).order('stock_dates.long_fund_rank ASC')
       stock_dates.each_with_index do |stock_date|
         next if stock_date.stock.trades.entered.first # Skip if we already entered a trade
         break if num_trades_required == 0
         note = "#{date} Enter long signal."
         note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
-        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}"
-        trade = Trade.create!(stock_id: stock.id, longshort: 'long', enter_signal_date: date, note: note)
+        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} > SMAVG #{stock_date.smavg_10d}" if MA
+        note << "\n RSI #{stock_date.rsi}" if RSI
+        trade = Trade.create!(stock_id: stock_date.stock.id, longshort: 'long', enter_signal_date: date, note: note)
         num_trades_required = num_trades_required - 1
       end
     end
@@ -101,14 +102,15 @@ class Trade < ActiveRecord::Base
       num_trades_required = MAX_NUMBER_OF_STOCKS - Trade.short.active.count + Trade.short.exit_signaled.count
 
       # Only get # of new trades required
-      stock_dates = StockDate.where(date: date, fund_short_enter: true, tech_short_enter: true, fund_long_enter: false).('order by short_fund_rank ASC')
+      stock_dates = StockDate.where(date: date, fund_short_enter: true, tech_short_enter: true, fund_long_enter: false).order('short_fund_rank ASC')
       stock_dates.each_with_index do |stock_date|
         next if stock_date.stock.trades.entered.first # Skip if we already entered a trade
         break if num_trades_required == 0
         note = "#{date} Enter short signal."
         note << "\n Fundamentals rank #{stock_date.short_fund_rank}."
-        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}"
-        trade = Trade.create!(stock_id: stock.id, longshort: 'short', enter_signal_date: date, note: note)
+        note << "\n Technical 10 day WMAVG #{stock_date.wmavg_10d} < SMAVG #{stock_date.smavg_10d}" if MA
+        note << "\n RSI #{stock_date.rsi}" if RSI
+        trade = Trade.create!(stock_id: stock_date.stock.id, longshort: 'short', enter_signal_date: date, note: note)
         num_trades_required = num_trades_required - 1
       end
     end

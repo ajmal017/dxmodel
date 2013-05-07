@@ -35,7 +35,10 @@ class StockDate < ActiveRecord::Base
   def calc_ma_signals
     raise self.inspect unless wmavg_10d.present? and smavg_10d.present?
     self.ma_long_enter = (wmavg_10d > smavg_10d) if MA_LONG_ENTER 
+    self.ma_long_exit = (wmavg_10d < smavg_10d) if MA_LONG_EXIT
+
     self.ma_short_enter = (wmavg_10d < smavg_10d) if MA_SHORT_ENTER 
+    self.ma_short_exit = (wmavg_10d > smavg_10d) if MA_SHORT_EXIT
   end
 
   def calc_rsi_signals
@@ -54,11 +57,11 @@ class StockDate < ActiveRecord::Base
 
 
   def calc_fund_signals
-    stock_date.fund_long_enter = true if stock_date.long_fund_rank <= LONG_ENTER_RANK_THRESHOLD 
-    stock_date.fund_long_exit = true if stock_date.long_fund_rank > LONG_EXIT_RANK_THRESHOLD 
+    self.fund_long_enter = true if long_fund_rank <= LONG_ENTER_RANK_THRESHOLD 
+    self.fund_long_exit = true if long_fund_rank > LONG_EXIT_RANK_THRESHOLD 
 
-    stock_date.fund_short_enter = true if stock_date.short_fund_rank <= SHORT_ENTER_RANK_THRESHOLD 
-    stock_date.fund_short_exit = true if stock_date.short_fund_rank > SHORT_EXIT_RANK_THRESHOLD 
+    self.fund_short_enter = true if short_fund_rank <= SHORT_ENTER_RANK_THRESHOLD 
+    self.fund_short_exit = true if short_fund_rank > SHORT_EXIT_RANK_THRESHOLD 
   end
 
 end
