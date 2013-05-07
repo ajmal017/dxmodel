@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130424065200) do
+ActiveRecord::Schema.define(:version => 20130506075445) do
 
   create_table "fx_rates", :force => true do |t|
     t.date     "date"
@@ -56,12 +56,10 @@ ActiveRecord::Schema.define(:version => 20130424065200) do
     t.float    "long_fund_score",                                             :default => 0.0
     t.integer  "long_fund_rank_by_industry"
     t.integer  "long_fund_rank"
-    t.string   "long_fund_signal"
     t.string   "long_tech_signal"
     t.float    "short_fund_score",                                            :default => 0.0
     t.integer  "short_fund_rank_by_industry"
     t.integer  "short_fund_rank"
-    t.string   "short_fund_signal"
     t.string   "short_tech_signal"
     t.datetime "created_at",                                                                   :null => false
     t.datetime "updated_at",                                                                   :null => false
@@ -80,6 +78,23 @@ ActiveRecord::Schema.define(:version => 20130424065200) do
     t.decimal  "wmavg_10d",                    :precision => 20, :scale => 6, :default => 0.0
     t.decimal  "smavg_10d",                    :precision => 20, :scale => 6, :default => 0.0
     t.decimal  "vwap",                         :precision => 20, :scale => 6, :default => 0.0
+    t.boolean  "ma_long_enter"
+    t.boolean  "ma_long_exit"
+    t.boolean  "ma_short_enter"
+    t.boolean  "ma_short_exit"
+    t.boolean  "rsi_long_enter"
+    t.boolean  "rsi_long_exit"
+    t.boolean  "rsi_short_enter"
+    t.boolean  "rsi_short_exit"
+    t.boolean  "fund_long_enter"
+    t.boolean  "fund_long_exit"
+    t.boolean  "fund_short_enter"
+    t.boolean  "fund_short_exit"
+    t.boolean  "tech_long_enter"
+    t.boolean  "tech_long_exit"
+    t.boolean  "tech_short_enter"
+    t.boolean  "tech_short_exit"
+    t.float    "rsi"
   end
 
   add_index "stock_dates", ["date"], :name => "index_stock_dates_on_date"

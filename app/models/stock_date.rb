@@ -29,4 +29,36 @@ class StockDate < ActiveRecord::Base
 #  validates :wmavg_10d, :presence => true
 #  validates :smavg_10d, :presence => true
 
+
+
+  # ------------- Instance Methods -----------------
+  def calc_ma_signals
+    raise self.inspect unless wmavg_10d.present? and smavg_10d.present?
+    self.ma_long_enter = (wmavg_10d > smavg_10d) if MA_LONG_ENTER 
+    self.ma_short_enter = (wmavg_10d < smavg_10d) if MA_SHORT_ENTER 
+  end
+
+  def calc_rsi_signals
+    raise self.inspect unless rsi.present? 
+    self.rsi_long_enter = rsi < RSI_OVERBOUGHT if RSI_LONG_ENTER 
+    self.rsi_short_enter = rsi > RSI_OVERSOLD if RSI_SHORT_ENTER 
+  end
+
+  def calc_tech_signals
+    self.tech_long_enter = ((RSI_LONG_ENTER ? rsi_long_enter : true) and (MA_LONG_ENTER ? ma_long_enter : true))
+    self.tech_long_exit =  ((RSI_LONG_EXIT ? rsi_long_exit : true) and (MA_LONG_EXIT ? ma_long_exit : true))
+
+    self.tech_short_enter = ((RSI_SHORT_ENTER ? rsi_short_enter : true) and (MA_SHORT_ENTER ? ma_short_enter : true))
+    self.tech_short_exit =  ((RSI_SHORT_EXIT ? rsi_short_exit : true) and (MA_SHORT_EXIT ? ma_short_exit : true))
+  end
+
+
+  def calc_fund_signals
+    stock_date.fund_long_enter = true if stock_date.long_fund_rank <= LONG_ENTER_RANK_THRESHOLD 
+    stock_date.fund_long_exit = true if stock_date.long_fund_rank > LONG_EXIT_RANK_THRESHOLD 
+
+    stock_date.fund_short_enter = true if stock_date.short_fund_rank <= SHORT_ENTER_RANK_THRESHOLD 
+    stock_date.fund_short_exit = true if stock_date.short_fund_rank > SHORT_EXIT_RANK_THRESHOLD 
+  end
+
 end
