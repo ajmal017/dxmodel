@@ -65,11 +65,11 @@ class StockDatesController < ApplicationController
             stock_date = StockDate.where({stock_id: stock.id, date: date}).first
             next if stock_date.nil?  # skip unless we have rank data for stock on date
 
-            stock_date.calc_fund_signal
+            stock_date.calc_fund_signals
 
-            stock_date.calc_ma_signal if MA
-            stock_date.calc_rsi_signal if RSI
-            stock_date.calc_tech_signal
+            stock_date.calc_ma_signals if MA
+            stock_date.calc_rsi_signals if RSI
+            stock_date.calc_tech_signals
             stock_date.save!
           end
 
