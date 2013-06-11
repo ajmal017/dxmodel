@@ -1,8 +1,0 @@
-COUNTRY = "AP"
-INDEX_TICKER = 'HSI'
-INDEX_NAME = 'Hong Kong Hang Seng Index'
-CURRENCIES = ["USD", "SGD", "HKD", "CNY"]
-
-# Fundamentals
-ENTER_RANK_THRESHOLD = 20
-EXIT_RANK_THRESHOLD = 30
