@@ -48,11 +48,11 @@ class StockDate < ActiveRecord::Base
   end
 
   def calc_tech_signals
-    self.tech_long_enter = ((RSI_LONG_ENTER ? rsi_long_enter : true) and (MA_LONG_ENTER ? ma_long_enter : true))
-    self.tech_long_exit =  ((RSI_LONG_EXIT ? rsi_long_exit : true) and (MA_LONG_EXIT ? ma_long_exit : true))
+    self.tech_long_enter = (((RSI and RSI_LONG_ENTER) ? rsi_long_enter : true) and (MA_LONG_ENTER ? ma_long_enter : true))
+    self.tech_long_exit =  (((RSI and RSI_LONG_EXIT) ? rsi_long_exit : true) and (MA_LONG_EXIT ? ma_long_exit : true))
 
-    self.tech_short_enter = ((RSI_SHORT_ENTER ? rsi_short_enter : true) and (MA_SHORT_ENTER ? ma_short_enter : true))
-    self.tech_short_exit =  ((RSI_SHORT_EXIT ? rsi_short_exit : true) and (MA_SHORT_EXIT ? ma_short_exit : true))
+    self.tech_short_enter = (((RSI and RSI_SHORT_ENTER) ? rsi_short_enter : true) and (MA_SHORT_ENTER ? ma_short_enter : true))
+    self.tech_short_exit =  (((RSI and RSI_SHORT_EXIT) ? rsi_short_exit : true) and (MA_SHORT_EXIT ? ma_short_exit : true))
   end
 
 
