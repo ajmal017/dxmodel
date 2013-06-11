@@ -167,7 +167,7 @@ private
       stock_dates.wmavg_10d =  ['','N.A.',nil].include?(row['WMAVG']) ? nil : row['WMAVG']
       stock_dates.smavg_10d =  ['','N.A.',nil].include?(row['SMAVG']) ? nil : row['SMAVG']
 
-      stock_dates.rsi =  ['','N.A.',nil].include?(row['RSI']) ? nil : row['RSI']
+      stock_dates.rsi =  ['','N.A.',nil].include?(row['RSI']) ? nil : row['RSI'] if RSI
 
       stock_dates.vwap =  ['','N.A.',nil].include?(row['VWAP']) ? nil : row['VWAP']
 
