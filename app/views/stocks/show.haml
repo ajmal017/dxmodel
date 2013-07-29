@@ -45,12 +45,12 @@
       %tr
         %td= stock_date.date
         %td.divider
-        %td= stock_date.long_fund_signal.try(:capitalize) || ''
+        %td= stock_date.long_fund_signal || ''
         %td= stock_date.long_fund_rank || ''
         %td= stock_date.long_fund_score || ''
         %td= stock_date.long_fund_rank_by_industry || ''
         %td.divider
-        %td= stock_date.short_fund_signal.try(:capitalize) || ''
+        %td= stock_date.short_fund_signal || ''
         %td= stock_date.short_fund_rank || ''
         %td= stock_date.short_fund_score || ''
         %td= stock_date.short_fund_rank_by_industry || ''
