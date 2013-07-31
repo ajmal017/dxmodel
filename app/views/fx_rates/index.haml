@@ -17,6 +17,10 @@
       %th USDEUR
     - if CURRENCIES.include?('JPY')
       %th USDJPY
+    - if CURRENCIES.include?('AUD')
+      %th USDAUD
+    - if CURRENCIES.include?('NZD')
+      %th USDNZD
   %tbody
     - @fx_rates.each do |fx_rate|
       %tr
@@ -35,3 +39,7 @@
           %td= fx_rate.usdeur
         - if CURRENCIES.include?('JPY')
           %td= fx_rate.usdjpy
+        - if CURRENCIES.include?('AUD')
+          %td= fx_rate.usdaud
+        - if CURRENCIES.include?('NZD')
+          %td= fx_rate.usdnzd
