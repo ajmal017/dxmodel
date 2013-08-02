@@ -8,6 +8,8 @@ class FxRate < ActiveRecord::Base
   validates :usdjpy, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('JPY') }
   validates :usdgbp, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('GBp') }
   validates :usdeur, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('EUR') }
+  validates :usdaud, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('AUD') }
+  validates :usdnzd, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('NZD') }
 
 
   default_scope order('fx_rates.date DESC')
