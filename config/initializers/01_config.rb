@@ -4,7 +4,7 @@ MAX_NUMBER_OF_STOCKS = 30  # E.g. 30 long AND 30 short
 
 
 COUNTRY = "AU"
-CURRENCIES = ["ASD", "NZD", "USD"]
+CURRENCIES = ["AUD", "NZD", "USD"]
 
 # Index
 INDEX_TICKER = "AS51"
