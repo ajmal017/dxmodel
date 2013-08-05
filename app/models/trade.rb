@@ -292,6 +292,10 @@ class Trade < ActiveRecord::Base
       local_value_on_date(date) / fx_rate.usdgbp 
     when 'EUR'
       local_value_on_date(date) / fx_rate.usdeur 
+    when 'AUD'
+      local_value_on_date(date) / fx_rate.usdaud 
+    when 'NZD'
+      local_value_on_date(date) / fx_rate.usdnzd
     when 'USD'
       local_value_on_date(date)
     end
