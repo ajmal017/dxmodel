@@ -44,6 +44,8 @@
               %li= link_to 'Day', day_reports_path
               %li= link_to 'In Out', inout_reports_path
 
+      = image_tag("/assets/flags/#{Rails.env.gsub(/\.dxmodel/,'')}.png", id: 'flag', alt: Rails.env) if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
+
       .session
         - if current_user
           = current_user.email
@@ -53,4 +55,3 @@
 
       %span.date= "EOD #{@date.strftime("%b %d, %Y").to_s}" if @date
 
-      = image_tag("/assets/flags/#{Rails.env.gsub(/\.dxmodel/,'')}.png", id: 'flag', alt: Rails.env) if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
