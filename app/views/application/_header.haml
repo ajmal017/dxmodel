@@ -2,7 +2,7 @@
   .navbar-inner
     .container
       %span.brand 
-        = link_to "DX Model #{ Rails.env.scan(/(uk|us|ap|jp).dxmodel/).try(:first).try(:first).try(:upcase) || '' }", root_path
+        = link_to "DX Model #{ Rails.env.scan(/(uk|us|ap|jp|au).dxmodel/).try(:first).try(:first).try(:upcase) || '' }", root_path
 
       .nav-collapse.collapse.navbar-responsive-collapse
         %ul.nav
@@ -52,3 +52,5 @@
           = link_to "Log in", log_in_path
 
       %span.date= "EOD #{@date.strftime("%b %d, %Y").to_s}" if @date
+
+      = image_tag "/flags/#{Rails.env}.png"
