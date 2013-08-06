@@ -1,6 +1,8 @@
 .navbar
   .navbar-inner
     .container
+      = image_tag("/assets/flags/#{Rails.env.gsub(/\.dxmodel/,'')}.png", id: 'flag', alt: Rails.env) if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
+
       %span.brand 
         =# link_to "DX Model #{ Rails.env.scan(/(uk|us|ap|jp|au).dxmodel/).try(:first).try(:first).try(:upcase) || '' }", root_path
         = link_to "DX Model", root_path
@@ -44,8 +46,6 @@
               %li= link_to 'Profit & loss', pnl_reports_path
               %li= link_to 'Day', day_reports_path
               %li= link_to 'In Out', inout_reports_path
-
-      = image_tag("/assets/flags/#{Rails.env.gsub(/\.dxmodel/,'')}.png", id: 'flag', alt: Rails.env) if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
 
       .session
         - if current_user
