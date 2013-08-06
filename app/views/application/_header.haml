@@ -53,4 +53,4 @@
 
       %span.date= "EOD #{@date.strftime("%b %d, %Y").to_s}" if @date
 
-      = image_tag("/flags/#{Rails.env}.png") if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
+      = image_tag("/assets/flags/#{Rails.env.gsub(/\.dxmodel/,'')}.png", id: 'flag', alt: Rails.env) if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
