@@ -3,16 +3,23 @@ MAX_PER_ENTRY = 1000000
 MAX_NUMBER_OF_STOCKS = 30  # E.g. 30 long AND 30 short
 
 
+# Country
 COUNTRY = "US"
 CURRENCIES = ["USD"]
 
+# Index
+INDEX_TICKER = "INDU"
+INDEX_NAME = "Dow Jones Industrial Average"
 
+
+# Fundamentals
 LONG_ENTER_RANK_THRESHOLD  = 20
 LONG_EXIT_RANK_THRESHOLD   = 75
 SHORT_ENTER_RANK_THRESHOLD = 20
 SHORT_EXIT_RANK_THRESHOLD  = 75
 
 
+#Technicals
 MA = true
 MA_LONG_ENTER  = true  # Use MA signal to enter long?
 MA_LONG_EXIT   = false # Use MA signal to exit long?

@@ -85,7 +85,7 @@
           = 'Enter' if stock_date.tech_short_enter
           = 'Exit' if stock_date.tech_short_exit
 
-        %td.short= stock_date.short_fund_signal.try(:capitalize) || ''
+        %td.short
           = 'Enter' if stock_date.fund_short_enter
           = 'Exit' if stock_date.fund_short_exit
 
