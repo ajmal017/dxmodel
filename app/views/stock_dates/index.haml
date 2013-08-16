@@ -67,15 +67,28 @@
         %td= stock_date.industry.name
 
         %td.long{:style => "background-color: lightgray;"}
-        %td.long= stock_date.long_tech_signal.try(:capitalize) || ''
-        %td.long= stock_date.long_fund_signal.try(:capitalize) || ''
+        %td.long
+          = 'Enter' if stock_date.tech_long_enter
+          = 'Exit' if stock_date.tech_long_exit
+
+        %td.long
+          = 'Enter' if stock_date.fund_long_enter
+          = 'Exit' if stock_date.fund_long_exit
+
+
         %td.long= stock_date.long_fund_rank || ''
         %td.long= stock_date.long_fund_score || ''
         %td.long= stock_date.long_fund_rank_by_industry || ''
 
         %td.short{:style => "background-color: lightgray;"}
-        %td.short= stock_date.short_tech_signal.try(:capitalize) || ''
+        %td.short
+          = 'Enter' if stock_date.tech_short_enter
+          = 'Exit' if stock_date.tech_short_exit
+
         %td.short= stock_date.short_fund_signal.try(:capitalize) || ''
+          = 'Enter' if stock_date.fund_short_enter
+          = 'Exit' if stock_date.fund_short_exit
+
         %td.short= stock_date.short_fund_rank || ''
         %td.short= stock_date.short_fund_score || ''
         %td.short= stock_date.short_fund_rank_by_industry || ''
