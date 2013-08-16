@@ -10,12 +10,15 @@ CURRENCIES = ["AUD", "NZD", "USD"]
 INDEX_TICKER = "AS51"
 INDEX_NAME = "ASX 200"
 
+
+# Fundamentals
 LONG_ENTER_RANK_THRESHOLD  = 20
 LONG_EXIT_RANK_THRESHOLD   = 30
 SHORT_ENTER_RANK_THRESHOLD = 20
 SHORT_EXIT_RANK_THRESHOLD  = 30
 
 
+#Technicals
 MA = true
 MA_LONG_ENTER  = true  # Use MA signal to enter long?
 MA_LONG_EXIT   = false # Use MA signal to exit long?
