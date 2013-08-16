@@ -8,10 +8,6 @@ INDEX_TICKER = 'HSI'
 INDEX_NAME = 'Hong Kong Hang Seng Index'
 CURRENCIES = ["USD", "SGD", "HKD", "CNY"]
 
-# Index
-INDEX_TICKER = "INDU"
-INDEX_NAME = "Dow Jones Industrial Average"
-
 
 # Fundamentals
 LONG_ENTER_RANK_THRESHOLD  = 20
