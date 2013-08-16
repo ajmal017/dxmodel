@@ -21,3 +21,4 @@
 
 /config/initializers/01_config.rb
 /config/initializers/02_country.rb
+/config/deploy.rb

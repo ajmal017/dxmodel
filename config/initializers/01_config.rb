@@ -7,16 +7,11 @@ CURRENCIES = ["GBp","EUR"]
 INDEX_TICKER = 'UKX'
 INDEX_NAME = 'FTSE 100 Index'
 
-
 # Fundamentals
 LONG_ENTER_RANK_THRESHOLD = 20
 LONG_EXIT_RANK_THRESHOLD = 30
-SHORT_ENTER_RANK_THRESHOLD = 20
-SHORT_EXIT_RANK_THRESHOLD = 30
 
-
-
-# TECHNICALS
+#Technicals
 MA = true
 MA_LONG_ENTER = true # Use MA signal to enter long?
 MA_LONG_EXIT = true # Use MA signal to exit long?
