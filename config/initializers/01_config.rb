@@ -10,6 +10,8 @@ INDEX_NAME = 'FTSE 100 Index'
 # Fundamentals
 LONG_ENTER_RANK_THRESHOLD = 20
 LONG_EXIT_RANK_THRESHOLD = 30
+SHORT_ENTER_RANK_THRESHOLD = 20
+SHORT_EXIT_RANK_THRESHOLD  = 30
 
 #Technicals
 MA = true
@@ -26,3 +28,8 @@ RSI_LONG_ENTER = true  # Use RSI signal to enter long?
 RSI_LONG_EXIT = false  # Use RSI signal to exit long?
 RSI_SHORT_ENTER = true  # Use RSI signal to enter long?
 RSI_SHORT_EXIT = false  # Use RSI signal to exit short?
+
+
+
+
+
