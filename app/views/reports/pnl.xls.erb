@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Date</Data></Cell>
+        <Cell><Data ss:Type="String">Realized</Data></Cell>
+        <Cell><Data ss:Type="String">Unrealized</Data></Cell>
+        <Cell><Data ss:Type="String">Total</Data></Cell>
+      </Row>
+    <% @totals.each_with_index do |total, index| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= Time.at(total[0]/1000).to_date.to_s %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @realized[index][1] if @realized[index][0] == total[0] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @unrealized[index][1] if @unrealized[index][0] == total[0] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= total[1] %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

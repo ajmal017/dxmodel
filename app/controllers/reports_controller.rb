@@ -1,4 +1,5 @@
 class ReportsController < ApplicationController
+  require 'csv'
   include ActionView::Helpers::NumberHelper
 
 #  caches_page :exposure, :pnl, :day, :inout
@@ -41,6 +42,14 @@ class ReportsController < ApplicationController
       if index_date.present? 
         date_index_percentage_change = ( (index_date.close.to_f - @first_index_date.close.to_f) / @first_index_date.close.to_f ) * 100
         @index << [date.to_datetime.to_i * 1000, date_index_percentage_change.round(2) ] 
+      end
+    end
+
+    respond_to do |format|
+      format.html
+      format.csv
+      format.xls do
+        render layout: false
       end
     end
 
