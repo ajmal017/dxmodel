@@ -20,4 +20,8 @@ class Stock < ActiveRecord::Base
   def unit
     currency + '&nbsp;'.html_safe
   end
+
+  def country_ticker
+    country + ' ' + ticker
+  end
 end
