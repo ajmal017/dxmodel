@@ -8,7 +8,7 @@ namespace :backtest do
     wipe_trades && wipe_signals
 
     # Loop through days
-    dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)[0..1]
+    dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)
     dates.each do |date, index|
       puts "#################\n" + date.to_s
 
