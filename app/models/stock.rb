@@ -1,5 +1,4 @@
 class Stock < ActiveRecord::Base
-  attr_accessible :ticker, :country, :industry_id, :name, :risk_funda_screen1_score, :currency
 
   has_many :stock_dates, :dependent => :destroy
   has_many :trades, :dependent => :destroy
@@ -19,6 +18,10 @@ class Stock < ActiveRecord::Base
 
   def unit
     currency + '&nbsp;'.html_safe
+  end
+
+  def ticker_country
+    ticker + ' ' + country
   end
 
   def country_ticker

@@ -5,6 +5,10 @@
 #percentage_pnl
 #usd_pnl{:style => "margin-top: 60px"}
 
+%table
+  %tr
+    %td Trades per day
+    %td= @dx_volume
 
 
 :javascript
@@ -74,3 +78,6 @@
       yAxis: { title: { text: null } }
     });
   });
+
+
+
