@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Ticker Country</Data></Cell>
+        <% @dates.each_with_index do |date| %>
+          <Cell><Data ss:Type="String"><%= date.strftime("%d/%m/%Y") %></Data></Cell>
+        <% end %>
+      </Row>
+
+
+      <% @stocks.each_with_index do |stock| %>
+        <Row>
+          <Cell><Data ss:Type="String"><%= stock.ticker_country %></Data></Cell>
+
+          <% @dates.each_with_index do |date| %>
+            <% stock_date = StockDate.where({stock_id: stock.id, date: date}).first %>
+            <Cell><Data ss:Type="Number"><%= stock_date.try(:close) %></Data></Cell>
+          <% end %>
+        </Row>
+      <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

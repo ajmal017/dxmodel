@@ -1,5 +1,4 @@
 class StockDate < ActiveRecord::Base
-  attr_accessible :date, :risk_funda_screen1_rank_by_industry, :stock_id
 
   belongs_to :stock
   has_one :industry, :through => :stock
@@ -57,11 +56,11 @@ class StockDate < ActiveRecord::Base
 
 
   def calc_fund_signals
-    self.fund_long_enter = true if long_fund_rank <= LONG_ENTER_RANK_THRESHOLD 
-    self.fund_long_exit = true if long_fund_rank > LONG_EXIT_RANK_THRESHOLD 
+    self.fund_long_enter = true if long_fund_rank.present? and long_fund_rank <= LONG_ENTER_RANK_THRESHOLD 
+    self.fund_long_exit = true if long_fund_rank.present? and long_fund_rank > LONG_EXIT_RANK_THRESHOLD 
 
-    self.fund_short_enter = true if short_fund_rank <= SHORT_ENTER_RANK_THRESHOLD 
-    self.fund_short_exit = true if short_fund_rank > SHORT_EXIT_RANK_THRESHOLD 
+    self.fund_short_enter = true if short_fund_rank.present? and short_fund_rank <= SHORT_ENTER_RANK_THRESHOLD 
+    self.fund_short_exit = true if short_fund_rank.present? and  short_fund_rank > SHORT_EXIT_RANK_THRESHOLD 
   end
 
 end

@@ -2,7 +2,9 @@ source 'https://rubygems.org'
 
 gem 'capistrano'
 
-gem 'rails'
+gem "rails", '~>4.0.0'
+gem 'activerecord-session_store'
+gem 'actionpack-action_caching'
 gem 'mysql2'
 gem 'haml-rails'
 gem 'state_machine'
@@ -17,14 +19,12 @@ gem 'whenever', :require => false
 
 gem "bcrypt-ruby", :require => "bcrypt"
 
-
-# Gems used only for assets and not required in production environments by default.
-group :assets do
-  gem 'coffee-rails', '~> 3.2.1'
-  gem 'uglifier', '>= 1.0.3'
-  gem "therubyracer", '~> 0.10.2'
-  gem 'sass-rails',   '~> 3.2.3'
-end
+gem 'sass-rails', '>= 3.2'
+gem "bootstrap-sass", github: "thomas-mcdonald/bootstrap-sass", branch: "3"
+gem 'font-awesome-sass-rails'
+gem 'coffee-rails', '4.0.0'
+gem 'uglifier', '>= 1.3.0'
+gem "therubyracer", platform: :ruby
 
 
 group :development do
