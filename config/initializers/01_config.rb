@@ -2,10 +2,18 @@ AUM = 20000000.0
 MAX_PER_ENTRY = 1000000
 MAX_NUMBER_OF_STOCKS = 30  # E.g. 30 long AND 30 short
 
+<<<<<<< HEAD
 COUNTRY = "JP"
 CURRENCIES = ["JPY", "USD"]
 INDEX_TICKER = "NKY"
 INDEX_NAME = "Nikkei 225"
+=======
+
+COUNTRY = "AP"
+INDEX_TICKER = 'HSI'
+INDEX_NAME = 'Hong Kong Hang Seng Index'
+CURRENCIES = ["USD", "SGD", "HKD", "CNY"]
+>>>>>>> master
 
 
 # Fundamentals
@@ -24,9 +32,18 @@ MA_SHORT_EXIT  = false # Use MA signal to exit short?
 
 
 RSI = false
+<<<<<<< HEAD
 RSI_OVERBOUGHT  = 70.0
 RSI_OVERSOLD    = 35.0
 RSI_LONG_ENTER  = true  # Use RSI signal to enter long?
 RSI_LONG_EXIT   = false # Use RSI signal to exit long?
 RSI_SHORT_ENTER = true  # Use RSI signal to enter long?
 RSI_SHORT_EXIT  = false # Use RSI signal to exit short?
+=======
+#RSI_OVERBOUGHT  = 70.0
+#RSI_OVERSOLD    = 35.0
+#RSI_LONG_ENTER  = true  # Use RSI signal to enter long?
+#RSI_LONG_EXIT   = false # Use RSI signal to exit long?
+#RSI_SHORT_ENTER = true  # Use RSI signal to enter long?
+#RSI_SHORT_EXIT  = false # Use RSI signal to exit short?
+>>>>>>> master

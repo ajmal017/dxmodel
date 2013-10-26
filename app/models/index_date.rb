@@ -1,5 +1,4 @@
 class IndexDate < ActiveRecord::Base
-  attr_accessible :index, :date, :close
 
   before_save  :capitalize_index
 

@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   require 'csv'
   include ActionView::Helpers::NumberHelper
 
-#  caches_page :exposure, :pnl, :day, :inout
+  caches_action :exposure, :pnl, :day, :inout, layout: false
   
   def pnl
     #dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
@@ -12,6 +12,8 @@ class ReportsController < ApplicationController
     @totals = []
     @percentages = []
     @index = []
+
+    @dx_volume = []
 
     dates.each do |date|
       trades = Trade.where("enter_date < ?", date)
@@ -43,6 +45,8 @@ class ReportsController < ApplicationController
         date_index_percentage_change = ( (index_date.close.to_f - @first_index_date.close.to_f) / @first_index_date.close.to_f ) * 100
         @index << [date.to_datetime.to_i * 1000, date_index_percentage_change.round(2) ] 
       end
+
+      @dx_volume = Trade.count.to_f / dates.count.to_f
     end
 
     respond_to do |format|
@@ -92,6 +96,17 @@ class ReportsController < ApplicationController
 
   def aum
     render :text => 'todo'
+  end
+
+
+  def stock_dates
+    @dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)
+    @stocks = Stock.order('country ASC, ticker ASC').all
+    respond_to do |format|
+      format.xls do
+        render layout: false
+      end
+    end
   end
 
 end
