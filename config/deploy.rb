@@ -1,69 +1,22 @@
-# Capistrano sequence
-#  deploy:setup
-#    after deploy:setup, db:setup
-#
-#  deploy
-#    update 
-#      update_code
-#        finalize_update
-#          before finalize_update, assets:symlink
-#          after finalize_update, bundle:install
-#          after finalize_update, db:symlink
-#        after update_code, 'assets:precompile'
-#      restart
-
-load 'deploy/assets'
-require 'bundler/capistrano'
-require 'capistrano/ext/multistage'
-
-set :stages, %w(ap.dxmodel uk.dxmodel us.dxmodel jp.dxmodel au.dxmodel)
-set :default_stage, "ap.dxmodel"
-
-#Whenever/cron
-set :whenever_command, "bundle exec whenever"
-require 'whenever/capistrano'
-
-# Database
-$:.unshift File.join(File.dirname(__FILE__), './deploy') 
-
-# Server Details
-default_run_options[:pty] = true
-ssh_options[:forward_agent] = true
-set :deploy_via, :remote_cache
-set(:deploy_to) { "/var/www/#{rails_env}.andywatts.com" }
-set :user, "dxmodel"
-set :use_sudo, false
-
-# Bundler
-set :bundle_without, [:darwin, :development, :test]  # Don't install dev, or test gems
-
-# Github 
-set :scm, :git
-set :scm_verbose, true
-set :scm_username, "andywatts"
-set :repository, "git@github.com:andywatts/dxmodel.git"
-set :git_enable_submodules, 1
-set :git_shallow_clone, 1
-
-# Runtime Dependencies
-depend :remote, :gem, "bundler", ">=1.0.7"
+set :application, 'DX Model'
+set :repo_url, 'git@github.com:andywatts/dxmodel.git'
+set :format, :pretty
+set :log_level, :info 
+set :pty, true
+set :keep_releases, 5
+# set :linked_files, %w{config/database.yml}
+# set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
 
-# Setup (new server)
-task :after_setup, :roles => :app do
-end
-after 'deploy:setup', 'after_setup'
+# Roles
+role :app, %w{dxmodel@dxmodel.andywatts.com}
+role :web, %w{dxmodel@dxmodel.andywatts.com}
+role :db,  %w{dxmodel@dxmodel.andywatts.com}
+
+# Servers
+server 'dxmodel.andywatts.com', user: 'dxmodel', roles: %w{web app}, my_property: :my_value
 
 
-# Deploy
 namespace :deploy do
-  task :start, :roles => :app do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
-  task :restart, :roles => :app do
-    run "touch #{current_path}/tmp/restart.txt"
-  end
+  after :finishing, 'deploy:cleanup'
 end
-task :after_deploy, :roles => :app do
-end
-after 'deploy:finalize_update', 'after_deploy'

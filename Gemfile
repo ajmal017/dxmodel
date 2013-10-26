@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'capistrano', '~> 3.0.0'
-
 gem "rails", '~>4.0.0'
 gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
@@ -28,6 +26,8 @@ gem "therubyracer", platform: :ruby
 
 
 group :development do
+  gem 'capistrano',  '~> 3.0.0'
+  gem 'capistrano-rails', '~> 1.0.0'
   gem 'thin'
   gem "debugger"
   #gem "rack-mini-profiler"
