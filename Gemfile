@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'capistrano'
+gem 'capistrano', '~> 3.0.0'
 
 gem "rails", '~>4.0.0'
 gem 'activerecord-session_store'

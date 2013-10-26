@@ -247,7 +247,7 @@ DEPENDENCIES
   activerecord-session_store
   bcrypt-ruby
   bootstrap-sass!
-  capistrano
+  capistrano (~> 3.0.0)
   capybara (>= 1.1.1)
   coffee-rails (= 4.0.0)
   database_cleaner (>= 0.6.7)
