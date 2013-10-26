@@ -60,16 +60,16 @@ class Trade < ActiveRecord::Base
   end
 
   # ------------- Scopes  --------------------
-  scope :enter_signaled, where("state = 'enter_signaled'")
-  scope :entered, where("state = 'entered'")
-  scope :exit_signaled, where("state = 'exit_signaled'")
-  scope :exited, where("state = 'exited'")
+  scope :enter_signaled, -> { where(state: 'enter_signaled') }
+  scope :entered,        -> { where(state: 'entered') }
+  scope :exit_signaled,  -> { where(state: 'exit_signaled') }
+  scope :exited,         -> { where(state: 'exited') }
 
-  scope :signaled, where("state = 'enter_signaled' or state = 'exit_signaled'")
-  scope :active, where("state = 'entered' or state = 'exit_signaled'")
+  scope :signaled,       -> { where("state = 'enter_signaled' or state = 'exit_signaled'") }
+  scope :active,         -> { where("state = 'entered' or state = 'exit_signaled'") }
 
-  scope :long, where("longshort = 'long'")
-  scope :short, where("longshort = 'short'")
+  scope :long,           -> { where(longshort: 'long') }
+  scope :short,          -> { where(longshort: 'short') }
 
   scope :open_on, lambda{|date| where( "trades.enter_date < ? and (trades.exit_date is null or trades.exit_date > ?)", date, date) }
   scope :closed_on, lambda{|date| where( "trades.exit_date = ?", date) }
@@ -139,6 +139,9 @@ class Trade < ActiveRecord::Base
         # Exit short trade due to fundamentals
         elsif stock_date.fund_short_exit and short_trade = stock.trades.entered.short.try(:first)
           short_trade.exit_signal_date = date
+
+debugger if short_trade.state == 'enter_signaled'
+
           short_trade.signal_exit!
           short_trade.note_will_change!
           short_trade.note << "\n\n#{date} Exit short signal."
