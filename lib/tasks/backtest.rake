@@ -1,5 +1,3 @@
-require 'ruby-debug'
-
 include ActionView::Helpers::DateHelper
 
 namespace :backtest do
@@ -65,11 +63,9 @@ namespace :backtest do
           trade.state = 'exited'
           trade.save!
         else
-debugger
           trade.exit_signal_date = nil
           trade.state = 'entered'
           trade.save!
-puts 's'
         end
       end
       puts "#{date.to_s} - Trades entered and exited"
