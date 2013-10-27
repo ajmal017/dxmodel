@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130730025133) do
+ActiveRecord::Schema.define(version: 20131026144523) do
 
   create_table "fx_rates", force: true do |t|
     t.date     "date"
@@ -127,7 +127,7 @@ ActiveRecord::Schema.define(version: 20130730025133) do
     t.decimal  "exit_local_value",  precision: 20, scale: 6
     t.decimal  "exit_usd_value",    precision: 20, scale: 6
     t.decimal  "exit_usd_fx_rate",  precision: 14, scale: 6
-    t.string   "note"
+    t.text     "note"
     t.datetime "created_at",                                 null: false
     t.datetime "updated_at",                                 null: false
   end
