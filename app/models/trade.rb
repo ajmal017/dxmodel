@@ -1,7 +1,4 @@
 class Trade < ActiveRecord::Base
-  attr_accessible :state, :stock_id, :enter_signal_date, :quantity, :longshort, :currency,
-                  :enter_date, :enter_local_price, :enter_usd_value, :enter_local_value, :enter_usd_fx_rate,
-                  :exit_signal_date, :exit_date, :exit_local_price, :exit_usd_value, :exit_local_value, :exit_usd_fx_rate, :note
 
   # ------------- Associations  --------------------
   belongs_to :stock
@@ -63,16 +60,16 @@ class Trade < ActiveRecord::Base
   end
 
   # ------------- Scopes  --------------------
-  scope :enter_signaled, where("state = 'enter_signaled'")
-  scope :entered, where("state = 'entered'")
-  scope :exit_signaled, where("state = 'exit_signaled'")
-  scope :exited, where("state = 'exited'")
+  scope :enter_signaled, -> { where(state: 'enter_signaled') }
+  scope :entered,        -> { where(state: 'entered') }
+  scope :exit_signaled,  -> { where(state: 'exit_signaled') }
+  scope :exited,         -> { where(state: 'exited') }
 
-  scope :signaled, where("state = 'enter_signaled' or state = 'exit_signaled'")
-  scope :active, where("state = 'entered' or state = 'exit_signaled'")
+  scope :signaled,       -> { where("state = 'enter_signaled' or state = 'exit_signaled'") }
+  scope :active,         -> { where("state = 'entered' or state = 'exit_signaled'") }
 
-  scope :long, where("longshort = 'long'")
-  scope :short, where("longshort = 'short'")
+  scope :long,           -> { where(longshort: 'long') }
+  scope :short,          -> { where(longshort: 'short') }
 
   scope :open_on, lambda{|date| where( "trades.enter_date < ? and (trades.exit_date is null or trades.exit_date > ?)", date, date) }
   scope :closed_on, lambda{|date| where( "trades.exit_date = ?", date) }

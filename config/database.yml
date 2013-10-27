@@ -49,3 +49,7 @@ au.dxmodel:
   database: au.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
+
+staging.dxmodel:
+  <<: *base
+  database: staging.dxmodel
