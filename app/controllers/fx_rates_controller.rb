@@ -24,6 +24,6 @@ class FxRatesController < ApplicationController
 private
  
   def fx_params
-    params.permit!
+    params[:fx_rate].permit!
   end
 end
