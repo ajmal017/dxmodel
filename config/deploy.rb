@@ -22,6 +22,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
+      execute "bundle install --without test development"
       execute "mkdir -p #{current_path}/tmp"
       execute "touch #{release_path.join('tmp/restart.txt')}"
     end
