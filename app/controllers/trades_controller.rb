@@ -64,7 +64,7 @@ class TradesController < ApplicationController
     if request.get?
       flash[:error] = 'To enter a trade, it should have state enter_proposed' and redirect_to :back unless @trade.enter_signaled?
 
-    elsif request.put?
+    elsif request.patch?
       Trade.transaction do
         @trade.attributes = params[:trade]
         @trade.state = 'entered'
@@ -88,7 +88,7 @@ class TradesController < ApplicationController
     if request.get?
       flash[:error] = 'To exit a trade, it should have state exit_proposed' and redirect_to :back unless @trade.exit_signaled?
 
-    elsif request.put?
+    elsif request.patch?
       Trade.transaction do
         @trade.attributes = params[:trade]
         @trade.state = 'exited'
