@@ -18,9 +18,9 @@ Dxmodel::Application.routes.draw do
     end
     member do
       get 'enter'
-      put 'enter'
+      patch 'enter'
       get 'exit'
-      put 'exit'
+      patch 'exit'
     end
   end
 

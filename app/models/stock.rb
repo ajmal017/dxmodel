@@ -27,4 +27,8 @@ class Stock < ActiveRecord::Base
   def country_ticker
     country + ' ' + ticker
   end
+
+  def trading_day? date
+    StockDate.joins(:stock).where(stocks: {country: country}, date: date).count > 0
+  end
 end
