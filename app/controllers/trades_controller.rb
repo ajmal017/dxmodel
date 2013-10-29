@@ -7,7 +7,7 @@ class TradesController < ApplicationController
   end
 
   def create
-    @trade = Trade.new(params[:trade])  
+    @trade = Trade.new(trade_params)
     if @trade.save  
       flash[:success] = "Successfully created trade."  
       expire_report_page_caches
@@ -23,7 +23,7 @@ class TradesController < ApplicationController
 
   def update
     @trade = Trade.find params[:id]
-    if @trade.update_attributes(params[:trade])  
+    if @trade.update_attributes(trade_params)
       flash[:success] = "Successfully updated trade."  
       redirect_to exited_trades_path 
     else
@@ -64,9 +64,9 @@ class TradesController < ApplicationController
     if request.get?
       flash[:error] = 'To enter a trade, it should have state enter_proposed' and redirect_to :back unless @trade.enter_signaled?
 
-    elsif request.put?
+    elsif request.patch?
       Trade.transaction do
-        @trade.attributes = params[:trade]
+        @trade.attributes = trade_params
         @trade.state = 'entered'
 
         if @trade.save
@@ -88,9 +88,9 @@ class TradesController < ApplicationController
     if request.get?
       flash[:error] = 'To exit a trade, it should have state exit_proposed' and redirect_to :back unless @trade.exit_signaled?
 
-    elsif request.put?
+    elsif request.patch?
       Trade.transaction do
-        @trade.attributes = params[:trade]
+        @trade.attributes = trade_params
         @trade.state = 'exited'
 
         if @trade.save
@@ -103,4 +103,9 @@ class TradesController < ApplicationController
     end
   end
 
+private
+  
+  def trade_params
+    params[:trade].permit!
+  end
 end
