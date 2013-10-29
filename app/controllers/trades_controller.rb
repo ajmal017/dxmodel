@@ -106,6 +106,6 @@ class TradesController < ApplicationController
 private
   
   def trade_params
-    params.permit!
+    params[:trade].permit!
   end
 end
