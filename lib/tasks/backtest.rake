@@ -1,6 +1,21 @@
+require 'debugger'
 include ActionView::Helpers::DateHelper
 
 namespace :backtest do
+  desc "Splits"
+  task :splits => [:environment] do |task, args|
+    Stock.order('country ASC, ticker ASC').all.each do |stock|
+      stock.stock_dates.order('date ASC').each_with_index do |stock_date, index|
+        unless index == 0 or stock_date.close.nil? or @yesterday_close.nil?
+          puts "#{stock.country_ticker} #{stock_date.date} #{@yesterday_close} #{stock_date.close}" if (stock_date.close - @yesterday_close).to_f/stock_date.close.to_f > 0.4
+        end
+        @yesterday_close = stock_date.close
+      end
+    end
+  end
+
+
+
   desc "Backtest"
   task :backtest => [:environment] do |task, args|
     time = Time.now
@@ -11,7 +26,7 @@ namespace :backtest do
     dates = FxRate.unscoped.select('distinct date').order('date ASC').collect(&:date)
     dates.each_with_index do |date, index|
 
-      # Loop through stocks
+      # Stock signals
       print "\n#{date.to_s} - Stock signals"
       Stock.order('country ASC, ticker ASC').all.each do |stock|
         stock_date = StockDate.where({stock_id: stock.id, date: date}).first
@@ -27,13 +42,17 @@ namespace :backtest do
         #puts "#{date.to_s} - #{stock.country_ticker} signals complete"
       end
 
-      # Calc trades
-      Trade.propose_exits_missing_stocks date
-      Trade.propose_exits_fundamental date
-      Trade.propose_exits_stop_loss date
-      Trade.propose_entries_long date
-      Trade.propose_entries_short date
-      puts "\n#{date.to_s} - Trade signals complete"
+
+      # Trade signals
+      if StockDate.where(date: date).present?
+        Trade.propose_exits_missing_stocks date
+        Trade.propose_exits_fundamental date
+        Trade.propose_exits_stop_loss date
+        Trade.propose_entries_long date
+        Trade.propose_entries_short date
+        puts "\n#{date.to_s} - Trade signals complete"
+      end
+
 
       # Create trades
       Trade.enter_signaled.each do |trade|
@@ -72,7 +91,6 @@ namespace :backtest do
     end
     puts "Run time: " + distance_of_time_in_words_to_now(time).to_s
   end
-
 
 private
 

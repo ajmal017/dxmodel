@@ -44,6 +44,9 @@ GEM
     atomic (1.1.14)
     bcrypt-ruby (3.1.2)
     builder (3.1.4)
+    byebug (2.3.1)
+      columnize (~> 0.3.6)
+      debugger-linecache (~> 1.2.0)
     capistrano (3.0.0)
       i18n
       rake (>= 10.0.0)
@@ -249,6 +252,7 @@ DEPENDENCIES
   activerecord-session_store
   bcrypt-ruby
   bootstrap-sass!
+  byebug
   capistrano (~> 3.0.0)
   capistrano-rails (~> 1.0.0)
   capybara (>= 1.1.1)
