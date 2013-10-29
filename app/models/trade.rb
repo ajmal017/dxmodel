@@ -84,7 +84,7 @@ class Trade < ActiveRecord::Base
       # Only get # of new trades required
       stock_dates = StockDate.where(date: date, fund_long_enter: true, tech_long_enter: true, fund_short_enter: false).order('stock_dates.long_fund_rank ASC')
       stock_dates.each_with_index do |stock_date|
-        next if stock_date.stock.trades.entered.first # Skip if we already entered a trade
+        next if stock_date.stock.trades.entered.present? # Skip if we already entered a trade
         break if num_trades_required == 0
         note = "#{date} Enter long signal."
         note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
@@ -161,7 +161,8 @@ class Trade < ActiveRecord::Base
     def propose_exits_missing_stocks date
       Trade.entered.each do |trade|
         stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
-        unless stock_date
+
+        if stock_date.blank? and trade.stock.trading_day?(date)
           trade.exit_signal_date = date
           trade.signal_exit! 
           trade.note_will_change!
@@ -174,7 +175,8 @@ class Trade < ActiveRecord::Base
     def propose_exits_stop_loss date
       Trade.entered.each do |trade|
         stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
-        if trade.stop_loss_triggered? stock_date.close, date
+
+        if stock_date and trade.stop_loss_triggered? stock_date.close, date
           trade.exit_signal_date = date
           trade.signal_exit! 
           trade.note_will_change!
