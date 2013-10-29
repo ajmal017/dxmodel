@@ -30,6 +30,7 @@ group :development do
   gem 'capistrano-rails', '~> 1.0.0'
   gem 'thin'
   gem "debugger"
+  gem "byebug"
   #gem "rack-mini-profiler"
 end
 

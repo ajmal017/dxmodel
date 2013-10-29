@@ -84,7 +84,7 @@ class Trade < ActiveRecord::Base
       # Only get # of new trades required
       stock_dates = StockDate.where(date: date, fund_long_enter: true, tech_long_enter: true, fund_short_enter: false).order('stock_dates.long_fund_rank ASC')
       stock_dates.each_with_index do |stock_date|
-        next if stock_date.stock.trades.entered.first # Skip if we already entered a trade
+        next if stock_date.stock.trades.entered.present? # Skip if we already entered a trade
         break if num_trades_required == 0
         note = "#{date} Enter long signal."
         note << "\n Fundamentals rank #{stock_date.long_fund_rank}."
@@ -161,7 +161,8 @@ class Trade < ActiveRecord::Base
     def propose_exits_missing_stocks date
       Trade.entered.each do |trade|
         stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
-        unless stock_date
+
+        if stock_date.blank? and trade.stock.trading_day?(date)
           trade.exit_signal_date = date
           trade.signal_exit! 
           trade.note_will_change!
@@ -174,14 +175,15 @@ class Trade < ActiveRecord::Base
     def propose_exits_stop_loss date
       Trade.entered.each do |trade|
         stock_date = StockDate.where(stock_id: trade.stock_id, date: date).first
-        if trade.stop_loss_triggered? stock_date.close
+
+        if stock_date and trade.stop_loss_triggered? stock_date.close, date
           trade.exit_signal_date = date
           trade.signal_exit! 
           trade.note_will_change!
           if trade.longshort == 'long'
-            trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{trade.holding_period_high}.  Stop loss value: #{trade.stop_loss_value}."
+            trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period high: #{trade.holding_period_high date}.  Stop loss value: #{trade.stop_loss_value date}."
           elsif trade.longshort == 'short'
-            trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period low: #{trade.holding_period_low}.  Stop loss value: #{trade.stop_loss_value}."
+            trade.note << "\n\n#{date} Stop loss signal.  Close: #{stock_date.close}.  Holding period low: #{trade.holding_period_low date}.  Stop loss value: #{trade.stop_loss_value date}."
           end
           trade.save!
         end
@@ -225,38 +227,38 @@ class Trade < ActiveRecord::Base
 
 
   # ------------- Instance Methods -----------------
-  def holding_period_high
+  def holding_period_high date
     stock_date = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s)
-    stock_date = stock_date.where("stock_dates.date < ?", exit_date.to_s) if exited?
+    stock_date = stock_date.where("stock_dates.date < ?", date.to_s)
     stock_date = stock_date.order('stock_dates.close DESC')
     return stock_date.first.nil? ? nil : stock_date.first.close
   end
 
 
-  def holding_period_low
+  def holding_period_low date
     stock_date = stock.stock_dates.where("stock_dates.date >= ?", enter_date.to_s)
-    stock_date = stock_date.where("stock_dates.date < ?", exit_date.to_s) if exited?
+    stock_date = stock_date.where("stock_dates.date < ?", date.to_s)
     stock_date = stock_date.order('stock_dates.close ASC')
     return stock_date.first.nil? ? nil : stock_date.first.close
   end
 
-  def stop_loss_value
-    if longshort == 'long' and holding_period_high
-      holding_period_high * 0.9 
+  def stop_loss_value date
+    if longshort == 'long' and holding_period_high date
+      holding_period_high(date) * 0.9 
 
-    elsif longshort == 'short' and holding_period_low
-      holding_period_low * 1.05 
+    elsif longshort == 'short' and holding_period_low date
+      holding_period_low(date) * 1.05 
     else
       nil
     end
   end
 
-  def stop_loss_triggered? price
-    if longshort == 'long' and stop_loss_value
-      return price <= stop_loss_value 
+  def stop_loss_triggered? price, date
+    if longshort == 'long' and stop_loss_value(date)
+      return price <= stop_loss_value(date)
 
-    elsif longshort == 'short' and stop_loss_value
-      return price >= stop_loss_value 
+    elsif longshort == 'short' and stop_loss_value(date)
+      return price >= stop_loss_value(date)
 
     else
       return false
