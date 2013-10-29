@@ -7,7 +7,7 @@ class FxRatesController < ApplicationController
   end
 
   def create
-    @fx_rate = FxRate.new params[:fx_rate]
+    @fx_rate = FxRate.new fx_params
     if @fx_rate.save  
       flash[:success] = "Successfully saved FX rates."  
       redirect_to fx_rates_path
@@ -20,4 +20,10 @@ class FxRatesController < ApplicationController
     @fx_rates = FxRate.order('date desc').all
   end
 
+
+private
+ 
+  def fx_params
+    params.permit!
+  end
 end
