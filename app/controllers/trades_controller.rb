@@ -7,7 +7,8 @@ class TradesController < ApplicationController
   end
 
   def create
-    @trade = Trade.new(trade_params)
+    permit_trade_params
+    @trade = Trade.new(params[:trade])
     if @trade.save  
       flash[:success] = "Successfully created trade."  
       expire_report_page_caches
@@ -22,8 +23,9 @@ class TradesController < ApplicationController
   end
 
   def update
+    permit_trade_params
     @trade = Trade.find params[:id]
-    if @trade.update_attributes(trade_params)
+    if @trade.update_attributes(params[:trade])
       flash[:success] = "Successfully updated trade."  
       redirect_to exited_trades_path 
     else
@@ -35,6 +37,7 @@ class TradesController < ApplicationController
   # Collections
 
   def signaled
+    permit_date_param
     dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
     @date = params[:date] ? Date.strptime(params[:date], "%Y-%m-%d") : dates[0]
 
@@ -59,6 +62,7 @@ class TradesController < ApplicationController
 
   # Enter trade (Move from enter_proposed to entered)
   def enter
+    permit_trade_params
     @trade = Trade.find params[:id] 
 
     if request.get?
@@ -66,7 +70,7 @@ class TradesController < ApplicationController
 
     elsif request.patch?
       Trade.transaction do
-        @trade.attributes = trade_params
+        @trade.attributes = params[:trade]
         @trade.state = 'entered'
 
         if @trade.save
@@ -83,6 +87,7 @@ class TradesController < ApplicationController
 
   # Exit trade (Move from exit_proposed to exited)
   def exit
+    permit_trade_params
     @trade = Trade.find params[:id] 
 
     if request.get?
@@ -90,7 +95,7 @@ class TradesController < ApplicationController
 
     elsif request.patch?
       Trade.transaction do
-        @trade.attributes = trade_params
+        @trade.attributes = params[:trade]
         @trade.state = 'exited'
 
         if @trade.save
@@ -105,7 +110,11 @@ class TradesController < ApplicationController
 
 private
   
-  def trade_params
+  def permit_trade_params
     params[:trade].permit!
+  end
+
+  def permit_date_param
+    params.permit(:date)
   end
 end
