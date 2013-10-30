@@ -1,6 +1,7 @@
 require 'capistrano/bundler'
 set :bundle_roles, :all
 set :bundle_without, %w{development test}.join(' ')
+set :bundle_gemfile, -> { release_path.join('Gemfile') }
 
 set :application, 'DX Model'
 set :repo_url, 'git@github.com:andywatts/dxmodel.git'
