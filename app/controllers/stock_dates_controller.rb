@@ -82,6 +82,8 @@ class StockDatesController < ApplicationController
 
           flash[:success] = "Upload successful"
           redirect_to signaled_trades_path
+
+          expire_action controller: 'reports', action: 'pnl'
         end
       end
     end
