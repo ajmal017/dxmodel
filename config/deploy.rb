@@ -1,4 +1,5 @@
-require 'capistrano/bundler'
+require 'apistrano/bundler'
+set :bundle_roles, :all
 
 set :application, 'DX Model'
 set :repo_url, 'git@github.com:andywatts/dxmodel.git'
