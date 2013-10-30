@@ -1,4 +1,4 @@
-require 'apistrano/bundler'
+require 'capistrano/bundler'
 set :bundle_roles, :all
 
 set :application, 'DX Model'
