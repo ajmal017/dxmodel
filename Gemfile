@@ -27,6 +27,7 @@ gem "therubyracer", platform: :ruby
 
 group :development do
   gem 'capistrano',  '~> 3.0.0'
+  gem 'capistrano-bundler'
   gem 'capistrano-rails', '~> 1.0.0'
   gem 'thin'
   #gem "debugger"
