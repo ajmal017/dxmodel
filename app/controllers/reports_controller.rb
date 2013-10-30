@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   require 'csv'
   include ActionView::Helpers::NumberHelper
 
-  caches_action :exposure, :pnl, :day, :inout, layout: false
+  caches_action :exposure, :pnl, :inout, layout: false, expires_in: 1.day
   
   def pnl
     #dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
@@ -61,6 +61,7 @@ class ReportsController < ApplicationController
 
 
   def day
+    permit_date_param
     dates = StockDate.select('distinct date').order('date DESC').collect(&:date)
     @date = params[:date] ? Date.strptime(params[:date], "%Y-%m-%d") : dates[0]
     @previous_date = dates[ dates.index(@date) + 1 ]
@@ -109,4 +110,9 @@ class ReportsController < ApplicationController
     end
   end
 
+private
+  
+  def permit_date_param
+    params.permit(:date)
+  end
 end
