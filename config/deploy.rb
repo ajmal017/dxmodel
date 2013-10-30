@@ -1,3 +1,9 @@
+require 'capistrano/bundler'
+set :bundle_roles, :all
+set :bundle_without, %w{development test}.join(' ')
+set :bundle_gemfile, -> { release_path.join('Gemfile') }
+set :bundle_dir, -> { shared_path.join('bundle') }
+
 set :application, 'DX Model'
 set :repo_url, 'git@github.com:andywatts/dxmodel.git'
 set :format, :pretty
@@ -22,7 +28,6 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      execute "bundle install --without test development"
       execute "mkdir -p #{current_path}/tmp"
       execute "touch #{release_path.join('tmp/restart.txt')}"
     end
