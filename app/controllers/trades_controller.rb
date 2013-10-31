@@ -111,7 +111,7 @@ class TradesController < ApplicationController
 private
   
   def permit_trade_params
-    params[:trade].permit!
+    params.permit(:trade)
   end
 
   def permit_date_param
