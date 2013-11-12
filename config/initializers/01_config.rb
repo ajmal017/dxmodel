@@ -31,3 +31,8 @@ RSI = false
 #RSI_LONG_EXIT   = false # Use RSI signal to exit long?
 #RSI_SHORT_ENTER = true  # Use RSI signal to enter long?
 #RSI_SHORT_EXIT  = false # Use RSI signal to exit short?
+
+
+# Stop loss
+LONG_STOP_LOSS = 0.1
+SHORT_STOP_LOSS = 0.05
