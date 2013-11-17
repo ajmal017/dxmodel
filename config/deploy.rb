@@ -4,7 +4,7 @@ set :bundle_without, %w{development test}.join(' ')
 set :bundle_gemfile, -> { release_path.join('Gemfile') }
 set :bundle_dir, -> { shared_path.join('bundle') }
 
-set :application, 'DX Model'
+set :application, 'dxmodel'
 set :repo_url, 'git@github.com:andywatts/dxmodel.git'
 set :format, :pretty
 set :log_level, :info 
