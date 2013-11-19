@@ -15,12 +15,12 @@ set :keep_releases, 5
 
 
 # Roles
-role :app, %w{dxmodel@dxmodel.andywatts.com}
-role :web, %w{dxmodel@dxmodel.andywatts.com}
-role :db,  %w{dxmodel@dxmodel.andywatts.com}
+role :app, %w{dxmodel@dxmodel.com}
+role :web, %w{dxmodel@dxmodel.com}
+role :db,  %w{dxmodel@dxmodel.com}
 
 # Servers
-server 'dxmodel.andywatts.com', user: 'dxmodel', roles: %w{web app}, my_property: :my_value
+server 'dxmodel.com', user: 'dxmodel', roles: %w{web app}, my_property: :my_value
 
 
 namespace :deploy do
