@@ -1,4 +1,3 @@
-require 'debugger'
 include ActionView::Helpers::DateHelper
 
 namespace :backtest do
