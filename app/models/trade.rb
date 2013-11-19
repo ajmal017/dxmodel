@@ -244,10 +244,12 @@ class Trade < ActiveRecord::Base
 
   def stop_loss_value date
     if longshort == 'long' and holding_period_high date
-      holding_period_high(date) * 0.9 
+      #holding_period_high(date) * 0.9 
+      holding_period_high(date) * (1.0 - LONG_STOP_LOSS)
 
     elsif longshort == 'short' and holding_period_low date
-      holding_period_low(date) * 1.05 
+      #holding_period_low(date) * 1.05 
+      holding_period_low(date) * (1.0 + SHORT_STOP_LOSS)
     else
       nil
     end
