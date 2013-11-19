@@ -4,7 +4,7 @@ set :bundle_without, %w{development test}.join(' ')
 set :bundle_gemfile, -> { release_path.join('Gemfile') }
 set :bundle_dir, -> { shared_path.join('bundle') }
 
-set :application, 'DX Model'
+set :application, 'dxmodel'
 set :repo_url, 'git@github.com:andywatts/dxmodel.git'
 set :format, :pretty
 set :log_level, :info 
@@ -15,12 +15,12 @@ set :keep_releases, 5
 
 
 # Roles
-role :app, %w{dxmodel@dxmodel.andywatts.com}
-role :web, %w{dxmodel@dxmodel.andywatts.com}
-role :db,  %w{dxmodel@dxmodel.andywatts.com}
+role :app, %w{dxmodel@dxmodel.com}
+role :web, %w{dxmodel@dxmodel.com}
+role :db,  %w{dxmodel@dxmodel.com}
 
 # Servers
-server 'dxmodel.andywatts.com', user: 'dxmodel', roles: %w{web app}, my_property: :my_value
+server 'dxmodel.com', user: 'dxmodel', roles: %w{web app}, my_property: :my_value
 
 
 namespace :deploy do
