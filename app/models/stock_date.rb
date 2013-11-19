@@ -24,9 +24,9 @@ class StockDate < ActiveRecord::Base
 #  validates :roe_bf12m, :presence => true
 #  validates :roa_bf12m, :presence => true
 #  validates :average_traded_value_30_days, :presence => true
-  validates :close, :presence => true
-  validates :wmavg_10d, :presence => true
-  validates :smavg_10d, :presence => true
+#  validates :close, :presence => true
+#  validates :wmavg_10d, :presence => true
+#  validates :smavg_10d, :presence => true
 
 
 
