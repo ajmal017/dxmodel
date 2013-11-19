@@ -94,7 +94,7 @@ private
   def validate_data long, short
     errors = []
     #optional_fields =  ['Alpha:M-6', 'P/E', 'Live PE Chg', 'P/B', 'Live P/BK Chg', 'P/FCF', 'Live P/CF Chg', 'Diluted EPS - 5 Year Average Growth:Y', 'BEst ROE BF12M', 'BEst ROA BF12M', 'Average Traded Value 30days']
-    required_fields = ['Closing PX ', 'WMAVG', 'SMAVG', 'VWAP']
+    required_fields = ['Closing PX ', 'WMAVG', 'SMAVG']
 
     long.each_with_index do |row, index|
       (required_fields + ['Ranking Model: Long Score']).each { |column| errors << "Long: row #{index + 2}: #{column} missing" unless numeric?(row[column]) }
