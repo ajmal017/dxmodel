@@ -1,4 +1,4 @@
-require 'capistrano/bundler'
+require 'capistrano/rails'
 set :bundle_roles, :all
 set :bundle_without, %w{development test}.join(' ')
 set :bundle_gemfile, -> { release_path.join('Gemfile') }
@@ -20,7 +20,7 @@ role :web, %w{dxmodel@dxmodel.com}
 role :db,  %w{dxmodel@dxmodel.com}
 
 # Servers
-server 'dxmodel.com', user: 'dxmodel', roles: %w{web app}, my_property: :my_value
+server 'dxmodel.com', user: 'dxmodel', roles: [:web, :app]
 
 
 namespace :deploy do
