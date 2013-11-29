@@ -49,3 +49,15 @@ staging.dxmodel:
   database: staging.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
+
+backtest1.dxmodel:
+  <<: *base
+  database: backtest1.dxmodel
+  password: enter12
+  socket: /var/run/mysqld/mysqld.sock #Ubuntu
+
+backtest2.dxmodel:
+  <<: *base
+  database: backtest2.dxmodel
+  password: enter12
+  socket: /var/run/mysqld/mysqld.sock #Ubuntu
