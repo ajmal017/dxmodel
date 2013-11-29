@@ -32,7 +32,7 @@ namespace :backtest do
         next if stock_date.nil?  # skip unless we have rank data for stock on date
 
         # Calc signals
-        stock_date.calc_fund_signals
+        #stock_date.calc_fund_signals
         stock_date.calc_ma_signals if MA
         stock_date.calc_rsi_signals if RSI
         stock_date.calc_tech_signals
@@ -45,7 +45,7 @@ namespace :backtest do
       # Trade signals
       if StockDate.where(date: date).present?
         Trade.propose_exits_missing_stocks date
-        Trade.propose_exits_fundamental date
+        #Trade.propose_exits_fundamental date
         Trade.propose_exits_stop_loss date
         Trade.propose_entries_long date
         Trade.propose_entries_short date

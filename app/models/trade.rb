@@ -82,7 +82,7 @@ class Trade < ActiveRecord::Base
       num_trades_required = MAX_NUMBER_OF_STOCKS - Trade.long.active.count + Trade.long.exit_signaled.count
 
       # Only get # of new trades required
-      stock_dates = StockDate.where(date: date, fund_long_enter: true, tech_long_enter: true, fund_short_enter: false).order('stock_dates.long_fund_rank ASC')
+      stock_dates = StockDate.where(date: date, tech_long_enter: true).order('stock_dates.long_fund_rank ASC')
       stock_dates.each_with_index do |stock_date|
         next if stock_date.stock.trades.entered.present? # Skip if we already entered a trade
         break if num_trades_required == 0
@@ -99,7 +99,7 @@ class Trade < ActiveRecord::Base
       num_trades_required = MAX_NUMBER_OF_STOCKS - Trade.short.active.count + Trade.short.exit_signaled.count
 
       # Only get # of new trades required
-      stock_dates = StockDate.where(date: date, fund_short_enter: true, tech_short_enter: true, fund_long_enter: false).order('short_fund_rank ASC')
+      stock_dates = StockDate.where(date: date, tech_short_enter: true).order('short_fund_rank ASC')
       stock_dates.each_with_index do |stock_date|
         next if stock_date.stock.trades.entered.first # Skip if we already entered a trade
         break if num_trades_required == 0
