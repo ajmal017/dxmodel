@@ -13,7 +13,7 @@ set :keep_releases, 5
 set :linked_files, %w{config/database.yml}
 set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 
-set :migration_rol, 'db'
+set :migration_role, 'db'
 
 # Roles
 role :app, %w{dxmodel@dxmodel.com}
