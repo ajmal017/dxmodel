@@ -47,11 +47,22 @@ class StockDate < ActiveRecord::Base
   end
 
   def calc_tech_signals
-    self.tech_long_enter = (((RSI and RSI_LONG_ENTER) ? rsi_long_enter : true) and (MA_LONG_ENTER ? ma_long_enter : true))
-    self.tech_long_exit =  (((RSI and RSI_LONG_EXIT) ? rsi_long_exit : true) and (MA_LONG_EXIT ? ma_long_exit : true))
+    self.tech_long_enter = rsi_long_enter if RSI_LONG_ENTER 
+    self.tech_long_enter = ma_long_enter if MA_LONG_ENTER
+    self.tech_long_enter = (rsi_long_enter and ma_long_enter) if (RSI_LONG_ENTER and MA_LONG_ENTER)
 
-    self.tech_short_enter = (((RSI and RSI_SHORT_ENTER) ? rsi_short_enter : true) and (MA_SHORT_ENTER ? ma_short_enter : true))
-    self.tech_short_exit =  (((RSI and RSI_SHORT_EXIT) ? rsi_short_exit : true) and (MA_SHORT_EXIT ? ma_short_exit : true))
+    self.tech_short_enter = rsi_short_enter if RSI_SHORT_ENTER 
+    self.tech_short_enter = ma_short_enter if MA_SHORT_ENTER
+    self.tech_short_enter = (rsi_short_enter and ma_short_enter) if (RSI_SHORT_ENTER and MA_SHORT_ENTER)
+
+
+    self.tech_long_exit = rsi_long_exit if RSI_LONG_EXIT
+    self.tech_long_exit = ma_long_exit if MA_LONG_EXIT
+    self.tech_long_exit = (rsi_long_exit and ma_long_exit) if (RSI_LONG_EXIT and MA_LONG_EXIT)
+
+    self.tech_short_exit = rsi_short_exit if RSI_SHORT_EXIT 
+    self.tech_short_exit = ma_short_exit if MA_SHORT_EXIT
+    self.tech_short_exit = (rsi_short_exit and ma_short_exit) if (RSI_SHORT_EXIT and MA_SHORT_EXIT)
   end
 
 
