@@ -20,25 +20,25 @@ staging:
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 
-ap.dxmodel:
+ap:
   <<: *base
   database: ap.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-uk.dxmodel:
+uk:
   <<: *base
   database: uk.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-us.dxmodel:
+us:
   <<: *base
   database: us.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-jp.dxmodel:
+jp:
   <<: *base
   database: jp.dxmodel
   password: enter12
@@ -50,13 +50,13 @@ staging.dxmodel:
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-backtest1.dxmodel:
+backtest1:
   <<: *base
   database: backtest1.dxmodel
   password: enter12
   socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-backtest2.dxmodel:
+backtest2:
   <<: *base
   database: backtest2.dxmodel
   password: enter12

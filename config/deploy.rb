@@ -1,4 +1,5 @@
 require 'capistrano/rails'
+SSHKit.config.command_map[:rake] = "bundle exec rake"
 set :bundle_roles, :all
 set :bundle_without, %w{development test}.join(' ')
 set :bundle_gemfile, -> { release_path.join('Gemfile') }
@@ -7,7 +8,7 @@ set :bundle_dir, -> { shared_path.join('bundle') }
 set :application, 'dxmodel'
 set :repo_url, 'git@github.com:andywatts/dxmodel.git'
 set :format, :pretty
-set :log_level, :info 
+set :log_level, :debug 
 set :pty, true
 set :keep_releases, 5
 set :linked_files, %w{config/database.yml}
