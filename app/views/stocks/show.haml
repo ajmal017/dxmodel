@@ -26,11 +26,13 @@
       %th Date
       %th.divider 
       %th Long fund. signal 
+      %th Long tech. signal 
       %th Long fund. rank
       %th Long fund. score
       %th Long industry rank
       %th.divider
       %th Short fund. signal 
+      %th Short tech. signal 
       %th Short fund. rank
       %th Short fund. score
       %th Short industry rank
@@ -48,6 +50,12 @@
         %td
           = 'Enter' if stock_date.fund_long_enter
           = 'Exit' if stock_date.fund_long_exit
+
+        %td
+          = 'Enter' if stock_date.tech_long_enter
+          = 'Exit' if stock_date.tech_long_exit
+
+
         %td= stock_date.long_fund_rank || ''
         %td= stock_date.long_fund_score || ''
         %td= stock_date.long_fund_rank_by_industry || ''
@@ -55,6 +63,11 @@
         %td
           = 'Enter' if stock_date.fund_short_enter
           = 'Exit' if stock_date.fund_short_exit
+
+        %td
+          = 'Enter' if stock_date.tech_short_enter
+          = 'Exit' if stock_date.tech_short_exit
+
         %td= stock_date.short_fund_rank || ''
         %td= stock_date.short_fund_score || ''
         %td= stock_date.short_fund_rank_by_industry || ''
