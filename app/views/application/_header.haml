@@ -1,11 +1,11 @@
 .navbar
   .navbar-inner
     .container
-      = image_tag("/assets/flags/#{Rails.env.gsub(/\.dxmodel/,'')}.png", id: 'flag', alt: Rails.env) if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
+      = link_to root_path do
+        = image_tag("/assets/flags/#{Rails.env.gsub(/\.dxmodel/,'')}.png", id: 'flag', alt: Rails.env) if Rails.env.scan(/(uk|us|ap|jp|au)/).present? 
 
       %span.brand 
-        =# link_to "DX Model #{ Rails.env.scan(/(uk|us|ap|jp|au).dxmodel/).try(:first).try(:first).try(:upcase) || '' }", root_path
-        = link_to "DX Model", root_path
+        = link_to "DX Model", "http://dxmodel.com"
 
       .nav-collapse.collapse.navbar-responsive-collapse
         %ul.nav
