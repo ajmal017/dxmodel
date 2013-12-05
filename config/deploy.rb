@@ -1,4 +1,5 @@
 require 'capistrano/rails'
+SSHKit.config.command_map[:rake] = "bundle exec rake"
 set :bundle_roles, :all
 set :bundle_without, %w{development test}.join(' ')
 set :bundle_gemfile, -> { release_path.join('Gemfile') }
