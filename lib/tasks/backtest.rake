@@ -3,7 +3,7 @@ include ActionView::Helpers::DateHelper
 namespace :backtest do
   desc "Splits"
   task :splits => [:environment] do |task, args|
-    Stock.order('country ASC, ticker ASC').all.each do |stock|
+    Stock.order('country ASC, ticker ASC').to_a.each do |stock|
       stock.stock_dates.order('date ASC').each_with_index do |stock_date, index|
         unless index == 0 or stock_date.close.nil? or @yesterday_close.nil?
           puts "#{stock.country_ticker} #{stock_date.date} #{@yesterday_close} #{stock_date.close}" if (stock_date.close - @yesterday_close).to_f/stock_date.close.to_f > 0.4
@@ -27,7 +27,7 @@ namespace :backtest do
 
       # Stock signals
       print "\n#{date.to_s} - Stock signals"
-      Stock.order('country ASC, ticker ASC').all.each do |stock|
+      Stock.order('country ASC, ticker ASC').to_a.each do |stock|
         stock_date = StockDate.where({stock_id: stock.id, date: date}).first
         next if stock_date.nil?  # skip unless we have rank data for stock on date
 
