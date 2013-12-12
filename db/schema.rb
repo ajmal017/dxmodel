@@ -75,8 +75,8 @@ ActiveRecord::Schema.define(version: 20131209080235) do
     t.decimal  "roa_bf12m",                    precision: 20, scale: 6
     t.decimal  "average_traded_value_30_days", precision: 20, scale: 6
     t.decimal  "close",                        precision: 20, scale: 6
-    t.decimal  "wmavg_10d",                    precision: 20, scale: 6
-    t.decimal  "smavg_10d",                    precision: 20, scale: 6
+    t.decimal  "wmavg_10d",                    precision: 20, scale: 6, null: false
+    t.decimal  "smavg_10d",                    precision: 20, scale: 6, null: false
     t.decimal  "vwap",                         precision: 20, scale: 6
     t.boolean  "ma_long_enter"
     t.boolean  "ma_long_exit"
