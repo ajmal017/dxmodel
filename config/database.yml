@@ -9,59 +9,47 @@ development:
   <<: *base
   database: dxmodel_dev
 
+prod: &prod
+  <<: *base
+  database: dxmodel_dev
+
 test:
   <<: *base
   database: dxmodel_test
 
 staging:
-  <<: *base
+  <<: *prod
   database: dxmodel_staging
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 
 ap:
-  <<: *base
+  <<: *prod
   database: ap.dxmodel
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 uk:
-  <<: *base
+  <<: *prod
   database: uk.dxmodel
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 us:
-  <<: *base
+  <<: *prod
   database: us.dxmodel
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 jp:
-  <<: *base
+  <<: *prod
   database: jp.dxmodel
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
-au.dxmodel:
-  <<: *base
+au:
+  <<: *prod
   database: au.dxmodel
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 staging.dxmodel:
   <<: *base
   database: staging.dxmodel
 
 backtest1:
-  <<: *base
+  <<: *prod
   database: backtest1.dxmodel
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu
 
 backtest2:
-  <<: *base
+  <<: *prod
   database: backtest2.dxmodel
-  password: enter12
-  socket: /var/run/mysqld/mysqld.sock #Ubuntu

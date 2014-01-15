@@ -1,3 +1,4 @@
+require 'debugger'
 include ActionView::Helpers::DateHelper
 
 namespace :backtest do
@@ -19,6 +20,7 @@ namespace :backtest do
   task :backtest => [:environment] do |task, args|
     time = Time.now
 
+    data_quality
     wipe_trades && wipe_signals
 
     # Loop through days
@@ -55,36 +57,8 @@ namespace :backtest do
 
       # Create trades
       Trade.enter_signaled.each do |trade|
-        stock_date = StockDate.where(date: dates[index + 1], stock_id: trade.stock_id).first.try(:close)
-        if stock_date.present?
-          trade.enter_date = dates[index + 1]
-          trade.enter_usd_fx_rate =  FxRate.where(date: trade.enter_date).first.send("usd#{trade.stock.currency.downcase}")
-          trade.enter_local_price = StockDate.where(date: dates[index + 1], stock_id: trade.stock_id).first.close
-          trade.quantity = (MAX_PER_ENTRY / (trade.enter_local_price / trade.enter_usd_fx_rate)).floor
-          trade.enter_local_value = trade.quantity * trade.enter_local_price
-          trade.enter_usd_value = trade.enter_local_value / trade.enter_usd_fx_rate
-          trade.state = 'entered'
-          trade.save!
-        else
-          trade.destroy!
-        end
-      end
-
-      Trade.exit_signaled.each do |trade|
-        stock_date = StockDate.where(date: dates[index + 1], stock_id: trade.stock_id).first.try(:close)
-        if stock_date.present?
-          trade.exit_date = dates[index + 1]
-          trade.exit_usd_fx_rate =  FxRate.where(date: trade.exit_date).first.send("usd#{trade.stock.currency.downcase}")
-          trade.exit_local_price = StockDate.where(date: dates[index + 1], stock_id: trade.stock_id).first.close
-          trade.exit_local_value = trade.quantity * trade.exit_local_price
-          trade.exit_usd_value = trade.exit_local_value / trade.exit_usd_fx_rate
-          trade.state = 'exited'
-          trade.save!
-        else
-          trade.exit_signal_date = nil
-          trade.state = 'entered'
-          trade.save!
-        end
+        trade.process_enter_signals date
+        trade.process_exit_signals date
       end
       puts "#{date.to_s} - Trades entered and exited"
     end
@@ -121,4 +95,8 @@ private
     StockDate.update_all tech_short_exit: false
   end
 
+  def data_quality
+    puts StockDate.where("close is null or close = 0.0").count.to_s + " stock dates with missing close prices"
+    puts StockDate.where("vwap is null or vwap = 0.0").count.to_s + " stock dates with missing vwap prices"
+  end
 end
