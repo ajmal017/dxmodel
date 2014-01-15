@@ -9,10 +9,6 @@ development:
   <<: *base
   database: dxmodel_dev
 
-prod: &prod
-  <<: *base
-  database: dxmodel_dev
-
 test:
   <<: *base
   database: dxmodel_test
@@ -37,10 +33,6 @@ us:
 jp:
   <<: *prod
   database: jp.dxmodel
-
-staging.dxmodel:
-  <<: *prod
-  database: staging.dxmodel
 
 backtest1:
   <<: *prod

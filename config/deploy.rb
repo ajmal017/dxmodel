@@ -47,7 +47,7 @@ end
 
 set :user, 'dxmodel'
 set :rsync_options, %w[--recursive --delete --delete-excluded --exclude .git*]
-set :shared_dirs, ['log', 'bin', 'tmp', 'vendor/bundle', 'public/system']
+set :shared_dirs, ['log', 'config', 'bin', 'tmp', 'vendor/bundle', 'public/system']
 set :shared_files, ['config/database.yml']
 set :shared_paths, shared_dirs + shared_files
 
