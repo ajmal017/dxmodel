@@ -56,10 +56,8 @@ namespace :backtest do
 
 
       # Create trades
-      Trade.enter_signaled.each do |trade|
-        trade.process_enter_signals date
-        trade.process_exit_signals date
-      end
+      Trade.process_enter_signals date
+      Trade.process_exit_signals date
       puts "#{date.to_s} - Trades entered and exited"
     end
     puts "Run time: " + distance_of_time_in_words_to_now(time).to_s
