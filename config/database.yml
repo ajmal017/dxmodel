@@ -17,7 +17,6 @@ staging:
   <<: *prod
   database: dxmodel_staging
 
-
 ap:
   <<: *prod
   database: ap.dxmodel
