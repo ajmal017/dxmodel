@@ -2,7 +2,7 @@ class ReportsController < ApplicationController
   require 'csv'
   include ActionView::Helpers::NumberHelper
 
-  caches_action :exposure, :pnl, :inout, layout: false, expires_in: 1.day
+  caches_action :exposure, :pnl, :inout, layout: false, expires_in: 1.day, :if => Proc.new { |c| c.request.format.html? }
   
   def pnl
     #dates = FxRate.unscoped.select('distinct date').where("date > ?", 90.days.ago).order('date ASC').collect(&:date)
@@ -50,9 +50,10 @@ class ReportsController < ApplicationController
     end
 
     respond_to do |format|
-      format.html
+      format.html 
       format.csv
       format.xls do
+        #render '/reports/pnl.xls.erb', layout: false
         render layout: false
       end
     end
