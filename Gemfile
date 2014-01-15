@@ -4,7 +4,6 @@ gem "rails", '~>4.0.0'
 gem 'activerecord-session_store'
 gem 'actionpack-action_caching'
 gem 'mysql2'
-gem 'haml-rails'
 gem 'state_machine'
 gem 'thor'
 gem 'pry'
@@ -14,9 +13,7 @@ gem 'jquery-ui-rails'
 gem 'simple_form'
 gem 'httparty'
 gem 'whenever', :require => false
-
 gem "bcrypt-ruby", :require => "bcrypt"
-
 gem 'sass-rails', '>= 3.2'
 gem "bootstrap-sass", github: "thomas-mcdonald/bootstrap-sass", branch: "3"
 gem 'font-awesome-sass-rails'
@@ -26,13 +23,12 @@ gem "therubyracer", platform: :ruby
 
 
 group :development do
-  gem 'capistrano',  '~> 3.0.0'
-  gem 'capistrano-bundler'
-  gem 'capistrano-rails', '~> 1.1.0'
-  gem 'thin'
-  #gem "debugger"
   gem "byebug"
-  #gem "rack-mini-profiler"
+  gem "puma"
+  gem "mina"
+  gem "mina-sidekiq"
+  gem "mina-rsync", git: "git@github.com:andywatts/mina-rsync.git"
+  gem "haml-rails", ">= 0.3.4"
 end
 
 group :test do

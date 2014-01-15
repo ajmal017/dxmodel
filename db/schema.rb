@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131026144523) do
+ActiveRecord::Schema.define(version: 20131209080235) do
 
   create_table "fx_rates", force: true do |t|
     t.date     "date"
@@ -55,45 +55,45 @@ ActiveRecord::Schema.define(version: 20131026144523) do
   create_table "stock_dates", force: true do |t|
     t.integer  "stock_id"
     t.date     "date"
-    t.float    "long_fund_score",                                       default: 0.0
+    t.float    "long_fund_score"
     t.integer  "long_fund_rank_by_industry"
     t.integer  "long_fund_rank"
-    t.float    "short_fund_score",                                      default: 0.0
+    t.float    "short_fund_score"
     t.integer  "short_fund_rank_by_industry"
     t.integer  "short_fund_rank"
-    t.datetime "created_at",                                                            null: false
-    t.datetime "updated_at",                                                            null: false
-    t.decimal  "alpha",                        precision: 20, scale: 6, default: 0.0
-    t.decimal  "per",                          precision: 20, scale: 6, default: 0.0
-    t.decimal  "per_change",                   precision: 20, scale: 6, default: 0.0
-    t.decimal  "pbr",                          precision: 8,  scale: 4, default: 0.0
-    t.decimal  "pbr_change",                   precision: 8,  scale: 4, default: 0.0
-    t.decimal  "pfcf",                         precision: 20, scale: 6, default: 0.0
-    t.decimal  "pfcf_change",                  precision: 20, scale: 6, default: 0.0
-    t.decimal  "eps_5yr_growth",               precision: 20, scale: 6, default: 0.0
-    t.decimal  "roe_bf12m",                    precision: 20, scale: 6, default: 0.0
-    t.decimal  "roa_bf12m",                    precision: 20, scale: 6, default: 0.0
-    t.decimal  "average_traded_value_30_days", precision: 20, scale: 6, default: 0.0
-    t.decimal  "close",                        precision: 20, scale: 6, default: 0.0
-    t.decimal  "wmavg_10d",                    precision: 20, scale: 6, default: 0.0
-    t.decimal  "smavg_10d",                    precision: 20, scale: 6, default: 0.0
-    t.decimal  "vwap",                         precision: 20, scale: 6, default: 0.0
-    t.boolean  "ma_long_enter",                                         default: false
-    t.boolean  "ma_long_exit",                                          default: false
-    t.boolean  "ma_short_enter",                                        default: false
-    t.boolean  "ma_short_exit",                                         default: false
-    t.boolean  "rsi_long_enter",                                        default: false
-    t.boolean  "rsi_long_exit",                                         default: false
-    t.boolean  "rsi_short_enter",                                       default: false
-    t.boolean  "rsi_short_exit",                                        default: false
-    t.boolean  "fund_long_enter",                                       default: false
-    t.boolean  "fund_long_exit",                                        default: false
-    t.boolean  "fund_short_enter",                                      default: false
-    t.boolean  "fund_short_exit",                                       default: false
-    t.boolean  "tech_long_enter",                                       default: false
-    t.boolean  "tech_long_exit",                                        default: false
-    t.boolean  "tech_short_enter",                                      default: false
-    t.boolean  "tech_short_exit",                                       default: false
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+    t.decimal  "alpha",                        precision: 20, scale: 6
+    t.decimal  "per",                          precision: 20, scale: 6
+    t.decimal  "per_change",                   precision: 20, scale: 6
+    t.decimal  "pbr",                          precision: 8,  scale: 4
+    t.decimal  "pbr_change",                   precision: 8,  scale: 4
+    t.decimal  "pfcf",                         precision: 20, scale: 6
+    t.decimal  "pfcf_change",                  precision: 20, scale: 6
+    t.decimal  "eps_5yr_growth",               precision: 20, scale: 6
+    t.decimal  "roe_bf12m",                    precision: 20, scale: 6
+    t.decimal  "roa_bf12m",                    precision: 20, scale: 6
+    t.decimal  "average_traded_value_30_days", precision: 20, scale: 6
+    t.decimal  "close",                        precision: 20, scale: 6
+    t.decimal  "wmavg_10d",                    precision: 20, scale: 6
+    t.decimal  "smavg_10d",                    precision: 20, scale: 6
+    t.decimal  "vwap",                         precision: 20, scale: 6
+    t.boolean  "ma_long_enter"
+    t.boolean  "ma_long_exit"
+    t.boolean  "ma_short_enter"
+    t.boolean  "ma_short_exit"
+    t.boolean  "rsi_long_enter"
+    t.boolean  "rsi_long_exit"
+    t.boolean  "rsi_short_enter"
+    t.boolean  "rsi_short_exit"
+    t.boolean  "fund_long_enter"
+    t.boolean  "fund_long_exit"
+    t.boolean  "fund_short_enter"
+    t.boolean  "fund_short_exit"
+    t.boolean  "tech_long_enter"
+    t.boolean  "tech_long_exit"
+    t.boolean  "tech_short_enter"
+    t.boolean  "tech_short_exit"
     t.float    "rsi"
   end
 
