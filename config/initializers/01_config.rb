@@ -19,9 +19,9 @@ SHORT_EXIT_RANK_THRESHOLD  = 30
 
 
 #Technicals
-MA_LONG_ENTER  = false  # Use MA signal to enter long?
+MA_LONG_ENTER  = true  # Use MA signal to enter long?
 MA_LONG_EXIT   = false # Use MA signal to exit long?
-MA_SHORT_ENTER = false  # Use MA signal to enter short?
+MA_SHORT_ENTER = true  # Use MA signal to enter short?
 MA_SHORT_EXIT  = false # Use MA signal to exit short?
 MA = MA_LONG_ENTER or MA_LONG_EXIT or MA_SHORT_ENTER or MA_SHORT_EXIT 
 
