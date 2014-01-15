@@ -3,44 +3,47 @@ require 'mina/rails'
 require 'mina/git'
 require "mina_rsync/tasks"
 
-
-
 task :ap do
-  #set :domain, 'ap.dxmodel.com'
+  set :domain, 'ap.dxmodel.com'
   set :deploy_to, '/var/www/ap.dxmodel.com'
   set :branch, 'ap'
 end
 
 task :au do
+  set :domain, 'au.dxmodel.com'
   set :branch, 'au'
   set :deploy_to, "/var/www/au.dxmodel.com"
 end
 
-task :backtest do
-  set :branch, 'backtest1'
-  set :deploy_to, "/var/www/backtest1.dxmodel.com"
-end
-
 task :jp do
+  set :domain, 'jp.dxmodel.com'
   set :branch, 'jp'
   set :deploy_to, "/var/www/jp.dxmodel.com"
 end
 
-task :staging do
-  set :branch, 'staging'
-  set :deploy_to, "/var/www/staging.dxmodel.com"
-end
-
 task :uk do
+  set :domain, 'uk.dxmodel.com'
   set :branch, 'uk'
   set :deploy_to, "/var/www/uk.dxmodel.com"
 end
 
 task :us do
+  set :domain, 'us.dxmodel.com'
   set :branch, 'us'
   set :deploy_to, "/var/www/us.dxmodel.com"
 end
 
+task :staging do
+  set :domain, 'staging.dxmodel.com'
+  set :branch, 'staging'
+  set :deploy_to, "/var/www/staging.dxmodel.com"
+end
+
+task :backtest do
+  set :domain, 'backtest1.dxmodel.com'
+  set :branch, 'backtest1'
+  set :deploy_to, "/var/www/backtest1.dxmodel.com"
+end
 
 set :user, 'dxmodel'
 set :rsync_options, %w[--recursive --delete --delete-excluded --exclude .git*]
