@@ -9,10 +9,6 @@ development:
   <<: *base
   database: dxmodel_dev
 
-prod: &prod
-  <<: *base
-  database: dxmodel_dev
-
 test:
   <<: *base
   database: dxmodel_test

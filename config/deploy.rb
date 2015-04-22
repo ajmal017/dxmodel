@@ -1,44 +1,79 @@
-require 'capistrano/rails'
-SSHKit.config.command_map[:rake] = "bundle exec rake"
-set :bundle_roles, :all
-set :bundle_without, %w{development test}.join(' ')
-set :bundle_gemfile, -> { release_path.join('Gemfile') }
-set :bundle_dir, -> { shared_path.join('bundle') }
+require 'mina/bundler'
+require 'mina/rails'
+require 'mina/git'
+require "mina_rsync/tasks"
 
-set :application, 'dxmodel'
-set :repo_url, 'git@github.com:andywatts/dxmodel.git'
-set :format, :pretty
-set :log_level, :debug 
-set :pty, true
-set :keep_releases, 5
-set :linked_files, %w{config/database.yml}
-set :linked_dirs, %w{bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
-
-set :migration_role, 'db'
-
-# Roles
-role :app, %w{dxmodel@dxmodel.com}
-role :web, %w{dxmodel@dxmodel.com}
-role :db,  %w{dxmodel@dxmodel.com}
-
-namespace :deploy do
-
-  desc 'Restart application'
-  task :restart do
-    on roles(:app), in: :sequence, wait: 5 do
-      execute "mkdir -p #{current_path}/tmp"
-      execute "touch #{release_path.join('tmp/restart.txt')}"
-    end
-  end
-
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
-  after :finishing, 'deploy:cleanup'
+task :ap do
+  set :branch, 'ap'
 end
+
+task :au do
+  set :branch, 'au'
+end
+
+task :jp do
+  set :branch, 'jp'
+end
+
+task :uk do
+  set :branch, 'uk'
+end
+
+task :us do
+  set :branch, 'us'
+end
+
+task :staging do
+  set :branch, 'staging'
+end
+
+task :backtest do
+  set :branch, 'backtest1'
+end
+
+set :rails_env, branch
+set :domain, "#{branch}.dxmodel.com"
+set :deploy_to, "/var/www/#{branch}.dxmodel.com"
+
+set :user, 'dxmodel'
+set :rsync_options, %w[--recursive --delete --delete-excluded --exclude .git*]
+set :shared_dirs, ['log', 'config', 'bin', 'tmp', 'vendor/bundle', 'public/system']
+set :shared_files, ['config/database.yml']
+set :shared_paths, shared_dirs + shared_files
+
+desc "Default env"
+task :environment do
+end
+
+
+desc "Setups shared folders and files on a new server."
+task :setup => :environment do
+  queue  %[echo "-----> Creating shared folders."]
+  shared_dirs.each do |shared_dir|
+    queue  %[echo "       #{shared_dir}"]
+    queue! %[mkdir -p "#{deploy_to}/shared/#{shared_dir}"]
+    queue! %[chmod g+rx,u+rwx "#{deploy_to}/shared/#{shared_dir}"]
+  end
+
+  shared_files.each do |shared_file|
+    queue  %[echo "-----> Be sure to create shared file '#{shared_file}'."]
+  end
+end
+
+
+desc "Deploys the current version to the server."
+task :deploy => :environment do
+  deploy do
+    invoke "rsync:deploy"
+    invoke :'deploy:link_shared_paths'
+    invoke :'bundle:install'
+    invoke :'rails:db_migrate'
+    invoke :'rails:assets_precompile'
+
+    to :launch do
+      queue "touch #{deploy_to}/tmp/restart.txt"
+    end
+  end
+end
+
+
