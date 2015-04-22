@@ -23,5 +23,5 @@ staging:
 
 us:
   <<: *prod
-  database: dxmodel_us
+  database: dxmodel-us
 
