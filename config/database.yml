@@ -21,31 +21,7 @@ staging:
   <<: *prod
   database: dxmodel_staging
 
-
-ap:
-  <<: *prod
-  database: ap.dxmodel
-
-uk:
-  <<: *prod
-  database: uk.dxmodel
-
 us:
   <<: *prod
-  database: us.dxmodel
+  database: dxmodel_us
 
-jp:
-  <<: *prod
-  database: jp.dxmodel
-
-staging.dxmodel:
-  <<: *prod
-  database: staging.dxmodel
-
-backtest1:
-  <<: *prod
-  database: backtest1.dxmodel
-
-backtest2:
-  <<: *prod
-  database: backtest2.dxmodel
