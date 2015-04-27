@@ -22,10 +22,6 @@ gem "therubyracer", platform: :ruby
 
 
 group :development do
-  gem "byebug"
-  gem "puma"
-  gem "mina"
-  gem "mina-rsync", git: "git@github.com:andywatts/mina-rsync.git"
   gem "haml-rails", ">= 0.3.4"
 end
 
