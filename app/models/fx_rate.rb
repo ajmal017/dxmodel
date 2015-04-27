@@ -11,7 +11,7 @@ class FxRate < ActiveRecord::Base
   validates :usdnzd, :presence => true, :uniqueness => {:scope => :date}, :if => Proc.new {|a| CURRENCIES.include?('NZD') }
 
 
-  default_scope order('fx_rates.date DESC')
+  default_scope {order('fx_rates.date DESC')}
 
 
   class << self
