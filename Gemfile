@@ -26,11 +26,11 @@ group :development do
 end
 
 group :test do
-  gem "rspec-rails", ">= 2.7.0"
-  gem "factory_girl_rails", ">= 1.3.0"
-  gem "capybara", ">= 1.1.1"
-  gem "poltergeist"
-  gem "database_cleaner", ">= 0.6.7"
-  gem 'shoulda-matchers'
-  gem 'rack_session_access'
+  #gem "rspec-rails", ">= 2.7.0"
+  #gem "factory_girl_rails", ">= 1.3.0"
+  #gem "capybara", ">= 1.1.1"
+  #gem "poltergeist"
+  #gem "database_cleaner", ">= 0.6.7"
+  #gem 'shoulda-matchers'
+  #gem 'rack_session_access'
 end
