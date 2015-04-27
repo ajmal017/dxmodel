@@ -1,7 +1,9 @@
 base: &base
   adapter: mysql2
-  username: root
-  host: localhost
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>
   encoding: utf8
   timeout: 5000
 
@@ -17,7 +19,6 @@ staging:
   <<: *prod
   database: dxmodel_staging
 
-us:
+production:
   <<: *prod
-  database: com_dxmodel_us
-
+  database: <%= ENV['RDS_DB_NAME'] %>
