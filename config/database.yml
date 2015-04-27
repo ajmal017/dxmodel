@@ -16,9 +16,9 @@ test:
   database: dxmodel_test
 
 staging:
-  <<: *prod
+  <<: *base
   database: dxmodel_staging
 
 production:
-  <<: *prod
+  <<: *base
   database: <%= ENV['RDS_DB_NAME'] %>
